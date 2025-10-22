@@ -1,0 +1,20 @@
+.wpcmt-aisays-description {
+    margin: 2em 0;
+    padding: 1.5em;
+    /*background: #f8f8f8;*/
+    border-left: 4px solid rgba(48,12,124,0.56);
+    border-radius: 4px;
+    clear: both;
+    /*box-shadow:0 4px 12px rgba(0, 0, 0, 0.88)*/
+}
+
+.wpcmt-aisays-description h2 {
+    /*color: #2271b1;*/
+    margin-top: 0;
+    font-size: 1.5em;
+}
+
+.wpcmt-aisays-content {
+    line-height: 1.6;
+    font-size: 1.1em;
+}
