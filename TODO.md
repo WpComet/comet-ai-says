@@ -6,9 +6,12 @@
 - - Attach prod img to ai desc
 - - Block UI, more clarity
 [ ] Dashboard to move usage tracker to, and add other summaries
+[?] Add Deepseek ? Offers free tier but requires account funding
 [ ] Try more hooks to attach to product page
 [ ] More admin filters; by price, asc-desc, rand etc.
 [ ] Operation -admin- params; batch size etc.
+[ ] Frontend button to regen if admin | shop manager
+[ ] Rate limiting - precautionary or otherwise, IP, key limit etc.
 [ ] Revise readme, screenshots, tags, description etc. for the plugin
 
 

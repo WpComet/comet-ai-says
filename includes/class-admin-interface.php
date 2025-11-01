@@ -153,7 +153,7 @@ Visual context: {image_analysis}
             'korean' => "- 간결하지만 설득력 있게 작성하세요 (약 150-200단어).\n- \"여기...\", \"소개합니다...\", \"이 제품은...\" 등의 도입 문구를 추가하지 마세요",
             'chinese' => "- 保持简洁但有说服力（约150-200字）。\n- 不要添加任何介绍性短语，如\"这是...\"、\"我介绍...\"、\"本产品...\"等。",
             'arabic' => "- اجعلها موجزة ولكن مقنعة (حوالي 150-200 كلمة).\n- لا تضيف أي عبارات تمهيدية مثل \"ها هو...\"، \"أقدم...\"، \"هذا المنتج...\"، إلخ.",
-            'turkish' => "- Kısa ama ikna edici olun (yaklaşık 150-200 kelime).\n- \"İşte...\", \"Sunuyorum...\", \"Bu ürün...\" gibi giriş ifadeleri EKLEMEYİN.",
+            'turkish' => "- Kısa ama ikna edici olun (yaklaşık 150-200 kelime).\n- işte buyur ürün açıklaman burada gibi cevaben gereksiz giriş ifadeleri EKLEME.",
             'hindi' => "- संक्षिप्त लेकिन प्रेरक रखें (लगभग 150-200 शब्द).\n- \"यहाँ है...\", \"मैं प्रस्तुत करता हूँ...\", \"यह उत्पाद...\" आदि जैसे किसी भी परिचयात्मक वाक्यांश को न जोड़ें।",
             'custom' => "- Keep it concise but persuasive (about 150-200 words).\n- Do NOT add any introductory phrases like \"Here is...\", \"I present...\", \"This product...\", etc.",
         ];
@@ -766,61 +766,70 @@ Visual context: {image_analysis}
 						for="wpcmt_aisays_gemini_model"><?php esc_html_e('Gemini Model', 'comet-ai-says'); ?></label>
 				</th>
 				<td>
-					<select id="wpcmt_aisays_gemini_model" name="wpcmt_aisays_gemini_model">
-						<optgroup
-							label="<?php esc_attr_e('Free Models', 'comet-ai-says'); ?>">
-							<option value="gemini-2.5-pro" <?php selected($current_gemini_model, 'gemini-2.5-pro'); ?>>
-								Gemini
-								2.5 Pro (Free – 5 RPM, 125K TPM)</option>
-							<option value="gemini-2.5-flash" <?php selected($current_gemini_model, 'gemini-2.5-flash'); ?>>Gemini
-								2.5 Flash (Free – 10 RPM, 250K TPM)</option>
-							<option value="gemini-2.5-flash-lite" <?php selected($current_gemini_model, 'gemini-2.5-flash-lite'); ?>>Gemini
-								2.5 Flash-Lite (Free – 15 RPM, 250K TPM)</option>
-							<option value="gemini-2.0-flash" <?php selected($current_gemini_model, 'gemini-2.0-flash'); ?>>Gemini
-								2.0 Flash (Free – 15 RPM, 1M TPM)</option>
-							<option value="gemini-2.0-flash-lite" <?php selected($current_gemini_model, 'gemini-2.0-flash-lite'); ?>>Gemini
-								2.0 Flash-Lite (Free – 30 RPM, 1M TPM)</option>
-						</optgroup>
+					<div style="display:flex">
+						<select id="wpcmt_aisays_gemini_model" name="wpcmt_aisays_gemini_model">
+							<optgroup
+								label="<?php esc_attr_e('Free Models', 'comet-ai-says'); ?>">
+								<option value="gemini-2.5-pro" <?php selected($current_gemini_model, 'gemini-2.5-pro'); ?>>
+									Gemini
+									2.5 Pro (Free – 5 RPM, 125K TPM)</option>
+								<option value="gemini-2.5-flash" <?php selected($current_gemini_model, 'gemini-2.5-flash'); ?>>Gemini
+									2.5 Flash (Free – 10 RPM, 250K TPM)</option>
+								<option value="gemini-2.5-flash-lite" <?php selected($current_gemini_model, 'gemini-2.5-flash-lite'); ?>>Gemini
+									2.5 Flash-Lite (Free – 15 RPM, 250K TPM)</option>
+								<option value="gemini-2.0-flash" <?php selected($current_gemini_model, 'gemini-2.0-flash'); ?>>Gemini
+									2.0 Flash (Free – 15 RPM, 1M TPM)</option>
+								<option value="gemini-2.0-flash-lite" <?php selected($current_gemini_model, 'gemini-2.0-flash-lite'); ?>>Gemini
+									2.0 Flash-Lite (Free – 30 RPM, 1M TPM)</option>
+							</optgroup>
 
-						<optgroup
-							label="<?php esc_attr_e('Preview & Experimental Models', 'comet-ai-says'); ?>">
-							<option value="gemini-2.5-flash-preview-04-17" <?php selected($current_gemini_model, 'gemini-2.5-flash-preview-04-17'); ?>>Gemini
-								2.5 Flash Preview (Limited Free)</option>
-							<option value="gemini-2.5-pro-preview-05-06" <?php selected($current_gemini_model, 'gemini-2.5-pro-preview-05-06'); ?>>Gemini
-								2.5 Pro Preview (Limited Free)</option>
-							<option value="gemini-2.5-pro-exp-03-25" <?php selected($current_gemini_model, 'gemini-2.5-pro-exp-03-25'); ?>>Gemini
-								2.5 Pro Exp (Limited Free)</option>
-							<option value="gemini-2.5-flash-preview-native-audio" <?php selected($current_gemini_model, 'gemini-2.5-flash-preview-native-audio'); ?>>Gemini
-								2.5 Flash Preview Native Audio (1 session, 25K TPM)</option>
-							<option value="gemini-2.5-flash-exp-audio-thinking" <?php selected($current_gemini_model, 'gemini-2.5-flash-exp-audio-thinking'); ?>>Gemini
-								2.5 Flash Experimental Audio Thinking (1 session, 10K TPM)</option>
-							<option value="gemini-2.5-flash-preview-tts" <?php selected($current_gemini_model, 'gemini-2.5-flash-preview-tts'); ?>>Gemini
-								2.5 Flash Preview TTS (3 RPM, 10K TPM)</option>
-							<option value="gemini-2.0-flash-preview-image-gen" <?php selected($current_gemini_model, 'gemini-2.0-flash-preview-image-gen'); ?>>Gemini
-								2.0 Flash Preview Image Gen (10 RPM, 200K TPM)</option>
-						</optgroup>
+							<optgroup
+								label="<?php esc_attr_e('Preview & Experimental Models', 'comet-ai-says'); ?>">
+								<option value="gemini-2.5-flash-preview-04-17" <?php selected($current_gemini_model, 'gemini-2.5-flash-preview-04-17'); ?>>Gemini
+									2.5 Flash Preview (Limited Free)</option>
+								<option value="gemini-2.5-pro-preview-05-06" <?php selected($current_gemini_model, 'gemini-2.5-pro-preview-05-06'); ?>>Gemini
+									2.5 Pro Preview (Limited Free)</option>
+								<option value="gemini-2.5-pro-exp-03-25" <?php selected($current_gemini_model, 'gemini-2.5-pro-exp-03-25'); ?>>Gemini
+									2.5 Pro Exp (Limited Free)</option>
 
-						<optgroup
-							label="<?php esc_attr_e('Other Models', 'comet-ai-says'); ?>">
-							<option value="gemma-3" <?php selected($current_gemini_model, 'gemma-3'); ?>>Gemma
-								3 (30 RPM, 15K TPM)</option>
-							<option value="gemma-3n" <?php selected($current_gemini_model, 'gemma-3n'); ?>>Gemma
-								3n (30 RPM, 15K TPM)</option>
-							<option value="gemini-embedding" <?php selected($current_gemini_model, 'gemini-embedding'); ?>>Gemini
-								Embedding (100 RPM, 30K TPM)</option>
-							<option value="gemini-robotics-er" <?php selected($current_gemini_model, 'gemini-robotics-er'); ?>>Gemini
-								Robotics-ER (10 RPM, 250K TPM)</option>
-						</optgroup>
-					</select>
-					<legend style="display:inline" class="abbr-badges">
-						<abbr
-							title="<?php esc_attr_e('Requests per minute', 'comet-ai-says'); ?>">RPM</abbr>
-						<abbr
-							title="<?php esc_attr_e('Tokens per minute', 'comet-ai-says'); ?>">TPM</abbr>
-						<abbr
-							title="<?php esc_attr_e('Requests per day', 'comet-ai-says'); ?>">RPD</abbr>
+								<?php /* unnecessary models
 
-					</legend>
+								<option value="gemini-2.5-flash-preview-native-audio" <?php selected($current_gemini_model, 'gemini-2.5-flash-preview-native-audio'); ?>>Gemini
+									2.5 Flash Preview Native Audio (1 session, 25K TPM)</option>
+								<option value="gemini-2.5-flash-exp-audio-thinking" <?php selected($current_gemini_model, 'gemini-2.5-flash-exp-audio-thinking'); ?>>Gemini
+									2.5 Flash Experimental Audio Thinking (1 session, 10K TPM)</option>
+								<option value="gemini-2.5-flash-preview-tts" <?php selected($current_gemini_model, 'gemini-2.5-flash-preview-tts'); ?>>Gemini
+									2.5 Flash Preview TTS (3 RPM, 10K TPM)</option>
+								<option value="gemini-2.0-flash-preview-image-gen" <?php selected($current_gemini_model, 'gemini-2.0-flash-preview-image-gen'); ?>>Gemini
+									2.0 Flash Preview Image Gen (10 RPM, 200K TPM)</option>
+									*/ ?>
+							</optgroup>
+
+							<optgroup
+								label="<?php esc_attr_e('Other Models', 'comet-ai-says'); ?>">
+								<option value="gemma-3" <?php selected($current_gemini_model, 'gemma-3'); ?>>Gemma
+									3 (30 RPM, 15K TPM)</option>
+									<?php /* unnecessary models
+								<option value="gemma-3n" <?php selected($current_gemini_model, 'gemma-3n'); ?>>Gemma
+									3n (30 RPM, 15K TPM)</option>
+								<option value="gemini-embedding" <?php selected($current_gemini_model, 'gemini-embedding'); ?>>Gemini
+									Embedding (100 RPM, 30K TPM)</option>
+									
+								<option value="gemini-robotics-er" <?php selected($current_gemini_model, 'gemini-robotics-er'); ?>>Gemini
+									Robotics-ER (10 RPM, 250K TPM)</option>
+									*/ ?>
+							</optgroup>
+						</select>
+						<legend style="display:inline-block; margin-top:.4rem;margin-left:.5rem" class="abbr-badges">
+							<abbr
+								title="<?php esc_attr_e('Requests per minute', 'comet-ai-says'); ?>">RPM</abbr>
+							<abbr
+								title="<?php esc_attr_e('Tokens per minute', 'comet-ai-says'); ?>">TPM</abbr>
+							<abbr
+								title="<?php esc_attr_e('Requests per day', 'comet-ai-says'); ?>">RPD</abbr>
+
+						</legend>
+					</div>
 					<p class="description">
 						<strong><?php esc_html_e('Note:', 'comet-ai-says'); ?></strong>
 						<?php esc_html_e('Gemini 2.5 models use internal reasoning tokens.', 'comet-ai-says'); ?>
