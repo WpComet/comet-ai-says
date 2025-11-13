@@ -942,8 +942,8 @@ Write a compelling description that converts visitors into buyers.', 'comet-ai-s
             return;
         }
 
-        remove_all_actions('admin_notices');
-        remove_all_actions('all_admin_notices');
+        // remove_all_actions('admin_notices');
+        // remove_all_actions('all_admin_notices');
 
         $this->show_notices();
     }
@@ -1285,7 +1285,7 @@ Write a compelling description that converts visitors into buyers.', 'comet-ai-s
     public function show_notices() {
         // phpcs:disable WordPress.Security.NonceVerification.Recommended
         if (isset($_GET['restored'])) {
-            echo '<div class="notice notice-success is-dismissible"><p>'.esc_html__('Settings restored to defaults!', 'comet-ai-says').'</p></div>';
+            echo '<div class="notice wpcomet-notice notice-success is-dismissible"><p>'.esc_html__('Settings restored to defaults!', 'comet-ai-says').'</p></div>';
         }
 
         // Output settings errors
@@ -1396,6 +1396,176 @@ Write a compelling description that converts visitors into buyers.', 'comet-ai-s
 			</th>
 			<td>
 				<?php $this->render_gemini_model_select($current_gemini_model); ?>
+				<details>
+					<summary><strong>📦
+							<?php esc_html_e('Gemini API Rate Limits & Pricing', 'comet-ai-says'); ?></strong>
+					</summary>
+					<br>
+					<strong>🆓
+						<?php esc_html_e('Free Tier (No billing account required):', 'comet-ai-says'); ?></strong><br>
+					<ul>
+						<li><code>Gemini 2.0 Flash</code> – 15 RPM, 1M TPM</li>
+						<li><code>Gemini 2.0 Flash Thinking</code> – 2 RPM, 30K TPM</li>
+						<li><code>Gemini 1.5 Flash</code> – 15 RPM, 1M TPM</li>
+						<li><code>Gemini 1.5 Pro</code> – 2 RPM, 32K TPM</li>
+					</ul>
+
+					<strong>💳
+						<?php esc_html_e('Paid Tiers (Requires billing account):', 'comet-ai-says'); ?></strong><br>
+					<ul>
+						<li><strong>Tier 1</strong>: Default paid limits</li>
+						<li><strong>Tier 2</strong>: Higher limits after meeting spend requirements</li>
+					</ul>
+
+					<strong>🧠
+						<?php esc_html_e('Key Context Windows:', 'comet-ai-says'); ?></strong><br>
+					<ul>
+						<li><code>Gemini 2.0 Flash</code> – 1M tokens</li>
+						<li><code>Gemini 2.0 Flash Thinking</code> – 128K tokens</li>
+						<li><code>Gemini 1.5 Flash</code> – 1M tokens</li>
+						<li><code>Gemini 1.5 Pro</code> – 2M tokens</li>
+					</ul>
+
+					<strong>⚠️
+						<?php esc_html_e('Important Notes:', 'comet-ai-says'); ?></strong><br>
+					<ul>
+						<li><?php esc_html_e('Free tier has daily quotas that reset at midnight Pacific Time', 'comet-ai-says'); ?>
+						</li>
+						<li><?php esc_html_e('Rate limits are per-project, not per-API-key', 'comet-ai-says'); ?>
+						</li>
+						<li><?php esc_html_e('Thinking tokens count toward your TPM limit', 'comet-ai-says'); ?>
+						</li>
+					</ul>
+
+					<em>RPM =
+						<?php esc_html_e('Requests per minute', 'comet-ai-says'); ?>,
+						TPM =
+						<?php esc_html_e('Tokens per minute', 'comet-ai-says'); ?></em><br>
+					<?php esc_html_e('Official documentation:', 'comet-ai-says'); ?>
+					<a href="https://ai.google.dev/gemini-api/docs/rate-limits"
+						target="_blank"><?php esc_html_e('Rate limits', 'comet-ai-says'); ?></a>
+				</details>
+
+				<details>
+					<summary><strong>🤖
+							<?php esc_html_e('Gemini Model Comparison Guide', 'comet-ai-says'); ?></strong>
+					</summary>
+					<br>
+
+					<table style="width: 100%; border-collapse: collapse; margin: 10px 0;">
+						<thead>
+							<tr style="background: #f8f9fa;">
+								<th style="padding: 8px; border: 1px solid #ddd; text-align: left;">
+									<?php esc_html_e('Model', 'comet-ai-says'); ?>
+								</th>
+								<th style="padding: 8px; border: 1px solid #ddd; text-align: left;">
+									<?php esc_html_e('Speed', 'comet-ai-says'); ?>
+								</th>
+								<th style="padding: 8px; border: 1px solid #ddd; text-align: left;">
+									<?php esc_html_e('Quality', 'comet-ai-says'); ?>
+								</th>
+								<th style="padding: 8px; border: 1px solid #ddd; text-align: left;">
+									<?php esc_html_e('Free Limits', 'comet-ai-says'); ?>
+								</th>
+								<th style="padding: 8px; border: 1px solid #ddd; text-align: left;">
+									<?php esc_html_e('Best For', 'comet-ai-says'); ?>
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr style="background: #f0f7ff;">
+								<td style="padding: 8px; border: 1px solid #ddd;">
+									<strong><?php esc_html_e('2.0 Flash', 'comet-ai-says'); ?></strong>
+								</td>
+								<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐⭐</td>
+								<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐⭐</td>
+								<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐⭐</td>
+								<td style="padding: 8px; border: 1px solid #ddd;">
+									<?php esc_html_e('Most products, balanced performance', 'comet-ai-says'); ?>
+								</td>
+							</tr>
+							<tr>
+								<td style="padding: 8px; border: 1px solid #ddd;">
+									<strong><?php esc_html_e('1.5 Flash', 'comet-ai-says'); ?></strong>
+								</td>
+								<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐⭐</td>
+								<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐</td>
+								<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐⭐</td>
+								<td style="padding: 8px; border: 1px solid #ddd;">
+									<?php esc_html_e('Fast, economical choice', 'comet-ai-says'); ?>
+								</td>
+							</tr>
+							<tr>
+								<td style="padding: 8px; border: 1px solid #ddd;">
+									<strong><?php esc_html_e('1.5 Pro', 'comet-ai-says'); ?></strong>
+								</td>
+								<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐</td>
+								<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐⭐⭐</td>
+								<td style="padding: 8px; border: 1px solid #ddd;">⭐</td>
+								<td style="padding: 8px; border: 1px solid #ddd;">
+									<?php esc_html_e('Complex/technical products', 'comet-ai-says'); ?>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+
+					<br>
+
+					<strong>🚀
+						<?php esc_html_e('Gemini 2.0 Flash (Recommended Default)', 'comet-ai-says'); ?></strong><br>
+					<ul>
+						<li><?php esc_html_e('Best balance of speed and quality', 'comet-ai-says'); ?>
+						</li>
+						<li><?php esc_html_e('Free tier: 15 RPM, 1M TPM', 'comet-ai-says'); ?>
+						</li>
+						<li><?php esc_html_e('1M token context window', 'comet-ai-says'); ?>
+						</li>
+						<li><?php esc_html_e('Use case: Most product descriptions', 'comet-ai-says'); ?>
+						</li>
+					</ul>
+
+					<strong>⚡
+						<?php esc_html_e('Gemini 1.5 Flash (Fast Alternative)', 'comet-ai-says'); ?></strong><br>
+					<ul>
+						<li><?php esc_html_e('Very fast, good for simple tasks', 'comet-ai-says'); ?>
+						</li>
+						<li><?php esc_html_e('Free tier: 15 RPM, 1M TPM', 'comet-ai-says'); ?>
+						</li>
+						<li><?php esc_html_e('1M token context window', 'comet-ai-says'); ?>
+						</li>
+						<li><?php esc_html_e('Use case: Simple product descriptions', 'comet-ai-says'); ?>
+						</li>
+					</ul>
+
+					<strong>🧠
+						<?php esc_html_e('Gemini 1.5 Pro (High Quality)', 'comet-ai-says'); ?></strong><br>
+					<ul>
+						<li><?php esc_html_e('Highest quality, slower responses', 'comet-ai-says'); ?>
+						</li>
+						<li><?php esc_html_e('Free tier: 2 RPM, 32K TPM', 'comet-ai-says'); ?>
+						</li>
+						<li><?php esc_html_e('2M token context window', 'comet-ai-says'); ?>
+						</li>
+						<li><?php esc_html_e('Use case: Complex product analysis', 'comet-ai-says'); ?>
+						</li>
+					</ul>
+
+					<strong>💡
+						<?php esc_html_e('Recommendations:', 'comet-ai-says'); ?></strong><br>
+					<ul>
+						<li><strong><?php esc_html_e('For most users:', 'comet-ai-says'); ?></strong>
+							<?php esc_html_e('Start with Gemini 2.0 Flash', 'comet-ai-says'); ?>
+						</li>
+						<li><strong><?php esc_html_e('If you need higher quality:', 'comet-ai-says'); ?></strong>
+							<?php esc_html_e('Use Gemini 1.5 Pro for complex products', 'comet-ai-says'); ?>
+						</li>
+						<li><strong><?php esc_html_e('For maximum speed:', 'comet-ai-says'); ?></strong>
+							<?php esc_html_e('Use Gemini 1.5 Flash', 'comet-ai-says'); ?>
+						</li>
+					</ul>
+
+					<em><?php esc_html_e('Note: Free tier limits include both input and output tokens', 'comet-ai-says'); ?></em>
+				</details>
 			</td>
 		</tr>
 
@@ -1674,12 +1844,7 @@ Write a compelling description that converts visitors into buyers.', 'comet-ai-s
      * @param mixed $hook
      */
     public function enqueue_admin_scripts($hook): void {
-        $allowed_pages = [
-            'settings_page_wpcmt-aisays-settings',
-            'product_page_wpcmt-aisays-table',
-        ];
-
-        if (in_array($hook, $allowed_pages)) {
+        if (in_array($hook, Plugin::$plugin_pages, true)) {
             $this->enqueue_shared_admin_styles();
         }
 

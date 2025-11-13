@@ -99,7 +99,7 @@ class FrontendDisplay {
         if (is_product()) {
             wp_enqueue_style(
                 'wpcmt-aisays-frontend',
-                WPCMT_AISAYS_URL.'assets/frontend.css',
+                Plugin::$plugin_url.'assets/frontend.css',
                 [],
                 '1.0.0'
             );
