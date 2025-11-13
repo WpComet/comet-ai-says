@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Comet AI Says: Product Descriptions
  * Description: Generate contextual AI product descriptions on-the-fly and store them in custom fields without messing with your existing descriptions.
- * Version: 1.0.1
+ * Version: 1.0.4
  * Author: WpComet
  * Plugin URI: https://wpcomet.com/ai-says/
  * Author URI: https://wpcomet.com/
@@ -26,27 +26,18 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-// Define plugin constants with prefix
-define('WPCMT_AISAYS_PATH', plugin_dir_path(__FILE__));
-define('WPCMT_AISAYS_URL', plugin_dir_url(__FILE__));
-
-// Include required files
-require_once WPCMT_AISAYS_PATH.'includes/class-ai-generator.php';
-require_once WPCMT_AISAYS_PATH.'includes/class-admin-interface.php';
-require_once WPCMT_AISAYS_PATH.'includes/class-frontend-display.php';
-require_once WPCMT_AISAYS_PATH.'includes/class-ai-products-table.php';
-
 class Plugin {
     public static $plugin_url;
     public static $plugin_path;
     public static $plugin_version;
-    private static $instance;
     public static $debug = false;
+    public static $plugin_pages = [];
+    private static $instance;
 
     private function __construct() {
         self::$plugin_path = plugin_dir_path(__FILE__);
         self::$plugin_url = plugin_dir_url(__FILE__);
-        self::$plugin_version = '1.0.0';
+        self::$plugin_version = '1.0.4';
 
         $this->init_hooks();
     }
@@ -58,11 +49,13 @@ class Plugin {
 
         $plugin_data = get_plugin_data(__FILE__);
 
-        return $plugin_data['Version'] ?? '1.0.0';
+        return $plugin_data['Version'] ?? '1.0.4';
     }
 
     private function init_hooks() {
         add_action('init', [$this, 'init']);
+        add_action('admin_init', [$this, 'admin_init']);
+        add_action('template_redirect', [$this, 'frontend_init']);
         add_filter('plugin_action_links_'.plugin_basename(__FILE__), [$this, 'add_plugin_action_links']);
     }
 
@@ -79,16 +72,59 @@ class Plugin {
         return self::$plugin_url.'assets/'.ltrim($path, '/').'?v='.self::$plugin_version;
     }
 
-    public function init() {
-        // Include required files
-        require_once self::$plugin_path.'includes/class-ai-generator.php';
-        require_once self::$plugin_path.'includes/class-admin-interface.php';
-        require_once self::$plugin_path.'includes/class-frontend-display.php';
-        require_once self::$plugin_path.'includes/class-ai-products-table.php';
+    /**
+     * Check if the current screen is strictly a plugin screen or a product edit screen.
+     *
+     * @return bool true if the current screen is a plugin related screen, false otherwise
+     */
+    public static function is_plugin_screen(): bool {
+        if (!is_admin()) {
+            return false;
+        }
 
-        // Initialize classes
-        new AIGenerator();
+        $screen = get_current_screen();
+
+        if (!$screen) {
+            return false;
+        }
+
+        if (in_array($screen->id, Plugin::$plugin_pages, true)) {
+            return true;
+        }
+
+        if ('product' === $screen->post_type && in_array($screen->base, ['post', 'add'], true)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function is_rest_request() {
+        return defined('REST_REQUEST') && REST_REQUEST;
+    }
+
+    public function is_frontend() {
+        return !is_admin()
+            && !wp_doing_ajax()
+            && !wp_doing_cron()
+            && !$this->is_rest_request();
+    }
+
+    public function init() {
+        require_once self::$plugin_path.'includes/class-admin-interface.php';
         new AdminInterface();
+    }
+
+    public function admin_init() {
+        // var_dump("11111111111");
+        if (defined('DOING_AJAX') && DOING_AJAX) {
+            require_once self::$plugin_path.'includes/class-ai-generator.php';
+            new AIGenerator();
+        }
+    }
+
+    public function frontend_init() {
+        require_once self::$plugin_path.'includes/class-frontend-display.php';
         new FrontendDisplay();
     }
 
@@ -109,7 +145,7 @@ class Plugin {
             'wpcmt_aisays_openai_model' => 'gpt-4o',
             'wpcmt_aisays_display_mode' => 'automatic',
             'wpcmt_aisays_display_position' => 'after_description',
-            'wpcmt_aisays_shortcode' => '[ai_product_description]',
+            'wpcmt_aisays_shortcode' => '[ai_says_product_description]',
             'wpcmt_aisays_prompt_template' => AdminInterface::get_default_prompt_template_public(),
             'wpcmt_aisays_max_tokens' => 1500,
         ];

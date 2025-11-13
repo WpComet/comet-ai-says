@@ -171,3 +171,15 @@ th#status {
 .widefat td {
   vertical-align: middle;
 }
+
+.api-key-field.masked {
+    letter-spacing: 1px;
+    -webkit-text-security: disc;
+    text-security: disc;
+}
+
+.api-key-field:not(.masked) {
+    letter-spacing: 1px;
+    -webkit-text-security: none;
+    text-security: none;
+}
