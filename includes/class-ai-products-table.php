@@ -78,6 +78,7 @@ class ProductsTable extends \WP_List_Table {
 
         return [
             'bulk_generate' => esc_html__('Generate AI Descriptions for Selected', 'comet-ai-says'),
+            'bulk_delete' => esc_html__('Delete AI Descriptions for Selected', 'comet-ai-says'),
         ];
     }
 
@@ -138,6 +139,13 @@ class ProductsTable extends \WP_List_Table {
                 $item->ID,
                 esc_attr($item->post_title),
                 esc_html__('Regenerate', 'comet-ai-says')
+            );
+            // Add the delete button
+            $actions['delete'] = sprintf(
+                '<a href="javascript:void(0);" class="delete-ai-desc button button-link-delete" data-product-id="%d" data-product-name="%s"><span class="dashicons dashicons-trash"></span> %s</a>',
+                $item->ID,
+                esc_attr($item->post_title),
+                esc_html__('Delete AI desc', 'comet-ai-says')
             );
         }
 
@@ -364,3 +372,4 @@ class ProductsTable extends \WP_List_Table {
         echo '</form>';
     }
 }
+?>

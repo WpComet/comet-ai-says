@@ -125,6 +125,21 @@ class AdminInterface {
                 'bulk_complete' => esc_html__('Bulk generation complete!', 'comet-ai-says'),
                 'bulk_error' => esc_html__('Error during bulk generation', 'comet-ai-says'),
                 'regenerate' => esc_html__('Regenerate', 'comet-ai-says'),
+                'delete_ai_description' => __('Delete AI desc', 'comet-ai-says'),
+                // translators: product name
+                'delete_confirm' => __('Are you sure you want to delete the AI description for "%s"?', 'comet-ai-says'),
+                // translators: %d: Number of products
+                'bulk_delete_confirm' => __('Are you sure you want to delete AI descriptions for %d selected products?', 'comet-ai-says'),
+                'deleting' => __('Deleting...', 'comet-ai-says'),
+                // translators: product name
+                'deleted_success' => __('AI description deleted for: %s', 'comet-ai-says'),
+                // translators: %d: Number of products
+                'deleted_count' => __('Successfully deleted AI descriptions for %d products.', 'comet-ai-says'),
+                'delete_error' => __('Error deleting AI description: ', 'comet-ai-says'),
+                // translators: product name
+                'delete_error_generic' => __('Error deleting AI description for: %s', 'comet-ai-says'),
+                // translators: product name
+                'delete_error_specific' => __('Failed to delete %s AI descriptions.', 'comet-ai-says'),
             ],
         ];
     }
@@ -1737,13 +1752,14 @@ Write a compelling description that converts visitors into buyers.', 'comet-ai-s
 
 	<div style="margin-bottom: 15px;">
 		<button type="button" id="generate-wpcmt-aisays" class="button button-primary"
-			data-product-id="<?php echo absint($post->ID); ?>">
+			data-product-id="<?php echo absint($post->ID); ?>"
+			data-product-name="<?php echo esc_attr(get_the_title($post->ID)); ?>">
 			<?php esc_html_e('Generate AI Description', 'comet-ai-says'); ?>
 		</button>
 		<span id="wpcmt-aisays-loading" style="display: none; margin-left: 10px;">
 			<?php
-                    // translators: %s: AI platform name
-                    printf(esc_html__('Generating with %s...', 'comet-ai-says'), esc_html($provider_name)); ?>
+                        // translators: %s: AI platform name
+                        printf(esc_html__('Generating with %s...', 'comet-ai-says'), esc_html($provider_name)); ?>
 			<span class="spinner is-active" style="float: none;"></span>
 		</span>
 	</div>
@@ -1757,6 +1773,11 @@ Write a compelling description that converts visitors into buyers.', 'comet-ai-s
 			<button type="button" id="save-wpcmt-aisays" class="button button-secondary"
 				data-product-id="<?php echo absint($post->ID); ?>">
 				<?php esc_html_e('Save AI Description', 'comet-ai-says'); ?>
+			</button>
+			<button type="button" id="delete-wpcmt-aisays" class="button button-link-delete"
+				data-product-id="<?php echo absint($post->ID); ?>"
+				data-product-name="<?php echo esc_attr(get_the_title($post->ID)); ?>">
+				<?php esc_html_e('Delete AI Description', 'comet-ai-says'); ?>
 			</button>
 			<span id="wpcmt-aisays-save-status" style="margin-left: 10px;"></span>
 		</div>

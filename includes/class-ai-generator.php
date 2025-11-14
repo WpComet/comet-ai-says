@@ -20,6 +20,7 @@ class AIGenerator {
         add_action('wp_ajax_generate_ai_description', [$this, 'generate_description_ajax']);
         add_action('wp_ajax_save_ai_description', [$this, 'save_description_ajax']);
         add_action('wp_ajax_get_ai_description', [$this, 'get_description_ajax']);
+        add_action('wp_ajax_delete_ai_description', [$this, 'delete_description_ajax']); // Add delete AJAX action
     }
 
     private function generate_description($product) {
@@ -27,7 +28,16 @@ class AIGenerator {
             return false;
         }
 
-        $language = get_option('wpcmt_aisays_language', 'english');
+        // Get product-specific language or fallback to global
+        $product_id = $product->get_id();
+        $product_language = get_post_meta($product_id, '_wpcmt_aisays_language', true);
+
+        if (empty($product_language) || 'global' === $product_language) {
+            $language = get_option('wpcmt_aisays_language', 'english');
+        } else {
+            $language = $product_language;
+        }
+
         $product_name = $product->get_name();
         $short_description = $product->get_short_description();
         $categories = wp_get_post_terms($product->get_id(), 'product_cat', ['fields' => 'names']);
@@ -429,7 +439,6 @@ class AIGenerator {
         return $product ? $instance->generate_description($product) : false;
     }
 
-
     public function generate_description_ajax() {
         // Security check
         if (!check_ajax_referer('wpcmt_aisays_nonce', 'nonce', false)) {
@@ -452,20 +461,8 @@ class AIGenerator {
             wp_send_json_error(esc_html__('Product not found', 'comet-ai-says'));
         }
 
-        // Check for product-specific language
-        $product_language = get_post_meta($product_id, '_wpcmt_aisays_language', true);
-        if ($product_language && 'global' !== $product_language) {
-            // Temporarily override the global language for this generation
-            $original_language = get_option('wpcmt_aisays_language');
-            update_option('wpcmt_aisays_language', $product_language);
-
-            $description = $this->generate_description($product);
-
-            // Restore original language
-            update_option('wpcmt_aisays_language', $original_language);
-        } else {
-            $description = $this->generate_description($product);
-        }
+        // Language is now handled in generate_description method
+        $description = $this->generate_description($product);
 
         if ($description) {
             wp_send_json_success(['description' => $description]);
@@ -522,6 +519,43 @@ class AIGenerator {
         }
     }
 
+    public function delete_description_ajax() {
+        // Security check
+        if (!check_ajax_referer('wpcmt_aisays_nonce', 'nonce', false)) {
+            if (Plugin::$debug && defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {
+                // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+                error_log('Comet AI Says - Security check failed in delete_description_ajax');
+            }
+            wp_die(esc_html__('Security check failed', 'comet-ai-says'));
+        }
+
+        // Validate product_id exists
+        if (!isset($_POST['product_id'])) {
+            wp_send_json_error(esc_html__('Product ID is required', 'comet-ai-says'));
+        }
+
+        $product_id = intval($_POST['product_id']);
+
+        // Check if product exists
+        $product = wc_get_product($product_id);
+        if (!$product) {
+            wp_send_json_error(esc_html__('Product not found', 'comet-ai-says'));
+        }
+
+        // Delete the AI description meta
+        if (delete_post_meta($product_id, '_wpcmt_aisays_description')) {
+            wp_send_json_success([
+                'product_id' => $product_id,
+                'product_name' => $product->get_name(),
+                // translators: product name
+                'message' => sprintf(__('AI description deleted for: %s', 'comet-ai-says'), $product->get_name()),
+            ]);
+        } else {
+            // translators: product name
+            wp_send_json_error(sprintf(__('Failed to delete AI description for: %s', 'comet-ai-says'), $product->get_name()));
+        }
+    }
+
     public static function log($message, $data = null) {
         if (!Plugin::$debug) {
             return;
@@ -536,54 +570,53 @@ class AIGenerator {
             error_log($log_message);
         }
     }
-    // Add to your AIGenerator class
-public static function generate_single_ajax() {
-    // Security check
-    if (!check_ajax_referer('wpcmt_aisays_nonce', 'nonce', false)) {
-        wp_send_json_error('Security check failed');
-    }
 
-    // Validate product_id exists
-    if (!isset($_POST['product_id'])) {
-        wp_send_json_error('Product ID is required');
-    }
+    public static function generate_single_ajax() {
+        // Security check
+        if (!check_ajax_referer('wpcmt_aisays_nonce', 'nonce', false)) {
+            wp_send_json_error('Security check failed');
+        }
 
-    $product_id = intval($_POST['product_id']);
-    $product = wc_get_product($product_id);
+        // Validate product_id exists
+        if (!isset($_POST['product_id'])) {
+            wp_send_json_error('Product ID is required');
+        }
 
-    if (!$product) {
-        wp_send_json_error('Product not found');
-    }
+        $product_id = intval($_POST['product_id']);
+        $product = wc_get_product($product_id);
 
-    // Check for product-specific language
-    $product_language = get_post_meta($product_id, '_wpcmt_aisays_language', true);
-    if ($product_language && 'global' !== $product_language) {
-        // Temporarily override the global language for this generation
-        $original_language = get_option('wpcmt_aisays_language');
-        update_option('wpcmt_aisays_language', $product_language);
+        if (!$product) {
+            wp_send_json_error('Product not found');
+        }
 
+        // Save the language if provided in the AJAX request
+        if (isset($_POST['language']) && !empty($_POST['language'])) {
+        $language = sanitize_text_field(wp_unslash($_POST['language']));
+            update_post_meta($product_id, '_wpcmt_aisays_language', $language);
+
+            if (Plugin::$debug && defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {
+                // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+                error_log("Comet AI Says - Saved language for product {$product_id}: {$language}");
+            }
+        }
+
+        // Language is now handled in generate_description method
         $description = self::generate_for_product($product);
 
-        // Restore original language
-        update_option('wpcmt_aisays_language', $original_language);
-    } else {
-        $description = self::generate_for_product($product);
-    }
+        if ($description) {
+            update_post_meta($product_id, '_wpcmt_aisays_description', $description);
+            AdminInterface::track_usage('generation');
 
-    if ($description) {
-        update_post_meta($product_id, '_wpcmt_aisays_description', $description);
-        AdminInterface::track_usage('generation');
-
-        wp_send_json_success([
-            'product_id' => $product_id,
-            'product_name' => $product->get_name(),
-            'description' => $description,
+            wp_send_json_success([
+                'product_id' => $product_id,
+                'product_name' => $product->get_name(),
+                'description' => $description,
+                // translators: product name
+                'message' => sprintf(__('Successfully generated AI description for: %s', 'comet-ai-says'), $product->get_name()),
+            ]);
+        } else {
             // translators: product name
-            'message' => sprintf(__('Successfully generated AI description for: %s', 'comet-ai-says'), $product->get_name())
-        ]);
-    } else {
-        // translators: product name
-        wp_send_json_error(sprintf(__('Failed to generate description for: %s. Check your API key and provider settings.', 'comet-ai-says'), $product->get_name()));
+            wp_send_json_error(sprintf(__('Failed to generate description for: %s. Check your API key and provider settings.', 'comet-ai-says'), $product->get_name()));
+        }
     }
-}
 }
