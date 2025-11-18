@@ -17,10 +17,10 @@ class AIGenerator {
             $this->api_key = get_option('wpcmt_aisays_openai_api_key');
         }
 
-        add_action('wp_ajax_generate_ai_description', [$this, 'generate_description_ajax']);
-        add_action('wp_ajax_save_ai_description', [$this, 'save_description_ajax']);
-        add_action('wp_ajax_get_ai_description', [$this, 'get_description_ajax']);
-        add_action('wp_ajax_delete_ai_description', [$this, 'delete_description_ajax']); // Add delete AJAX action
+        add_action('wp_ajax_wpcmt_aisays_generate_ai_description', [$this, 'generate_description_ajax']);
+        add_action('wp_ajax_wpcmt_aisays_save_ai_description', [$this, 'save_description_ajax']);
+        add_action('wp_ajax_wpcmt_aisays_get_ai_description', [$this, 'get_description_ajax']);
+        add_action('wp_ajax_wpcmt_aisays_delete_ai_description', [$this, 'delete_description_ajax']); // Add delete AJAX action
     }
 
     private function generate_description($product) {
@@ -439,7 +439,7 @@ class AIGenerator {
         return $product ? $instance->generate_description($product) : false;
     }
 
-    public function generate_description_ajax() {
+    public function enerate_description_ajax() {
         // Security check
         if (!check_ajax_referer('wpcmt_aisays_nonce', 'nonce', false)) {
             if (Plugin::$debug && defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {

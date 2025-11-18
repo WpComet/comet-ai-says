@@ -7,14 +7,16 @@ class FrontendDisplay {
         $display_mode = get_option('wpcmt_aisays_display_mode', 'automatic');
         $display_position = get_option('wpcmt_aisays_display_position', 'after_description');
 
-        // Only register hooks if automatic mode is enabled
+        // Only register hooks depending on display mode
         if ('automatic' === $display_mode) {
             $this->register_automatic_hooks($display_position);
         }
+        elseif ('manual' === $display_mode) {
+            add_shortcode('comet-ai-says-product-description', [$this, 'display_ai_description_shortcode']);
+        }
 
-        // Always register shortcode and styles
-        add_shortcode('ai_says_product_description', [$this, 'display_ai_description_shortcode']);
-        add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
+        // Removed frontend css file for now, since css is minimal inlined it. Enable back if it gets bigger
+        //add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
     }
 
     private function register_automatic_hooks($position) {
@@ -41,14 +43,14 @@ class FrontendDisplay {
     private function get_ai_description_html($content) {
         ob_start();
         ?>
-<div class="wpcmt-aisays-description">
-	<h2><?php esc_html_e('This is what AI says about this product', 'comet-ai-says'); ?>
-	</h2>
-	<div class="wpcmt-aisays-content">
-		<?php echo wp_kses_post(wpautop($content)); ?>
-	</div>
-</div>
-<?php
+        <div class="wpcmt-aisays-description" style="margin: 1rem 0; border-left: 4px solid rgba(48,12,124,0.56);clear: both;padding: 1rem;">
+            <h3><?php esc_html_e('This is what ✨ AI says about this product', 'comet-ai-says'); ?>
+            </h3>
+            <div class="wpcmt-aisays-content" style="line-height: 1.6;  font-size: 1.1em;">
+                <?php echo wp_kses_post(wpautop($content)); ?>
+            </div>
+        </div>
+        <?php
         return ob_get_clean();
     }
 

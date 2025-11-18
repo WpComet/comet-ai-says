@@ -4,7 +4,7 @@ Tags: woocommerce, ai, product descriptions, gpt, custom fields
 Requires at least: 5.8  
 Tested up to: 6.8
 Requires PHP: 7.4  
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPLv3  
 License URI: https://www.gnu.org/licenses/gpl-3.0.html  
 
@@ -45,6 +45,9 @@ Comet AI Says is a lightweight, privacy-conscious WordPress plugin that generate
 8. Plugin settings panel with API configuration and model selection.
 
 == Changelog ==
+= 1.1.1 =
+- More granular precise scripts loading
+
 = 1.1.0 =
 - Added delete functionality across the board
 - Single source of truth for ajax actions
@@ -88,5 +91,27 @@ No breaking changes in version 1.0.0.
 
 == External Services ==
 
-This plugin connects directly to third-party AI APIs (OpenAI, Gemini) to generate product descriptions. You must provide your own API keys.
+This plugin connects to third-party AI services directly to generate product descriptions, no middleware or extra services between. You must provide your own API keys for these services.
 
+= Google Gemini AI =
+
+* **Service**: Google's Gemini AI API for generating product descriptions
+* **What data is sent**: Product information (name, description, categories, attributes, featured image) and your custom prompt template
+* **When data is sent**: When you manually generate descriptions via the admin interface or bulk operations
+* **Terms of Service**: https://policies.google.com/terms
+* **Privacy Policy**: https://policies.google.com/privacy
+
+= OpenAI GPT =
+
+* **Service**: OpenAI's GPT API for generating product descriptions  
+* **What data is sent**: Product information (name, description, categories, attributes, featured image) and your custom prompt template
+* **When data is sent**: When you manually generate descriptions via the admin interface or bulk operations
+* **Terms of Service**: https://openai.com/terms/
+* **Privacy Policy**: https://openai.com/privacy/
+
+= Data Processing Notes =
+
+* Product data is sent securely via HTTPS to the respective AI service APIs
+* No data is stored by the AI services beyond the immediate request processing
+* You must obtain and configure your own API keys for these services
+* The plugin does not send any personally identifiable information (PII) unless included in your product data

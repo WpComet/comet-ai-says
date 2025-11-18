@@ -37,8 +37,8 @@ class AdminInterface {
         add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_scripts']);
         add_action('admin_post_generate_bulk_ai_descriptions', [$this, 'handle_bulk_generation']);
         add_action('admin_init', [$this, 'maybe_restore_defaults']);
-        add_action('wp_ajax_check_existing_description', [$this, 'check_existing_description_callback']);
-        add_action('wp_ajax_generate_single_ai_description', [$this, 'generate_single_ai_description_callback']);
+        add_action('wp_ajax_wpcmt_aisays_check_existing_description', [$this, 'check_existing_description_callback']);
+        add_action('wp_ajax_wpcmt_aisays_generate_single_ai_description', [$this, 'generate_single_ai_description_callback']);
         add_action('save_post_product', [$this, 'save_product_language']);
     }
 
@@ -69,46 +69,112 @@ class AdminInterface {
         return $plugin_data['Version'] ?? '1.0.0';
     }
 
-    /**
-     * Enqueue AI scripts with localization.
-     */
-    private function enqueue_ai_scripts(): void {
-        wp_enqueue_script(
-            'wpcmt-aisays-admin',
-            $this->get_asset_url('admin.js'),
+    private function is_product_screen($hook): bool {
+        return ('post.php' === $hook || 'post-new.php' === $hook) && 'product' === get_post_type();
+    }
+
+    // @todo: add option on who can use the plugin, do not initiate the plugin at all if not allowed
+    private function permission_check(): bool {
+        return current_user_can('manage_products');
+    }
+
+    private function enqueue_admin_settings_js(): void {
+        wp_register_script(
+            'wpcmt-aisays-admin-settings',
+            $this->get_asset_url('admin-plugin-settings.js'),
             ['jquery'],
             $this->get_plugin_version(),
             true
         );
 
-        wp_localize_script('wpcmt-aisays-admin', 'wpcmtAISays', $this->get_script_localization_data());
+        wp_localize_script('wpcmt-aisays-admin-settings', 'wpcmt_aisays', $this->get_script_localization_data('settings'));
+
+        wp_enqueue_script('wpcmt-aisays-admin-settings');
+    }
+
+    /**
+     * Enqueue AI scripts with localization.
+     */
+    private function enqueue_plugin_admin_scripts(): void {
+        wp_register_script(
+            'wpcmt-aisays-admin',
+            $this->get_asset_url('admin-shared.js'),
+            ['jquery'],
+            $this->get_plugin_version(),
+            true
+        );
+
+        wp_localize_script('wpcmt-aisays-admin', 'wpcmt_aisays', $this->get_script_localization_data('general'));
+
+        wp_enqueue_script('wpcmt-aisays-admin');
     }
 
     /**
      * Get script localization data.
+     *
+     * @param null|mixed $screen
      */
-    private function get_script_localization_data(): array {
-        return [
-            'ajaxurl' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('wpcmt_aisays_nonce'),
-            'bulk_nonce' => wp_create_nonce('wpcmt_aisays_bulk_nonce'),
-            'i18n' => [
-                'generate_error' => esc_html__('Error: ', 'comet-ai-says'),
-                'generate_error_generic' => esc_html__('An error occurred while generating the description.', 'comet-ai-says'),
-                'saving' => esc_html__('Saving...', 'comet-ai-says'),
-                'saved' => esc_html__('Saved!', 'comet-ai-says'),
-                'save_error' => esc_html__('Error saving', 'comet-ai-says'),
-                'generating' => esc_html__('Generating...', 'comet-ai-says'),
-                'generate_ai_description' => esc_html__('Generate AI Description', 'comet-ai-says'),
-                // translators: %s: Product name
-                'generated_success' => esc_html__('AI description generated and saved for: %s', 'comet-ai-says'),
-                // translators: %s: Product name
-                'save_error_specific' => esc_html__('Error saving description for: %s', 'comet-ai-says'),
-                // translators: %s: Product name
-                'generate_error_specific' => esc_html__('Error generating description for: %s', 'comet-ai-says'),
-                // translators: %s: Product name
-                'generate_error_generic_specific' => esc_html__('An error occurred while generating description for: %s', 'comet-ai-says'),
-                'view_error' => esc_html__('Error loading AI description', 'comet-ai-says'),
+    private function get_script_localization_data($screen = null): array {
+        // Common strings used across multiple screens
+        $common = [
+            'generate_error' => esc_html__('Error: ', 'comet-ai-says'),
+            'generate_error_generic' => esc_html__('An error occurred while generating the description.', 'comet-ai-says'),
+            'saving' => esc_html__('Saving...', 'comet-ai-says'),
+            'saved' => esc_html__('Saved!', 'comet-ai-says'),
+            'save_error' => esc_html__('Error saving', 'comet-ai-says'),
+            'generating' => esc_html__('Generating...', 'comet-ai-says'),
+            'generate_ai_description' => esc_html__('Generate AI Description', 'comet-ai-says'),
+            // translators: %s: Product name
+            'generated_success' => esc_html__('AI description generated and saved for: %s', 'comet-ai-says'),
+            // translators: %s: Product name
+            'save_error_specific' => esc_html__('Error saving description for: %s', 'comet-ai-says'),
+            // translators: %s: Product name
+            'generate_error_specific' => esc_html__('Error generating description for: %s', 'comet-ai-says'),
+            // translators: %s: Product name
+            'generate_error_generic_specific' => esc_html__('An error occurred while generating description for: %s', 'comet-ai-says'),
+            'view_error' => esc_html__('Error loading AI description', 'comet-ai-says'),
+            'regenerate' => esc_html__('Regenerate', 'comet-ai-says'),
+            'delete_ai_description' => __('Delete AI desc', 'comet-ai-says'),
+            // translators: product name
+            'delete_confirm' => __('Are you sure you want to delete the AI description for "%s"?', 'comet-ai-says'),
+            'deleting' => __('Deleting...', 'comet-ai-says'),
+            // translators: product name
+            'deleted_success' => __('AI description deleted for: %s', 'comet-ai-says'),
+            'delete_error' => __('Error deleting AI description: ', 'comet-ai-says'),
+            // translators: product name
+            'delete_error_generic' => __('Error deleting AI description for: %s', 'comet-ai-says'),
+        ];
+
+        // Screen-specific strings
+        $screen_strings = [];
+
+        if ('settings' === $screen) {
+            $screen_strings = [
+                'show' => esc_html__('Show', 'comet-ai-says'),
+                'hide' => esc_html__('Hide', 'comet-ai-says'),
+                'tokens' => esc_html__('tokens', 'comet-ai-says'),
+                'tokens_4000_10000' => esc_html__('4000-10000 tokens for complex analysis', 'comet-ai-says'),
+                'tokens_1500_5000' => esc_html__('1500-5000 tokens for detailed descriptions', 'comet-ai-says'),
+                'tokens_800_2500' => esc_html__('800-2500 tokens for efficient descriptions', 'comet-ai-says'),
+                'tokens_1000_4000' => esc_html__('1000-4000 tokens for balanced performance', 'comet-ai-says'),
+                'tokens_800_2000' => esc_html__('800-2000 tokens for lightweight tasks', 'comet-ai-says'),
+                'tokens_1500_4000' => esc_html__('1500-4000 tokens for preview testing', 'comet-ai-says'),
+                'tokens_3000_8000' => esc_html__('3000-8000 tokens for pro preview', 'comet-ai-says'),
+                'tokens_1000_3000' => esc_html__('1000-3000 tokens for Gemma model', 'comet-ai-says'),
+                'tokens_1000_5000' => esc_html__('1000-5000 tokens for comprehensive descriptions', 'comet-ai-says'),
+                'cap_125k_5' => esc_html__('125K TPM, 5 RPM', 'comet-ai-says'),
+                'cap_250k_10' => esc_html__('250K TPM, 10 RPM', 'comet-ai-says'),
+                'cap_250k_15' => esc_html__('250K TPM, 15 RPM', 'comet-ai-says'),
+                'cap_1m_15' => esc_html__('1M TPM, 15 RPM', 'comet-ai-says'),
+                'cap_1m_30' => esc_html__('1M TPM, 30 RPM', 'comet-ai-says'),
+                'cap_limited_free' => esc_html__('Limited Free Tier', 'comet-ai-says'),
+                'cap_15k_30' => esc_html__('15K TPM, 30 RPM', 'comet-ai-says'),
+                'cap_standard' => esc_html__('Standard configuration', 'comet-ai-says'),
+                'cap_gemini_25' => esc_html__('Up to 375,000 tokens daily with Gemini 2.5 Flash', 'comet-ai-says'),
+                'cap_gemini_20' => esc_html__('Up to 150,000 tokens daily with Gemini 2.0 Flash', 'comet-ai-says'),
+            ];
+        } elseif ( 'general' === $screen || 'product-descriptions' === $screen || 'product-edit' === $screen) {
+            $screen_strings = [
                 'no_products_selected' => esc_html__('Please select at least one product.', 'comet-ai-says'),
                 // translators: %d: Number of products
                 'bulk_confirm' => esc_html__('Generate AI descriptions for %d selected products?', 'comet-ai-says'),
@@ -124,23 +190,30 @@ class AdminInterface {
                 'bulk_generating' => esc_html__('Bulk generating descriptions...', 'comet-ai-says'),
                 'bulk_complete' => esc_html__('Bulk generation complete!', 'comet-ai-says'),
                 'bulk_error' => esc_html__('Error during bulk generation', 'comet-ai-says'),
-                'regenerate' => esc_html__('Regenerate', 'comet-ai-says'),
-                'delete_ai_description' => __('Delete AI desc', 'comet-ai-says'),
-                // translators: product name
-                'delete_confirm' => __('Are you sure you want to delete the AI description for "%s"?', 'comet-ai-says'),
                 // translators: %d: Number of products
                 'bulk_delete_confirm' => __('Are you sure you want to delete AI descriptions for %d selected products?', 'comet-ai-says'),
-                'deleting' => __('Deleting...', 'comet-ai-says'),
-                // translators: product name
-                'deleted_success' => __('AI description deleted for: %s', 'comet-ai-says'),
                 // translators: %d: Number of products
                 'deleted_count' => __('Successfully deleted AI descriptions for %d products.', 'comet-ai-says'),
-                'delete_error' => __('Error deleting AI description: ', 'comet-ai-says'),
-                // translators: product name
-                'delete_error_generic' => __('Error deleting AI description for: %s', 'comet-ai-says'),
                 // translators: product name
                 'delete_error_specific' => __('Failed to delete %s AI descriptions.', 'comet-ai-says'),
-            ],
+            ];
+        }
+
+        // Base strings that are used everywhere
+        $base = [
+            'ajaxurl' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('wpcmt_aisays_nonce'),
+            'bulk_nonce' => wp_create_nonce('wpcmt_aisays_bulk_nonce'),
+        ];
+
+        // Combine all strings
+        $all_strings = array_merge($common, $screen_strings);
+
+        return [
+            'ajaxurl' => $base['ajaxurl'],
+            'nonce' => $base['nonce'],
+            'bulk_nonce' => $base['bulk_nonce'],
+            'i18n' => $all_strings,
         ];
     }
 
@@ -198,9 +271,9 @@ Visual context: {image_analysis}
     }
 
     /**
-     * Enqueue shared admin styles.
+     * Enqueue plugin admin styles.
      */
-    private function enqueue_shared_admin_styles(): void {
+    private function enqueue_plugin_admin_styles(): void {
         wp_enqueue_style(
             'wpcmt-aisays-admin',
             $this->get_asset_url('plugin-admin.css'),
@@ -252,7 +325,15 @@ Visual context: {image_analysis}
             'details' => [],
         ];
 
-        foreach ($product_ids as $product_id) {
+        // Throttling for better bulk processing
+        $delay_between = 500000; // 0.5 seconds
+        $increase = 100000; // 0.1 seconds
+
+    	foreach ($product_ids as $i => $product_id) {
+            if ($index > 0) {
+                usleep($delay_between + $i * $increase); // Increasing delay
+            }
+
             try {
                 $product = wc_get_product($product_id);
                 if (!$product) {
@@ -677,281 +758,6 @@ Write a compelling description that converts visitors into buyers.', 'comet-ai-s
 <?php
     }
 
-    /**
-     * Output admin JavaScript.
-     */
-    private function output_admin_javascript(): void {
-        ?>
-<script>
-	// Language data for JavaScript
-	var languageData =
-		<?php echo wp_json_encode([
-		    'intro' => [
-		        'english' => self::get_language_part('english', 'intro'),
-		        'spanish' => self::get_language_part('spanish', 'intro'),
-		        'french' => self::get_language_part('french', 'intro'),
-		        'german' => self::get_language_part('german', 'intro'),
-		        'italian' => self::get_language_part('italian', 'intro'),
-		        'portuguese' => self::get_language_part('portuguese', 'intro'),
-		        'dutch' => self::get_language_part('dutch', 'intro'),
-		        'russian' => self::get_language_part('russian', 'intro'),
-		        'japanese' => self::get_language_part('japanese', 'intro'),
-		        'korean' => self::get_language_part('korean', 'intro'),
-		        'chinese' => self::get_language_part('chinese', 'intro'),
-		        'arabic' => self::get_language_part('arabic', 'intro'),
-		        'turkish' => self::get_language_part('turkish', 'intro'),
-		        'hindi' => self::get_language_part('hindi', 'intro'),
-		        'custom' => self::get_language_part('custom', 'intro'),
-		    ],
-		    'instructions' => [
-		        'english' => self::get_language_part('english', 'instructions'),
-		        'spanish' => self::get_language_part('spanish', 'instructions'),
-		        'french' => self::get_language_part('french', 'instructions'),
-		        'german' => self::get_language_part('german', 'instructions'),
-		        'italian' => self::get_language_part('italian', 'instructions'),
-		        'portuguese' => self::get_language_part('portuguese', 'instructions'),
-		        'dutch' => self::get_language_part('dutch', 'instructions'),
-		        'russian' => self::get_language_part('russian', 'instructions'),
-		        'japanese' => self::get_language_part('japanese', 'instructions'),
-		        'korean' => self::get_language_part('korean', 'instructions'),
-		        'chinese' => self::get_language_part('chinese', 'instructions'),
-		        'arabic' => self::get_language_part('arabic', 'instructions'),
-		        'turkish' => self::get_language_part('turkish', 'instructions'),
-		        'hindi' => self::get_language_part('hindi', 'instructions'),
-		        'custom' => self::get_language_part('custom', 'instructions'),
-		    ],
-		]); ?>
-	;
-
-	function toggleVisibility(fieldId) {
-		var field = document.getElementById(fieldId);
-		var button = field.nextElementSibling;
-
-		if (field.classList.contains('masked')) {
-			// Show the actual text
-			field.classList.remove('masked');
-			field.style.webkitTextSecurity = 'none';
-			field.style.textSecurity = 'none';
-			button.textContent =
-				'<?php echo esc_js(__('Hide', 'comet-ai-says')); ?>';
-		} else {
-			// Mask the text
-			field.classList.add('masked');
-			field.style.webkitTextSecurity = 'disc';
-			field.style.textSecurity = 'disc';
-			button.textContent =
-				'<?php echo esc_js(__('Show', 'comet-ai-says')); ?>';
-		}
-	}
-
-	jQuery(document).ready(function($) {
-		// Provider change handler
-		$('#wpcmt_aisays_provider').on('change', function() {
-			var provider = $(this).val();
-			$('#gemini-model-row, #gemini-api-key-row').toggle(provider === 'gemini');
-			$('#openai-model-row, #openai-api-key-row').toggle(provider === 'openai');
-		});
-
-		// Language change handler
-		$('#wpcmt_aisays_language').on('change', function() {
-			$('#custom-language-row').toggle($(this).val() === 'custom');
-			updatePromptPreview();
-		});
-
-		// Custom language and prompt template handlers
-		$('#wpcmt_aisays_custom_language, #wpcmt_aisays_prompt_template').on('input', updatePromptPreview);
-
-		// Display mode change handler
-		$('#wpcmt_aisays_display_mode').on('change', function() {
-			var isAutomatic = $(this).val() === 'automatic';
-			$('#display-position-row').toggle(isAutomatic);
-			$('#shortcode-row').toggle(!isAutomatic);
-		});
-
-		// Model change handler for token ranges
-		$('#wpcmt_aisays_gemini_model').on('change', function() {
-			updateTokenRange();
-			updateCapacityInfo();
-		});
-
-		// Token slider handler
-		$('#wpcmt_aisays_max_tokens').on('input', function() {
-			$('#max-tokens-value').text($(this).val() +
-				' <?php echo esc_js(__('tokens', 'comet-ai-says')); ?>'
-			);
-		});
-
-		// Settings search
-		$('#comet-settings-search').on('keyup', function() {
-			var searchText = $(this).val().toLowerCase();
-			if (searchText.length >= 2) {
-				$('.form-table tr').each(function() {
-					$(this).toggle($(this).text().toLowerCase().indexOf(searchText) > -1);
-				});
-			} else {
-				$('.form-table tr').show();
-			}
-		});
-
-		// Initialize
-		updateTokenRange();
-		updatePromptPreview();
-		var apifieldid = document.querySelector('.api-key-field').id;
-
-		toggleVisibility(apifieldid);
-	});
-
-	function updatePromptPreview() {
-		var template = jQuery('#wpcmt_aisays_prompt_template').val();
-		var language = jQuery('#wpcmt_aisays_language').val();
-		var customLanguage = jQuery('#wpcmt_aisays_custom_language').val();
-
-		var introduction = getLanguageInstruction(language, 'intro', customLanguage);
-		var instructions = getLanguageInstruction(language, 'instructions', customLanguage);
-
-		var preview = template
-			.replace(/{introduction}/g, introduction)
-			.replace(/{instructions}/g, instructions)
-			.replace(/{product_name}/g, 'Sample Product Name')
-			.replace(/{short_description}/g, 'Sample short description')
-			.replace(/{categories}/g, 'Sample Category')
-			.replace(/{attributes}/g, '- Color: Red\n- Size: Large')
-			.replace(/{image_analysis}/g, 'Sample image analysis');
-
-		if (template.trim() !== '') {
-			jQuery('#preview-content').text(preview);
-			jQuery('#prompt-preview').show();
-		} else {
-			jQuery('#prompt-preview').hide();
-		}
-	}
-
-	function getLanguageInstruction(language, part, customLanguage) {
-		var instruction = languageData[part][language] || languageData[part]['english'];
-		if (language === 'custom' && part === 'intro' && customLanguage) {
-			instruction = instruction.replace('CUSTOM_LANGUAGE', customLanguage);
-		} else if (language === 'custom' && part === 'intro') {
-			instruction = instruction.replace('CUSTOM_LANGUAGE', 'Custom Language');
-		}
-		return instruction;
-	}
-
-	function updateTokenRange() {
-		var geminiModel = jQuery('#wpcmt_aisays_gemini_model').val();
-		var maxTokensInput = jQuery('#wpcmt_aisays_max_tokens');
-		var tokensValue = jQuery('#max-tokens-value');
-		var recommended = jQuery('#recommended-tokens');
-		var capacityInfo = jQuery('#token-capacity-info');
-
-		var configs = {
-			'gemini-2.5-pro': {
-				min: 4000,
-				max: 10000,
-				default: 5000,
-				rec: '<?php echo esc_js(__('4000-10000 tokens for complex analysis', 'comet-ai-says')); ?>',
-				cap: '<?php echo esc_js(__('125K TPM, 5 RPM', 'comet-ai-says')); ?>'
-			},
-			'gemini-2.5-flash': {
-				min: 1500,
-				max: 5000,
-				default: 3000,
-				rec: '<?php echo esc_js(__('1500-5000 tokens for detailed descriptions', 'comet-ai-says')); ?>',
-				cap: '<?php echo esc_js(__('250K TPM, 10 RPM', 'comet-ai-says')); ?>'
-			},
-			'gemini-2.5-flash-lite': {
-				min: 800,
-				max: 2500,
-				default: 1500,
-				rec: '<?php echo esc_js(__('800-2500 tokens for efficient descriptions', 'comet-ai-says')); ?>',
-				cap: '<?php echo esc_js(__('250K TPM, 15 RPM', 'comet-ai-says')); ?>'
-			},
-			'gemini-2.0-flash': {
-				min: 1000,
-				max: 4000,
-				default: 2500,
-				rec: '<?php echo esc_js(__('1000-4000 tokens for balanced performance', 'comet-ai-says')); ?>',
-				cap: '<?php echo esc_js(__('1M TPM, 15 RPM', 'comet-ai-says')); ?>'
-			},
-			'gemini-2.0-flash-lite': {
-				min: 800,
-				max: 2000,
-				default: 1200,
-				rec: '<?php echo esc_js(__('800-2000 tokens for lightweight tasks', 'comet-ai-says')); ?>',
-				cap: '<?php echo esc_js(__('1M TPM, 30 RPM', 'comet-ai-says')); ?>'
-			},
-			'gemini-2.5-flash-preview-04-17': {
-				min: 1500,
-				max: 4000,
-				default: 2500,
-				rec: '<?php echo esc_js(__('1500-4000 tokens for preview testing', 'comet-ai-says')); ?>',
-				cap: '<?php echo esc_js(__('Limited Free Tier', 'comet-ai-says')); ?>'
-			},
-			'gemini-2.5-pro-preview-05-06': {
-				min: 3000,
-				max: 8000,
-				default: 4000,
-				rec: '<?php echo esc_js(__('3000-8000 tokens for pro preview', 'comet-ai-says')); ?>',
-				cap: '<?php echo esc_js(__('Limited Free Tier', 'comet-ai-says')); ?>'
-			},
-			'gemini-2.5-pro-exp-03-25': {
-				min: 3000,
-				max: 8000,
-				default: 4000,
-				rec: '<?php echo esc_js(__('3000-8000 tokens for experimental features', 'comet-ai-says')); ?>',
-				cap: '<?php echo esc_js(__('Limited Free Tier', 'comet-ai-says')); ?>'
-			},
-			'gemma-3': {
-				min: 1000,
-				max: 3000,
-				default: 1800,
-				rec: '<?php echo esc_js(__('1000-3000 tokens for Gemma model', 'comet-ai-says')); ?>',
-				cap: '<?php echo esc_js(__('15K TPM, 30 RPM', 'comet-ai-says')); ?>'
-			},
-			'default': {
-				min: 1000,
-				max: 5000,
-				default: 2500,
-				rec: '<?php echo esc_js(__('1000-5000 tokens for comprehensive descriptions', 'comet-ai-says')); ?>',
-				cap: '<?php echo esc_js(__('Standard configuration', 'comet-ai-says')); ?>'
-			}
-		};
-
-		var config = configs.default;
-		for (var key in configs) {
-			if (key !== 'default' && geminiModel.includes(key)) {
-				config = configs[key];
-				break;
-			}
-		}
-
-		maxTokensInput.attr('min', config.min).attr('max', config.max);
-		recommended.text(config.rec);
-		capacityInfo.text(config.cap);
-
-		maxTokensInput.val(config.default);
-		/*
-        var currentVal = parseInt(maxTokensInput.val());
-        if (currentVal < config.min || currentVal > config.max) {
-			maxTokensInput.val(config.default);
-		}*/
-
-		tokensValue.text(maxTokensInput.val() +
-			' <?php echo esc_js(__('tokens', 'comet-ai-says')); ?>'
-		);
-	}
-
-	function updateCapacityInfo() {
-		var geminiModel = jQuery('#wpcmt_aisays_gemini_model').val();
-		var capacityInfo = jQuery('#token-capacity-info');
-		capacityInfo.text(geminiModel.includes('2.5') ?
-			'<?php echo esc_js(__('Up to 375,000 tokens daily with Gemini 2.5 Flash', 'comet-ai-says')); ?>' :
-			'<?php echo esc_js(__('Up to 150,000 tokens daily with Gemini 2.0 Flash', 'comet-ai-says')); ?>'
-		);
-	}
-</script>
-<?php
-    }
-
     public function control_notices() {
         if (!Plugin::is_plugin_screen()) {
             return;
@@ -1071,7 +877,7 @@ Write a compelling description that converts visitors into buyers.', 'comet-ai-s
             'wpcmt_aisays_openai_model' => 'gpt-4o',
             'wpcmt_aisays_display_mode' => 'automatic',
             'wpcmt_aisays_display_position' => 'after_description',
-            'wpcmt_aisays_shortcode' => '[ai_says_product_description]',
+            'wpcmt_aisays_shortcode' => '[comet-ai-says-product-description]',
             'wpcmt_aisays_prompt_template' => $this->get_default_prompt_template(),
             'wpcmt_aisays_max_tokens' => 1500,
         ];
@@ -1264,8 +1070,8 @@ Write a compelling description that converts visitors into buyers.', 'comet-ai-s
             'wpcmt-aisays-table',
             [$this, 'products_table_page']
         );
-        Plugin::$plugin_pages[] = $p1;
-        Plugin::$plugin_pages[] = $p2;
+        Plugin::$plugin_pages['settings'] = $p1;
+        Plugin::$plugin_pages['product-descriptions'] = $p2;
     }
 
     /**
@@ -1282,7 +1088,7 @@ Write a compelling description that converts visitors into buyers.', 'comet-ai-s
             'wpcmt_aisays_openai_model' => ['string', 'gpt-4o'],
             'wpcmt_aisays_display_mode' => ['string', 'automatic'],
             'wpcmt_aisays_display_position' => ['string', 'after_description'],
-            'wpcmt_aisays_shortcode' => ['string', '[ai_says_product_description]'],
+            'wpcmt_aisays_shortcode' => ['string', '[comet-ai-says-product-description]'],
             'wpcmt_aisays_prompt_template' => ['string', $this->get_default_prompt_template(), 'sanitize_textarea_field'],
             'wpcmt_aisays_max_tokens' => ['integer', 1500, 'absint'],
         ];
@@ -1297,13 +1103,13 @@ Write a compelling description that converts visitors into buyers.', 'comet-ai-s
         }
     }
 
-    public function show_notices() {
-        // phpcs:disable WordPress.Security.NonceVerification.Recommended
+    public function show_notices(): void {
         if (isset($_GET['restored'])) {
-            echo '<div class="notice wpcomet-notice notice-success is-dismissible"><p>'.esc_html__('Settings restored to defaults!', 'comet-ai-says').'</p></div>';
+            printf(
+                '<div class="notice wpcomet-notice notice-success is-dismissible"><p>%s</p></div>',
+                esc_html__('Settings restored to defaults!', 'comet-ai-says')
+            );
         }
-
-        // Output settings errors
         settings_errors('wpcmt_aisays_settings');
     }
 
@@ -1332,7 +1138,7 @@ Write a compelling description that converts visitors into buyers.', 'comet-ai-s
         $current_prompt_template = get_option('wpcmt_aisays_prompt_template', $this->get_default_prompt_template());
         $current_display_mode = get_option('wpcmt_aisays_display_mode', 'automatic');
         $current_display_position = get_option('wpcmt_aisays_display_position', 'after_description');
-        $current_shortcode = get_option('wpcmt_aisays_shortcode', '[ai_says_product_description]');
+        $current_shortcode = get_option('wpcmt_aisays_shortcode', '[comet-ai-says-product-description]');
         $current_max_tokens = get_option('wpcmt_aisays_max_tokens', 1500);
         ?>
 
@@ -1671,9 +1477,6 @@ Write a compelling description that converts visitors into buyers.', 'comet-ai-s
 
 <?php
         echo '</div>'; // Close the single wrap div
-
-        // Output the JavaScript
-        $this->output_admin_javascript();
     }
 
     /**
@@ -1758,8 +1561,8 @@ Write a compelling description that converts visitors into buyers.', 'comet-ai-s
 		</button>
 		<span id="wpcmt-aisays-loading" style="display: none; margin-left: 10px;">
 			<?php
-                        // translators: %s: AI platform name
-                        printf(esc_html__('Generating with %s...', 'comet-ai-says'), esc_html($provider_name)); ?>
+                                // translators: %s: AI platform name
+                                printf(esc_html__('Generating with %s...', 'comet-ai-says'), esc_html($provider_name)); ?>
 			<span class="spinner is-active" style="float: none;"></span>
 		</span>
 	</div>
@@ -1865,21 +1668,23 @@ Write a compelling description that converts visitors into buyers.', 'comet-ai-s
      * @param mixed $hook
      */
     public function enqueue_admin_scripts($hook): void {
-        if (in_array($hook, Plugin::$plugin_pages, true)) {
-            $this->enqueue_shared_admin_styles();
+        // Always enqueue styles for plugin screens
+        if (Plugin::is_plugin_screen()) {
+            $this->enqueue_plugin_admin_styles();
         }
 
-        if ('post.php' === $hook || 'post-new.php' === $hook) {
-            global $post_type;
-            if ('product' === $post_type) {
-                $this->enqueue_ai_scripts();
-            }
-
-            return;
+        // Load settings JS only on settings page
+        if (Plugin::is_plugin_screen('settings')) {
+            $this->enqueue_admin_settings_js();
+        }
+        // Load generation operations JS on plugins product description table page
+        if (Plugin::is_plugin_screen('product-descriptions')) {
+            $this->enqueue_plugin_admin_scripts();
         }
 
-        if ('product_page_wpcmt-aisays-table' === $hook) {
-            $this->enqueue_ai_scripts();
+        // Load generation operations JS on product pages
+        if ($this->is_product_screen($hook)) {
+            $this->enqueue_plugin_admin_scripts();
         }
     }
 
@@ -1958,7 +1763,7 @@ Write a compelling description that converts visitors into buyers.', 'comet-ai-s
      */
     public function handle_bulk_generation(): void {
         // Verify nonce and permissions
-        if (!isset($_POST['_wpnonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_wpnonce'])), 'bulk-products') || !current_user_can('manage_products')) {
+        if (!isset($_POST['_wpnonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_wpnonce'])), 'bulk-products') || !$this->permission_check()) {
             wp_die(esc_html__('Security check failed', 'comet-ai-says'));
         }
 
@@ -1967,6 +1772,11 @@ Write a compelling description that converts visitors into buyers.', 'comet-ai-s
             $product_ids = array_map('intval', $_POST['product_ids']);
             $results = $this->process_bulk_generation($product_ids);
             wp_send_json_success($results);
+        }
+
+        // Added layer of validation
+        if (!isset($_POST['product_ids']) || !is_array($_POST['product_ids'])) {
+            wp_die(esc_html__('Invalid product IDs', 'comet-ai-says'));
         }
 
         // Handle initial bulk action

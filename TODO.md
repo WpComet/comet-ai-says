@@ -1,5 +1,6 @@
 [✔] Delete saved ai desc.
 [ ] More use-cases; product archive desc w/ sampling, empty image alt-captions.
+[ ] Add option on who can use the plugin, do not initiate the plugin at all if not allowed
 [ ] Detailed error reports on fail - token fail or RPM or sth else
 [ ] Non-factor text bug: regenerate on return
 [ ] UI improv for admin list table 

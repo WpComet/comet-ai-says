@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Comet AI Says: Product Descriptions
  * Description: Generate contextual AI product descriptions on-the-fly and store them in custom fields without messing with your existing descriptions.
- * Version: 1.1.0
+ * Version: 1.1.1
  * Author: WpComet
  * Plugin URI: https://wpcomet.com/ai-says/
  * Author URI: https://wpcomet.com/
@@ -74,10 +74,10 @@ class Plugin {
 
     /**
      * Check if the current screen is strictly a plugin screen or a product edit screen.
-     *
+     * @param string|null $key Optional. Specific screen key to check ('settings', 'product-descriptions', etc.)
      * @return bool true if the current screen is a plugin related screen, false otherwise
      */
-    public static function is_plugin_screen(): bool {
+    public static function is_plugin_screen(?string $key=null): bool {
         if (!is_admin()) {
             return false;
         }
@@ -88,11 +88,21 @@ class Plugin {
             return false;
         }
 
-        if (in_array($screen->id, Plugin::$plugin_pages, true)) {
+        // If specific screen is requested, check only that one
+        if ($key !== null) {
+            if (isset(Plugin::$plugin_pages[$key])) {
+                return $screen->id === Plugin::$plugin_pages[$key];
+            }
+            return false;
+        }
+
+        // Strict check if the current screen is a plugin screen
+        if (in_array($screen->id, array_values(Plugin::$plugin_pages), true)) {
             return true;
         }
 
-        if ('product' === $screen->post_type && in_array($screen->base, ['post', 'add'], true)) {
+        // extended check if the current screen is a related screen
+        if ('extended' == $key && ( 'product' === $screen->post_type && in_array($screen->base, ['post', 'add'], true) ) ) {
             return true;
         }
 
@@ -145,7 +155,7 @@ class Plugin {
             'wpcmt_aisays_openai_model' => 'gpt-4o',
             'wpcmt_aisays_display_mode' => 'automatic',
             'wpcmt_aisays_display_position' => 'after_description',
-            'wpcmt_aisays_shortcode' => '[ai_says_product_description]',
+            'wpcmt_aisays_shortcode' => '[comet-ai-says-product-description]',
             'wpcmt_aisays_prompt_template' => AdminInterface::get_default_prompt_template_public(),
             'wpcmt_aisays_max_tokens' => 1500,
         ];
