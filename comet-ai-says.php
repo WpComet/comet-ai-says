@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Comet AI Says: Product Descriptions
  * Description: Generate contextual AI product descriptions on-the-fly and store them in custom fields without messing with your existing descriptions.
- * Version: 1.1.4
+ * Version: 1.1.3
  * Author: WpComet
  * Plugin URI: https://wpcomet.com/ai-says/
  * Author URI: https://wpcomet.com/
@@ -26,7 +26,8 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class Plugin {
+class Plugin
+{
     public static $plugin_url;
     public static $plugin_path;
     public static $plugin_version;
@@ -34,17 +35,19 @@ class Plugin {
     public static $plugin_pages = [];
     private static $instance;
 
-    private function __construct() {
+    private function __construct()
+    {
         self::$plugin_path = plugin_dir_path(__FILE__);
         self::$plugin_url = plugin_dir_url(__FILE__);
-        self::$plugin_version = '1.1.4';
+        self::$plugin_version = '1.1.3';
 
         $this->init_hooks();
     }
 
-    private function get_plugin_version_from_header() {
+    private function get_plugin_version_from_header()
+    {
         if (!function_exists('get_plugin_data')) {
-            require_once ABSPATH.'wp-admin/includes/plugin.php';
+            require_once ABSPATH . 'wp-admin/includes/plugin.php';
         }
 
         $plugin_data = get_plugin_data(__FILE__);
@@ -52,14 +55,16 @@ class Plugin {
         return $plugin_data['Version'] ?? '1.1.0';
     }
 
-    private function init_hooks() {
+    private function init_hooks()
+    {
         add_action('init', [$this, 'init']);
         add_action('admin_init', [$this, 'admin_init']);
         add_action('template_redirect', [$this, 'frontend_init']);
-        add_filter('plugin_action_links_'.plugin_basename(__FILE__), [$this, 'add_plugin_action_links']);
+        add_filter('plugin_action_links_' . plugin_basename(__FILE__), [$this, 'add_plugin_action_links']);
     }
 
-    public static function get_instance() {
+    public static function get_instance()
+    {
         if (null === self::$instance) {
             self::$instance = new self();
         }
@@ -67,9 +72,10 @@ class Plugin {
         return self::$instance;
     }
 
-    public static function get_asset_url($path) {
+    public static function get_asset_url($path)
+    {
         // Add cache busting, CDN URL processing, etc.
-        return self::$plugin_url.'assets/'.ltrim($path, '/').'?v='.self::$plugin_version;
+        return self::$plugin_url . 'assets/' . ltrim($path, '/') . '?v=' . self::$plugin_version;
     }
 
     /**
@@ -77,7 +83,8 @@ class Plugin {
      * @param string|null $key Optional. Specific screen key to check ('settings', 'product-descriptions', etc.)
      * @return bool true if the current screen is a plugin related screen, false otherwise
      */
-    public static function is_plugin_screen(?string $key=null): bool {
+    public static function is_plugin_screen(?string $key = null): bool
+    {
         if (!is_admin()) {
             return false;
         }
@@ -102,47 +109,53 @@ class Plugin {
         }
 
         // extended check if the current screen is a related screen
-        if ('extended' == $key && ( 'product' === $screen->post_type && in_array($screen->base, ['post', 'add'], true) ) ) {
+        if ('extended' == $key && ('product' === $screen->post_type && in_array($screen->base, ['post', 'add'], true))) {
             return true;
         }
 
         return false;
     }
 
-    public function is_rest_request() {
+    public function is_rest_request()
+    {
         return defined('REST_REQUEST') && REST_REQUEST;
     }
 
-    public function is_frontend() {
+    public function is_frontend()
+    {
         return !is_admin()
             && !wp_doing_ajax()
             && !wp_doing_cron()
             && !$this->is_rest_request();
     }
 
-    public function init() {
-        require_once self::$plugin_path.'includes/class-admin-interface.php';
+    public function init()
+    {
+        require_once self::$plugin_path . 'includes/class-admin-interface.php';
         new AdminInterface();
     }
 
-    public function admin_init() {
+    public function admin_init()
+    {
         // var_dump("11111111111");
         if (defined('DOING_AJAX') && DOING_AJAX) {
-            require_once self::$plugin_path.'includes/class-ai-generator.php';
+            require_once self::$plugin_path . 'includes/class-ai-generator.php';
             new AIGenerator();
         }
     }
 
-    public function frontend_init() {
-        require_once self::$plugin_path.'includes/class-frontend-display.php';
+    public function frontend_init()
+    {
+        require_once self::$plugin_path . 'includes/class-frontend-display.php';
         new FrontendDisplay();
     }
 
     /**
      * Static activation method.
      */
-    public static function activate() {
-        require_once self::$plugin_path.'includes/class-admin-interface.php';
+    public static function activate()
+    {
+        require_once self::$plugin_path . 'includes/class-admin-interface.php';
 
         // Set default settings
         $defaults = [
@@ -172,7 +185,8 @@ class Plugin {
      *
      * @param mixed $links
      */
-    public function add_plugin_action_links($links) {
+    public function add_plugin_action_links($links)
+    {
         $action_links = [
             'settings' => sprintf(
                 '<a href="%s">%s</a>',
@@ -194,4 +208,4 @@ class Plugin {
 Plugin::get_instance();
 
 // Activation hook
-register_activation_hook(__FILE__, [__NAMESPACE__.'\\Plugin', 'activate']);
+register_activation_hook(__FILE__, [__NAMESPACE__ . '\\Plugin', 'activate']);
