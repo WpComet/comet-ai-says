@@ -101,7 +101,7 @@
   };
 
   window.getLanguageInstruction = function (language, part, customLanguage) {
-    var instruction = languageData[part][language] || languageData[part]["english"];
+    var instruction = wpcmt_aisays.languageData[part][language] || wpcmt_aisays.languageData[part]["english"];
     if (language === "custom" && part === "intro" && customLanguage) {
       instruction = instruction.replace("CUSTOM_LANGUAGE", customLanguage);
     } else if (language === "custom" && part === "intro") {
@@ -118,26 +118,19 @@
     var capacityInfo = $("#token-capacity-info");
 
     var configs = {
-      "gemini-2.5-pro": {
-        min: 4000,
-        max: 10000,
-        default: 5000,
-        rec: wpcmt_aisays.i18n.tokens_4000_10000 || "4000-10000 tokens for complex analysis",
-        cap: wpcmt_aisays.i18n.cap_125k_5 || "125K TPM, 5 RPM",
+      "gemini-3.0-flash": {
+        min: 1000,
+        max: 4000,
+        default: 2500,
+        rec: wpcmt_aisays.i18n.tokens_1000_4000 || "1000-4000 tokens for balanced performance",
+        cap: wpcmt_aisays.i18n.cap_1m_15 || "1M TPM, 15 RPM",
       },
-      "gemini-2.5-flash": {
-        min: 1500,
-        max: 5000,
+      "gemini-3.0-flash-thinking": {
+        min: 2000,
+        max: 6000,
         default: 3000,
-        rec: wpcmt_aisays.i18n.tokens_1500_5000 || "1500-5000 tokens for detailed descriptions",
-        cap: wpcmt_aisays.i18n.cap_250k_10 || "250K TPM, 10 RPM",
-      },
-      "gemini-2.5-flash-lite": {
-        min: 800,
-        max: 2500,
-        default: 1500,
-        rec: wpcmt_aisays.i18n.tokens_800_2500 || "800-2500 tokens for efficient descriptions",
-        cap: wpcmt_aisays.i18n.cap_250k_15 || "250K TPM, 15 RPM",
+        rec: wpcmt_aisays.i18n.tokens_2000_6000 || "2000-6000 tokens for complex reasoning",
+        cap: wpcmt_aisays.i18n.cap_30k_2 || "30K TPM, 2 RPM",
       },
       "gemini-2.0-flash": {
         min: 1000,
@@ -153,6 +146,20 @@
         rec: wpcmt_aisays.i18n.tokens_800_2000 || "800-2000 tokens for lightweight tasks",
         cap: wpcmt_aisays.i18n.cap_1m_30 || "1M TPM, 30 RPM",
       },
+      "gemini-1.5-flash": {
+        min: 1000,
+        max: 4000,
+        default: 2500,
+        rec: wpcmt_aisays.i18n.tokens_1000_4000 || "1000-4000 tokens for balanced performance",
+        cap: wpcmt_aisays.i18n.cap_1m_15 || "1M TPM, 15 RPM",
+      },
+      "gemini-1.5-pro": {
+        min: 2000,
+        max: 8000,
+        default: 4000,
+        rec: wpcmt_aisays.i18n.tokens_2000_8000 || "2000-8000 tokens for high-quality analysis",
+        cap: wpcmt_aisays.i18n.cap_32k_2 || "32K TPM, 2 RPM",
+      },
       "gemini-2.5-flash-preview-04-17": {
         min: 1500,
         max: 4000,
@@ -166,20 +173,6 @@
         default: 4000,
         rec: wpcmt_aisays.i18n.tokens_3000_8000 || "3000-8000 tokens for pro preview",
         cap: wpcmt_aisays.i18n.cap_limited_free || "Limited Free Tier",
-      },
-      "gemini-2.5-pro-exp-03-25": {
-        min: 3000,
-        max: 8000,
-        default: 4000,
-        rec: wpcmt_aisays.i18n.tokens_3000_8000 || "3000-8000 tokens for experimental features",
-        cap: wpcmt_aisays.i18n.cap_limited_free || "Limited Free Tier",
-      },
-      "gemma-3": {
-        min: 1000,
-        max: 3000,
-        default: 1800,
-        rec: wpcmt_aisays.i18n.tokens_1000_3000 || "1000-3000 tokens for Gemma model",
-        cap: wpcmt_aisays.i18n.cap_15k_30 || "15K TPM, 30 RPM",
       },
       default: {
         min: 1000,
@@ -202,17 +195,37 @@
     recommended.text(config.rec);
     capacityInfo.text(config.cap);
 
+    var currentVal = parseInt(maxTokensInput.val());
     maxTokensInput.val(config.default);
+
+    // Alternatively only set default if current value is outside new range
+
+    /*if (currentVal < config.min || currentVal > config.max) {
+      maxTokensInput.val(config.default);
+    }*/
+
     tokensValue.text(maxTokensInput.val() + " " + (wpcmt_aisays.i18n.tokens || "tokens"));
   };
-
   window.updateCapacityInfo = function () {
     var geminiModel = $("#wpcmt_aisays_gemini_model").val();
     var capacityInfo = $("#token-capacity-info");
-    capacityInfo.text(
-      geminiModel.includes("2.5")
-        ? wpcmt_aisays.i18n.cap_gemini_25 || "Up to 375,000 tokens daily with Gemini 2.5 Flash"
-        : wpcmt_aisays.i18n.cap_gemini_20 || "Up to 150,000 tokens daily with Gemini 2.0 Flash"
-    );
+
+    var capacityText = wpcmt_aisays.i18n.cap_standard || "Standard configuration";
+
+    if (geminiModel.includes("3.0-flash") && !geminiModel.includes("thinking")) {
+      capacityText = wpcmt_aisays.i18n.cap_1m_15 || "1M TPM, 15 RPM";
+    } else if (geminiModel.includes("3.0-flash-thinking")) {
+      capacityText = wpcmt_aisays.i18n.cap_30k_2 || "30K TPM, 2 RPM";
+    } else if (geminiModel.includes("2.0-flash") && !geminiModel.includes("lite")) {
+      capacityText = wpcmt_aisays.i18n.cap_1m_15 || "1M TPM, 15 RPM";
+    } else if (geminiModel.includes("2.0-flash-lite")) {
+      capacityText = wpcmt_aisays.i18n.cap_1m_30 || "1M TPM, 30 RPM";
+    } else if (geminiModel.includes("1.5-flash")) {
+      capacityText = wpcmt_aisays.i18n.cap_1m_15 || "1M TPM, 15 RPM";
+    } else if (geminiModel.includes("1.5-pro")) {
+      capacityText = wpcmt_aisays.i18n.cap_32k_2 || "32K TPM, 2 RPM";
+    }
+
+    capacityInfo.text(capacityText);
   };
 })(jQuery);

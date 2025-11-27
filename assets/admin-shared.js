@@ -14,57 +14,57 @@ jQuery(document).ready(function ($) {
     /**
      * Unified AJAX handler for single product operations
      */
-function handleSingleProductOperation(action, productId, productName, $button, successCallback, errorCallback) {
-    const buttonTexts = {
-        'wpcmt_aisays_generate_single_ai_description': {
-            loading: wpcmt_aisays.i18n.generating,
-            default: '<span class="dashicons dashicons-media-text"></span> ' + wpcmt_aisays.i18n.generate_ai_description
-        },
-        'wpcmt_aisays_delete_ai_description': {
-            loading: wpcmt_aisays.i18n.deleting,
-            default: '<span class="dashicons dashicons-trash"></span> ' + wpcmt_aisays.i18n.delete_ai_description
-        }
-    };
-
-    const buttonConfig = buttonTexts[action] || {
-        loading: 'Processing...',
-        default: $button.html()
-    };
-
-    // Get the selected language from the dropdown
-    const selectedLanguage = $('#wpcmt-aisays-language').val();
-
-    $button.prop("disabled", true).html('<span class="spinner is-active"></span> ' + buttonConfig.loading);
-
-    $.ajax({
-        url: wpcmt_aisays.ajaxurl,
-        type: "POST",
-        data: {
-            action: action,
-            product_id: productId,
-            nonce: wpcmt_aisays.nonce,
-            from: "single-operation",
-            language: selectedLanguage // Add the selected language
-        },
-        success: (response) => {
-            if (response.success) {
-                successCallback(response, $button, productId, productName);
-            } else {
-                $button.prop("disabled", false).html(buttonConfig.default);
-                errorCallback(response.data, productName);
+    function handleSingleProductOperation(action, productId, productName, $button, successCallback, errorCallback) {
+        const buttonTexts = {
+            'wpcmt_aisays_generate_single_ai_description': {
+                loading: wpcmt_aisays.i18n.generating,
+                default: '<span class="dashicons dashicons-media-text"></span> ' + wpcmt_aisays.i18n.generate_ai_description
+            },
+            'wpcmt_aisays_delete_ai_description': {
+                loading: wpcmt_aisays.i18n.deleting,
+                default: '<span class="dashicons dashicons-trash"></span> ' + wpcmt_aisays.i18n.delete_ai_description
             }
-        },
-        error: () => {
-            $button.prop("disabled", false).html(buttonConfig.default);
-            errorCallback(null, productName);
-        }
-    });
-}
+        };
+
+        const buttonConfig = buttonTexts[action] || {
+            loading: 'Processing...',
+            default: $button.html()
+        };
+
+        // Get the selected language from the dropdown
+        const selectedLanguage = $('#wpcmt-aisays-language').val();
+
+        $button.prop("disabled", true).html('<span class="spinner is-active"></span> ' + buttonConfig.loading);
+
+        $.ajax({
+            url: wpcmt_aisays.ajaxurl,
+            type: "POST",
+            data: {
+                action: action,
+                product_id: productId,
+                nonce: wpcmt_aisays.nonce,
+                from: "single-operation",
+                language: selectedLanguage // Add the selected language
+            },
+            success: (response) => {
+                if (response.success) {
+                    successCallback(response, $button, productId, productName);
+                } else {
+                    $button.prop("disabled", false).html(buttonConfig.default);
+                    errorCallback(response.data, productName);
+                }
+            },
+            error: () => {
+                $button.prop("disabled", false).html(buttonConfig.default);
+                errorCallback(null, productName);
+            }
+        });
+    }
     /**
      * Success callback for generation operations
      */
     const handleGenerationSuccess = (response, $button, productId, productName) => {
-        console.log( wpcmt_aisays);
+        //  console.log( wpcmt_aisays);
         // For products table
         if ($button.closest("tr").length) {
             const $row = $button.closest("tr");
@@ -86,9 +86,9 @@ function handleSingleProductOperation(action, productId, productName, $button, s
             $("#wpcmt-aisays-text").val(response.data.description);
             $("#wpcmt-aisays-result").show();
         }
-        
+
         $button.prop("disabled", false).html('<span class="dashicons dashicons-media-text"></span> ' + wpcmt_aisays.i18n.generate_ai_description);
-        alert(wpcmt_aisays.i18n.generated_success.replace("%s", productName));
+        alert(response.data.message);
     };
 
     /**
@@ -110,7 +110,7 @@ function handleSingleProductOperation(action, productId, productName, $button, s
             $("#wpcmt-aisays-text").val("");
             $("#wpcmt-aisays-result").hide();
         }
-        
+
         $button.prop("disabled", false).html('<span class="dashicons dashicons-trash"></span> ' + wpcmt_aisays.i18n.delete_ai_description);
         alert(wpcmt_aisays.i18n.deleted_success.replace("%s", productName));
     };
@@ -123,7 +123,7 @@ function handleSingleProductOperation(action, productId, productName, $button, s
             'generate': wpcmt_aisays.i18n.generate_error_generic_specific.replace("%s", productName),
             'delete': wpcmt_aisays.i18n.delete_error_generic.replace("%s", productName)
         };
-        
+
         alert(errorMessage || errorMessages[operationType]);
     };
 

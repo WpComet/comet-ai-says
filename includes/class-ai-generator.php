@@ -2,12 +2,14 @@
 
 namespace WpComet\AISays;
 
-class AIGenerator {
+class AIGenerator
+{
     private $provider;
     private $api_key;
     private static $instance;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->provider = get_option('wpcmt_aisays_provider', 'gemini');
 
         // Get the appropriate API key based on provider
@@ -23,7 +25,8 @@ class AIGenerator {
         add_action('wp_ajax_wpcmt_aisays_delete_ai_description', [$this, 'delete_description_ajax']); // Add delete AJAX action
     }
 
-    private function generate_description($product) {
+    private function generate_description($product)
+    {
         if (empty($this->api_key)) {
             return false;
         }
@@ -53,10 +56,10 @@ class AIGenerator {
                 if ($attribute['is_taxonomy']) {
                     $terms = wp_get_post_terms($product->get_id(), $attribute['name'], ['fields' => 'names']);
                     if (!empty($terms)) {
-                        $attributes_string .= '- '.wc_attribute_label($attribute['name']).': '.implode(', ', $terms)."\n";
+                        $attributes_string .= '- ' . wc_attribute_label($attribute['name']) . ': ' . implode(', ', $terms) . "\n";
                     }
                 } else {
-                    $attributes_string .= '- '.wc_attribute_label($attribute['name']).': '.$attribute['value']."\n";
+                    $attributes_string .= '- ' . wc_attribute_label($attribute['name']) . ': ' . $attribute['value'] . "\n";
                 }
             }
         }
@@ -106,7 +109,8 @@ class AIGenerator {
         }
     }
 
-    private function get_featured_image_analysis($product_id) {
+    private function get_featured_image_analysis($product_id)
+    {
         $featured_image_id = get_post_thumbnail_id($product_id);
 
         if (!$featured_image_id) {
@@ -133,7 +137,7 @@ class AIGenerator {
             $analysis_context .= sprintf(__('Image caption: "%s". ', 'comet-ai-says'), $image_caption);
         }
 
-        return $analysis_context.__('The product has a featured image that shows the actual product. Use visual cues from the image to enhance the description.', 'comet-ai-says');
+        return $analysis_context . __('The product has a featured image that shows the actual product. Use visual cues from the image to enhance the description.', 'comet-ai-says');
     }
 
     /**
@@ -145,7 +149,8 @@ class AIGenerator {
      * @param mixed      $prompt
      * @param null|mixed $product_id
      */
-    private function call_gemini_api($prompt, $product_id = null) {
+    private function call_gemini_api($prompt, $product_id = null)
+    {
         $gemini_model = get_option('wpcmt_aisays_gemini_model', 'gemini-2.0-flash');
         $max_tokens = get_option('wpcmt_aisays_max_tokens', 1024);
 
@@ -165,7 +170,7 @@ class AIGenerator {
             }
         }
 
-        $api_url = 'https://generativelanguage.googleapis.com/v1/models/'.$gemini_model.':generateContent?key='.$this->api_key;
+        $api_url = 'https://generativelanguage.googleapis.com/v1/models/' . $gemini_model . ':generateContent?key=' . $this->api_key;
 
         // Build request parts
         $parts = [['text' => $prompt]];
@@ -180,7 +185,7 @@ class AIGenerator {
 
             if (Plugin::$debug && defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-                error_log('Comet AI Says - Using image analysis for product ID: '.$product_id);
+                error_log('Comet AI Says - Using image analysis for product ID: ' . $product_id);
             }
         }
 
@@ -209,7 +214,7 @@ class AIGenerator {
         if (is_wp_error($response)) {
             if (Plugin::$debug && defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-                error_log('Comet AI Says - Gemini API Connection Error: '.$response->get_error_message());
+                error_log('Comet AI Says - Gemini API Connection Error: ' . $response->get_error_message());
             }
 
             return false;
@@ -226,7 +231,7 @@ class AIGenerator {
         if (404 === $response_code || $use_image) {
             if (Plugin::$debug && defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-                error_log('Comet AI Says - Gemini API fallback. Response code: '.$response_code.', Used image: '.($use_image ? 'yes' : 'no'));
+                error_log('Comet AI Says - Gemini API fallback. Response code: ' . $response_code . ', Used image: ' . ($use_image ? 'yes' : 'no'));
             }
 
             if (404 === $response_code) {
@@ -239,7 +244,7 @@ class AIGenerator {
 
         if (Plugin::$debug && defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {
             // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log,WordPress.PHP.DevelopmentFunctions.error_log_print_r
-            error_log('Comet AI Says - Gemini API Error Response: '.print_r($body, true));
+            error_log('Comet AI Says - Gemini API Error Response: ' . print_r($body, true));
         }
 
         return false;
@@ -250,7 +255,8 @@ class AIGenerator {
      *
      * @param mixed $product_id
      */
-    private function prepare_gemini_image_data($product_id) {
+    private function prepare_gemini_image_data($product_id)
+    {
         $featured_image_id = get_post_thumbnail_id($product_id);
         if (!$featured_image_id) {
             return false;
@@ -286,7 +292,8 @@ class AIGenerator {
      * @param mixed      $prompt
      * @param null|mixed $product_id
      */
-    private function call_openai_api($prompt, $product_id = null) {
+    private function call_openai_api($prompt, $product_id = null)
+    {
         $api_url = 'https://api.openai.com/v1/chat/completions';
         $model = 'gpt-4o'; // Use gpt-4o for both text and vision
 
@@ -320,7 +327,7 @@ class AIGenerator {
 
             if (Plugin::$debug && defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-                error_log('Comet AI Says - Using vision analysis for product ID: '.$product_id);
+                error_log('Comet AI Says - Using vision analysis for product ID: ' . $product_id);
             }
         } else {
             $messages = [
@@ -334,7 +341,7 @@ class AIGenerator {
         $args = [
             'headers' => [
                 'Content-Type' => 'application/json',
-                'Authorization' => 'Bearer '.$this->api_key,
+                'Authorization' => 'Bearer ' . $this->api_key,
             ],
             'body' => json_encode([
                 'model' => $model,
@@ -350,7 +357,7 @@ class AIGenerator {
         if (is_wp_error($response)) {
             if (Plugin::$debug && defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-                error_log('Comet AI Says - OpenAI API Error: '.$response->get_error_message());
+                error_log('Comet AI Says - OpenAI API Error: ' . $response->get_error_message());
             }
 
             return false;
@@ -366,7 +373,7 @@ class AIGenerator {
         if ($use_image) {
             if (Plugin::$debug && defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log,WordPress.PHP.DevelopmentFunctions.error_log_print_r
-                error_log('Comet AI Says - OpenAI Vision API failed, falling back to text-only. Response: '.print_r($body, true));
+                error_log('Comet AI Says - OpenAI Vision API failed, falling back to text-only. Response: ' . print_r($body, true));
             }
 
             return $this->call_openai_api($prompt); // Recursive call without product_id
@@ -374,15 +381,16 @@ class AIGenerator {
 
         if (Plugin::$debug && defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {
             // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log,WordPress.PHP.DevelopmentFunctions.error_log_print_r
-            error_log('Comet AI Says - OpenAI API Error Response: '.print_r($body, true));
+            error_log('Comet AI Says - OpenAI API Error Response: ' . print_r($body, true));
         }
 
         return false;
     }
 
-    private function fallback_gemini_api($prompt) {
+    private function fallback_gemini_api($prompt)
+    {
         // Fallback to the current recommended free model
-        $api_url = 'https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent?key='.$this->api_key;
+        $api_url = 'https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent?key=' . $this->api_key;
 
         $args = [
             'headers' => [
@@ -421,7 +429,8 @@ class AIGenerator {
         return false;
     }
 
-    public static function get_instance() {
+    public static function get_instance()
+    {
         if (null === self::$instance) {
             self::$instance = new self();
         }
@@ -430,7 +439,8 @@ class AIGenerator {
     }
 
     // Static accessor
-    public static function generate_for_product($product_or_id) {
+    public static function generate_for_product($product_or_id)
+    {
         $instance = self::get_instance();
 
         // Check if it's already a WC_Product object
@@ -439,7 +449,8 @@ class AIGenerator {
         return $product ? $instance->generate_description($product) : false;
     }
 
-    public function enerate_description_ajax() {
+    public function enerate_description_ajax()
+    {
         // Security check
         if (!check_ajax_referer('wpcmt_aisays_nonce', 'nonce', false)) {
             if (Plugin::$debug && defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {
@@ -471,7 +482,8 @@ class AIGenerator {
         }
     }
 
-    public function save_description_ajax() {
+    public function save_description_ajax()
+    {
         // Security check
         if (!check_ajax_referer('wpcmt_aisays_nonce', 'nonce', false)) {
             if (Plugin::$debug && defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {
@@ -494,7 +506,8 @@ class AIGenerator {
         wp_send_json_success(esc_html__('Description saved', 'comet-ai-says'));
     }
 
-    public function get_description_ajax() {
+    public function get_description_ajax()
+    {
         // Security check
         if (!check_ajax_referer('wpcmt_aisays_nonce', 'nonce', false)) {
             if (Plugin::$debug && defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {
@@ -519,7 +532,8 @@ class AIGenerator {
         }
     }
 
-    public function delete_description_ajax() {
+    public function delete_description_ajax()
+    {
         // Security check
         if (!check_ajax_referer('wpcmt_aisays_nonce', 'nonce', false)) {
             if (Plugin::$debug && defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {
@@ -556,22 +570,24 @@ class AIGenerator {
         }
     }
 
-    public static function log($message, $data = null) {
+    public static function log($message, $data = null)
+    {
         if (!Plugin::$debug) {
             return;
         }
 
         if (defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {
-            $log_message = 'Comet AI Says: '.$message;
+            $log_message = 'Comet AI Says: ' . $message;
             if ($data) {
-                $log_message .= ' - Data: '.wp_json_encode($data);
+                $log_message .= ' - Data: ' . wp_json_encode($data);
             }
             // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
             error_log($log_message);
         }
     }
 
-    public static function generate_single_ajax() {
+    public static function generate_single_ajax()
+    {
         // Security check
         if (!check_ajax_referer('wpcmt_aisays_nonce', 'nonce', false)) {
             wp_send_json_error('Security check failed');
@@ -591,7 +607,7 @@ class AIGenerator {
 
         // Save the language if provided in the AJAX request
         if (isset($_POST['language']) && !empty($_POST['language'])) {
-        $language = sanitize_text_field(wp_unslash($_POST['language']));
+            $language = sanitize_text_field(wp_unslash($_POST['language']));
             update_post_meta($product_id, '_wpcmt_aisays_language', $language);
 
             if (Plugin::$debug && defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {
@@ -606,17 +622,43 @@ class AIGenerator {
         if ($description) {
             update_post_meta($product_id, '_wpcmt_aisays_description', $description);
             AdminInterface::track_usage('generation');
+            $instance = self::get_instance();
+            $model_name = $instance->get_current_model_name();
 
             wp_send_json_success([
                 'product_id' => $product_id,
                 'product_name' => $product->get_name(),
                 'description' => $description,
-                // translators: product name
-                'message' => sprintf(__('Successfully generated AI description for: %s', 'comet-ai-says'), $product->get_name()),
+                // translators: product name, model name
+                'message' => sprintf(__('AI description generated and saved for: %1$s via: %2$s', 'comet-ai-says'), $product->get_name(), $model_name),
             ]);
         } else {
             // translators: product name
             wp_send_json_error(sprintf(__('Failed to generate description for: %s. Check your API key and provider settings.', 'comet-ai-says'), $product->get_name()));
+        }
+    }
+
+    /**
+     * Get the current model name for display
+     */
+    private function get_current_model_name()
+    {
+        $provider = get_option('wpcmt_aisays_provider', 'gemini');
+
+        if ($provider === 'gemini') {
+            $model = get_option('wpcmt_aisays_gemini_model', 'gemini-2.0-flash');
+            // Clean up the model name for display
+            $model = str_replace('gemini-', 'Gemini ', $model);
+            $model = str_replace('-', ' ', $model);
+            $model = ucwords($model);
+            return $model;
+        } else {
+            $model = get_option('wpcmt_aisays_openai_model', 'gpt-4o');
+            // Clean up the model name for display
+            $model = str_replace('gpt-', 'GPT-', $model);
+            $model = str_replace('-', ' ', $model);
+            $model = ucwords($model);
+            return $model;
         }
     }
 }
