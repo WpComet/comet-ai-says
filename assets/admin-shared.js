@@ -193,7 +193,7 @@ jQuery(document).ready(function ($) {
             url: wpcmt_aisays.ajaxurl,
             type: "POST",
             data: {
-                action: "save_ai_description",
+                action: "wpcmt_aisays_save_ai_description",
                 product_id: productId,
                 description: description,
                 nonce: wpcmt_aisays.nonce,

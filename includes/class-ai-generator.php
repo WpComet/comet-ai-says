@@ -43,8 +43,9 @@ class AIGenerator
 
         $product_name = $product->get_name();
         $short_description = $product->get_short_description();
-        $categories = wp_get_post_terms($product->get_id(), 'product_cat', ['fields' => 'names']);
+        $tags = wp_get_post_terms($product->get_id(), 'product_tag', ['fields' => 'names']);
         $attributes = $product->get_attributes();
+        $store_context = get_bloginfo('name');
 
         // Get the custom prompt template or use default
         $prompt_template = get_option('wpcmt_aisays_prompt_template', AdminInterface::get_default_prompt_template_public());
@@ -78,6 +79,8 @@ class AIGenerator
                 '{product_name}',
                 '{short_description}',
                 '{categories}',
+                '{tags}',
+                '{store_context}',
                 '{attributes}',
                 '{image_analysis}',
                 '{instructions}',
@@ -87,12 +90,19 @@ class AIGenerator
                 $product_name,
                 $short_description ?: __('No short description provided', 'comet-ai-says'),
                 !empty($categories) ? implode(', ', $categories) : __('No categories', 'comet-ai-says'),
+                !empty($tags) ? implode(', ', $tags) : __('No tags', 'comet-ai-says'),
+                $store_context,
                 $attributes_string ?: __('No specifications provided', 'comet-ai-says'),
                 $image_analysis ?: __('No image analysis available', 'comet-ai-says'),
                 $instructions,
             ],
             $prompt_template
         );
+
+        if (Plugin::$debug && defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {
+            // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+            error_log('Prompt sent: ' . $prompt);
+        }
 
         // Call the appropriate API based on provider
         switch ($this->provider) {
@@ -152,8 +162,7 @@ class AIGenerator
     private function call_gemini_api($prompt, $product_id = null)
     {
         $gemini_model = get_option('wpcmt_aisays_gemini_model', 'gemini-2.0-flash');
-        $max_tokens = get_option('wpcmt_aisays_max_tokens', 1024);
-
+        $max_tokens = (int) get_option('wpcmt_aisays_max_tokens', 1500);
         // Check if we should use image analysis
         $use_image = $product_id && get_post_thumbnail_id($product_id);
         $image_data = null;
@@ -162,6 +171,8 @@ class AIGenerator
             $image_data = $this->prepare_gemini_image_data($product_id);
             if (!$image_data) {
                 $use_image = false; // Fallback to text-only if image prep fails
+                // Remove the visual context placeholder from prompt to avoid confusion
+                $prompt = str_replace('{image_analysis}', '', $prompt);
 
                 if (Plugin::$debug && defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
@@ -239,6 +250,8 @@ class AIGenerator
             }
 
             // If image failed, retry without image
+            // Remove the visual context placeholder from prompt to avoid confusion
+            $prompt = str_replace('{image_analysis}', '', $prompt);
             return $this->call_gemini_api($prompt); // Recursive call without product_id
         }
 
@@ -262,7 +275,7 @@ class AIGenerator
             return false;
         }
 
-        $image_url = wp_get_attachment_image_url($featured_image_id, 'thumbnail');
+        $image_url = wp_get_attachment_image_url($featured_image_id, 'large');
         if (!$image_url) {
             return false;
         }
@@ -295,32 +308,42 @@ class AIGenerator
     private function call_openai_api($prompt, $product_id = null)
     {
         $api_url = 'https://api.openai.com/v1/chat/completions';
-        $model = 'gpt-4o'; // Use gpt-4o for both text and vision
-
+        $model = get_option('wpcmt_aisays_openai_model', 'gpt-4o');
+        $max_tokens = (int) get_option('wpcmt_aisays_max_tokens', 1500);
         // Check if we should use image analysis
         $use_image = $product_id && get_post_thumbnail_id($product_id);
-        $image_url = null;
+        $image_data = null;
 
         if ($use_image) {
-            $image_url = wp_get_attachment_image_url(get_post_thumbnail_id($product_id), 'full');
-            if (!$image_url) {
-                $use_image = false; // Fallback to text-only if image URL fails
+            // Reuse the Gemini image prep logic as it returns base64 which OpenAI also supports
+            // We just need to handle the array structure differently
+            $image_data = $this->prepare_gemini_image_data($product_id);
+
+            if (!$image_data) {
+                $use_image = false; // Fallback to text-only if image prep fails
+                // Remove the visual context placeholder from prompt to avoid confusion
+                $prompt = str_replace('{image_analysis}', '', $prompt);
 
                 if (Plugin::$debug && defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-                    error_log('Comet AI Says - OpenAI image URL preparation failed, falling back to text-only');
+                    error_log('Comet AI Says - OpenAI image preparation failed, falling back to text-only');
                 }
             }
         }
 
         // Build messages array
-        if ($use_image && $image_url) {
+        if ($use_image && $image_data) {
             $messages = [
                 [
                     'role' => 'user',
                     'content' => [
                         ['type' => 'text', 'text' => $prompt],
-                        ['type' => 'image_url', 'image_url' => ['url' => $image_url]],
+                        [
+                            'type' => 'image_url',
+                            'image_url' => [
+                                'url' => 'data:' . $image_data['mime_type'] . ';base64,' . $image_data['base64']
+                            ]
+                        ],
                     ],
                 ],
             ];
@@ -346,7 +369,7 @@ class AIGenerator
             'body' => json_encode([
                 'model' => $model,
                 'messages' => $messages,
-                'max_tokens' => 500,
+                'max_tokens' => $max_tokens,
                 'temperature' => 0.7,
             ]),
             'timeout' => 30,
@@ -376,6 +399,8 @@ class AIGenerator
                 error_log('Comet AI Says - OpenAI Vision API failed, falling back to text-only. Response: ' . print_r($body, true));
             }
 
+            // Remove the visual context placeholder from prompt to avoid confusion
+            $prompt = str_replace('{image_analysis}', '', $prompt);
             return $this->call_openai_api($prompt); // Recursive call without product_id
         }
 
@@ -391,6 +416,7 @@ class AIGenerator
     {
         // Fallback to the current recommended free model
         $api_url = 'https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent?key=' . $this->api_key;
+        $max_tokens = (int) get_option('wpcmt_aisays_max_tokens', 1500);
 
         $args = [
             'headers' => [
@@ -408,7 +434,7 @@ class AIGenerator
                 ],
                 'generationConfig' => [
                     'temperature' => 0.7,
-                    'maxOutputTokens' => 500,
+                    'maxOutputTokens' => $max_tokens,
                 ],
             ]),
             'timeout' => 30,
@@ -449,7 +475,7 @@ class AIGenerator
         return $product ? $instance->generate_description($product) : false;
     }
 
-    public function enerate_description_ajax()
+    public function generate_description_ajax()
     {
         // Security check
         if (!check_ajax_referer('wpcmt_aisays_nonce', 'nonce', false)) {
@@ -621,7 +647,7 @@ class AIGenerator
 
         if ($description) {
             update_post_meta($product_id, '_wpcmt_aisays_description', $description);
-            AdminInterface::track_usage('generation');
+
             $instance = self::get_instance();
             $model_name = $instance->get_current_model_name();
 

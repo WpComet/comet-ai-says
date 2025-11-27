@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv3.
 msgid ""
 msgstr ""
-"Project-Id-Version: Comet AI Says: Product Descriptions 1.1.3\n"
+"Project-Id-Version: Comet AI Says: Product Descriptions 1.1.5\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/comet-ai-says\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-11-27T14:59:37+00:00\n"
+"POT-Creation-Date: 2025-11-27T23:20:47+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: comet-ai-says\n"
@@ -40,7 +40,7 @@ msgid "https://wpcomet.com/"
 msgstr ""
 
 #: comet-ai-says.php:194
-#: includes/class-admin-interface.php:297
+#: includes/class-admin-interface.php:299
 msgid "Settings"
 msgstr ""
 
@@ -117,7 +117,7 @@ msgstr ""
 
 #. translators: product name
 #: includes/class-admin-interface.php:152
-#: includes/class-ai-generator.php:565
+#: includes/class-ai-generator.php:591
 msgid "AI description deleted for: %s"
 msgstr ""
 
@@ -131,7 +131,7 @@ msgid "Error deleting AI description for: %s"
 msgstr ""
 
 #: includes/class-admin-interface.php:163
-#: includes/class-admin-interface.php:1228
+#: includes/class-admin-interface.php:1235
 msgid "Show"
 msgstr ""
 
@@ -309,256 +309,266 @@ msgstr ""
 msgid "Failed to delete %s AI descriptions."
 msgstr ""
 
-#: includes/class-admin-interface.php:289
+#: includes/class-admin-interface.php:291
 msgid "Generating descriptions..."
 msgstr ""
 
-#: includes/class-admin-interface.php:301
+#: includes/class-admin-interface.php:303
 msgid "Product Descriptions"
 msgstr ""
 
-#: includes/class-admin-interface.php:383
-#: includes/class-ai-generator.php:472
-#: includes/class-ai-generator.php:556
+#: includes/class-admin-interface.php:385
+#: includes/class-ai-generator.php:498
+#: includes/class-ai-generator.php:582
 msgid "Product not found"
 msgstr ""
 
 #. translators: %s: Product name
-#: includes/class-admin-interface.php:398
+#: includes/class-admin-interface.php:400
 msgid "Generated for: %s"
 msgstr ""
 
 #. translators: %s: Product name
-#: includes/class-admin-interface.php:407
+#: includes/class-admin-interface.php:409
 msgid "Generation failed for: %s"
 msgstr ""
 
-#: includes/class-admin-interface.php:433
-msgid "🚀 Latest Models (Recommended)"
+#: includes/class-admin-interface.php:435
+msgid "🚀 Latest Stable Models (Recommended)"
 msgstr ""
 
-#: includes/class-admin-interface.php:441
-msgid "Free Models"
+#: includes/class-admin-interface.php:446
+msgid "✨ Latest Premium/Preview Models"
 msgstr ""
 
-#: includes/class-admin-interface.php:455
-msgid "Preview & Experimental Models"
-msgstr ""
-
-#: includes/class-admin-interface.php:465
-#: includes/class-admin-interface.php:1326
-msgid "Requests per minute"
-msgstr ""
-
-#: includes/class-admin-interface.php:466
-#: includes/class-admin-interface.php:1327
-msgid "Tokens per minute"
+#: includes/class-admin-interface.php:454
+msgid "🗑️ Legacy/Retired Models (Avoid)"
 msgstr ""
 
 #: includes/class-admin-interface.php:467
+#: includes/class-admin-interface.php:1475
+msgid "Requests per minute"
+msgstr ""
+
+#: includes/class-admin-interface.php:468
+#: includes/class-admin-interface.php:1476
+msgid "Tokens per minute"
+msgstr ""
+
+#: includes/class-admin-interface.php:469
 msgid "Requests per day"
 msgstr ""
 
-#: includes/class-admin-interface.php:471
+#: includes/class-admin-interface.php:473
 msgid "🚀 Recommendation:"
 msgstr ""
 
-#: includes/class-admin-interface.php:472
-msgid "Start with \"Gemini 3.0 Flash\" - latest model improved reasoning and performance."
+#: includes/class-admin-interface.php:474
+msgid "Start with \"Gemini 2.5 Flash\" for the best balance of speed, performance, and cost."
 msgstr ""
 
-#: includes/class-admin-interface.php:493
+#: includes/class-admin-interface.php:490
 msgid "Latest Models (Recommended)"
 msgstr ""
 
-#: includes/class-admin-interface.php:496
+#: includes/class-admin-interface.php:493
 msgid "Latest, Fastest, Most Capable"
 msgstr ""
 
-#: includes/class-admin-interface.php:500
+#: includes/class-admin-interface.php:497
 msgid "Fast, Cost-effective"
 msgstr ""
 
-#: includes/class-admin-interface.php:503
+#: includes/class-admin-interface.php:500
 msgid "GPT-4 Models"
 msgstr ""
 
-#: includes/class-admin-interface.php:509
+#: includes/class-admin-interface.php:506
 msgid "GPT-3.5 Models"
 msgstr ""
 
-#: includes/class-admin-interface.php:512
+#: includes/class-admin-interface.php:509
 msgid "Fast, Economical"
 msgstr ""
 
-#: includes/class-admin-interface.php:517
+#: includes/class-admin-interface.php:514
 msgid "GPT-4o recommended for most users."
 msgstr ""
 
-#: includes/class-admin-interface.php:518
+#: includes/class-admin-interface.php:515
 msgid "GPT-4o includes vision capabilities. GPT-3.5 is faster and cheaper but less capable."
 msgstr ""
 
-#: includes/class-admin-interface.php:531
+#: includes/class-admin-interface.php:528
 msgid "Display Mode"
 msgstr ""
 
-#: includes/class-admin-interface.php:536
+#: includes/class-admin-interface.php:533
 msgid "Automatic - Show immediately"
 msgstr ""
 
-#: includes/class-admin-interface.php:539
+#: includes/class-admin-interface.php:536
 msgid "Manual - Shortcode only"
 msgstr ""
 
-#: includes/class-admin-interface.php:543
+#: includes/class-admin-interface.php:540
 msgid "Choose how AI descriptions are displayed on product pages."
 msgstr ""
 
-#: includes/class-admin-interface.php:550
+#: includes/class-admin-interface.php:547
 msgid "Display Position"
 msgstr ""
 
-#: includes/class-admin-interface.php:555
+#: includes/class-admin-interface.php:552
 msgid "After short description"
 msgstr ""
 
-#: includes/class-admin-interface.php:558
+#: includes/class-admin-interface.php:555
 msgid "After product description"
 msgstr ""
 
-#: includes/class-admin-interface.php:561
+#: includes/class-admin-interface.php:558
 msgid "After product tabs"
 msgstr ""
 
-#: includes/class-admin-interface.php:564
+#: includes/class-admin-interface.php:561
 msgid "Bottom of product page"
 msgstr ""
 
-#: includes/class-admin-interface.php:568
+#: includes/class-admin-interface.php:565
 msgid "Choose where to display the AI description when using automatic mode."
 msgstr ""
 
-#: includes/class-admin-interface.php:575
+#: includes/class-admin-interface.php:572
 msgid "Shortcode"
 msgstr ""
 
-#: includes/class-admin-interface.php:581
+#: includes/class-admin-interface.php:578
 msgid "Use this shortcode to display the AI description anywhere on your site."
 msgstr ""
 
-#: includes/class-admin-interface.php:582
+#: includes/class-admin-interface.php:579
 msgid "Copy and paste it into any post, page, or product description."
 msgstr ""
 
-#: includes/class-admin-interface.php:597
+#: includes/class-admin-interface.php:594
 msgid "Description Language"
 msgstr ""
 
-#: includes/class-admin-interface.php:607
-#: includes/class-admin-interface.php:618
+#: includes/class-admin-interface.php:604
+#: includes/class-admin-interface.php:615
 #: includes/class-admin-interface.php:1648
 msgid "Custom Language"
 msgstr ""
 
-#: includes/class-admin-interface.php:611
+#: includes/class-admin-interface.php:608
 msgid "Select the language for generated product descriptions"
 msgstr ""
 
-#: includes/class-admin-interface.php:623
+#: includes/class-admin-interface.php:620
 msgid "e.g., Swedish, Thai, Greek, etc."
 msgstr ""
 
-#: includes/class-admin-interface.php:625
+#: includes/class-admin-interface.php:622
 msgid "Enter any language not listed above"
 msgstr ""
 
-#: includes/class-admin-interface.php:641
+#: includes/class-admin-interface.php:638
 msgid "Prompt Preview:"
 msgstr ""
 
-#: includes/class-admin-interface.php:643
+#: includes/class-admin-interface.php:640
 msgid "This shows exactly how your template will be processed with the current language selection."
 msgstr ""
 
-#: includes/class-admin-interface.php:652
+#: includes/class-admin-interface.php:649
 msgid "Customize the prompt template. Available variables:"
 msgstr ""
 
-#: includes/class-admin-interface.php:654
+#: includes/class-admin-interface.php:651
 msgid "Selected language instruction"
 msgstr ""
 
-#: includes/class-admin-interface.php:656
+#: includes/class-admin-interface.php:653
 msgid "Product name"
 msgstr ""
 
-#: includes/class-admin-interface.php:658
+#: includes/class-admin-interface.php:655
 msgid "Existing short description"
 msgstr ""
 
-#: includes/class-admin-interface.php:660
-#: includes/class-admin-interface.php:701
+#: includes/class-admin-interface.php:657
+#: includes/class-admin-interface.php:702
 msgid "Product categories"
 msgstr ""
 
-#: includes/class-admin-interface.php:662
+#: includes/class-admin-interface.php:659
+#: includes/class-admin-interface.php:705
+msgid "Product tags"
+msgstr ""
+
+#: includes/class-admin-interface.php:661
+#: includes/class-admin-interface.php:708
+msgid "Store context/niche"
+msgstr ""
+
+#: includes/class-admin-interface.php:663
 msgid "Product attributes/specifications"
 msgstr ""
 
-#: includes/class-admin-interface.php:664
+#: includes/class-admin-interface.php:665
 msgid "Featured image analysis and context"
 msgstr ""
 
-#: includes/class-admin-interface.php:667
+#: includes/class-admin-interface.php:668
 msgid "Reset to Default"
 msgstr ""
 
-#: includes/class-admin-interface.php:670
+#: includes/class-admin-interface.php:671
 msgid "You can write-in additional rules like:"
 msgstr ""
 
-#: includes/class-admin-interface.php:672
+#: includes/class-admin-interface.php:673
 msgid "Do NOT use markdown formatting, asterisks, or special characters"
 msgstr ""
 
-#: includes/class-admin-interface.php:674
+#: includes/class-admin-interface.php:675
 msgid "Write in a continuous paragraph format without section headers"
 msgstr ""
 
-#: includes/class-admin-interface.php:686
+#: includes/class-admin-interface.php:687
 msgid "Prompt Template Guide"
 msgstr ""
 
-#: includes/class-admin-interface.php:688
+#: includes/class-admin-interface.php:689
 msgid "Available Variables:"
 msgstr ""
 
-#: includes/class-admin-interface.php:692
+#: includes/class-admin-interface.php:693
 msgid "The selected language instruction"
 msgstr ""
 
-#: includes/class-admin-interface.php:695
+#: includes/class-admin-interface.php:696
 msgid "Product name/title"
 msgstr ""
 
-#: includes/class-admin-interface.php:698
+#: includes/class-admin-interface.php:699
 msgid "Existing product short description"
 msgstr ""
 
-#: includes/class-admin-interface.php:704
+#: includes/class-admin-interface.php:711
 msgid "Product attributes and specifications"
 msgstr ""
 
-#: includes/class-admin-interface.php:707
+#: includes/class-admin-interface.php:714
 msgid "Featured image analysis and visual context"
 msgstr ""
 
-#: includes/class-admin-interface.php:710
+#: includes/class-admin-interface.php:717
 msgid "Example Custom Templates:"
 msgstr ""
 
-#: includes/class-admin-interface.php:712
+#: includes/class-admin-interface.php:719
 msgid ""
 "Write a creative product description in {language} for {product_name}.\n"
 "\n"
@@ -569,7 +579,7 @@ msgid ""
 "Create an engaging, SEO-friendly description that highlights unique selling points."
 msgstr ""
 
-#: includes/class-admin-interface.php:720
+#: includes/class-admin-interface.php:727
 msgid ""
 "Create a professional e-commerce product description in {language}.\n"
 "\n"
@@ -581,455 +591,435 @@ msgid ""
 "Write a compelling description that converts visitors into buyers."
 msgstr ""
 
-#: includes/class-admin-interface.php:739
+#: includes/class-admin-interface.php:746
 msgid "Setup Instructions"
 msgstr ""
 
-#: includes/class-admin-interface.php:741
+#: includes/class-admin-interface.php:748
 msgid "For Gemini (Recommended - Free):"
-msgstr ""
-
-#: includes/class-admin-interface.php:744
-#: includes/class-admin-interface.php:763
-msgid "Go to"
-msgstr ""
-
-#: includes/class-admin-interface.php:747
-msgid "Sign in with your Google account"
-msgstr ""
-
-#: includes/class-admin-interface.php:749
-msgid "Click \"Create API Key\""
 msgstr ""
 
 #: includes/class-admin-interface.php:751
 #: includes/class-admin-interface.php:770
+msgid "Go to"
+msgstr ""
+
+#: includes/class-admin-interface.php:754
+msgid "Sign in with your Google account"
+msgstr ""
+
+#: includes/class-admin-interface.php:756
+msgid "Click \"Create API Key\""
+msgstr ""
+
+#: includes/class-admin-interface.php:758
+#: includes/class-admin-interface.php:777
 msgid "Copy the API key and paste it above"
 msgstr ""
 
-#: includes/class-admin-interface.php:753
+#: includes/class-admin-interface.php:760
 #: includes/class-admin-interface.php:1516
 msgid "Recommended:"
 msgstr ""
 
-#: includes/class-admin-interface.php:754
+#: includes/class-admin-interface.php:761
 msgid "Start with \"Gemini 2.0 Flash\" - it's completely free with high limits"
 msgstr ""
 
-#: includes/class-admin-interface.php:756
+#: includes/class-admin-interface.php:763
 msgid "Gemini offers free usage with generous limits"
 msgstr ""
 
-#: includes/class-admin-interface.php:760
+#: includes/class-admin-interface.php:767
 msgid "For OpenAI (Limited - Paid):"
 msgstr ""
 
-#: includes/class-admin-interface.php:766
+#: includes/class-admin-interface.php:773
 msgid "Create an account and set up billing"
 msgstr ""
 
-#: includes/class-admin-interface.php:768
+#: includes/class-admin-interface.php:775
 msgid "Create an API key"
 msgstr ""
 
-#: includes/class-admin-interface.php:784
+#: includes/class-admin-interface.php:791
 msgid "Support"
 msgstr ""
 
-#: includes/class-admin-interface.php:786
+#: includes/class-admin-interface.php:793
 msgid "For more information, please visit our"
 msgstr ""
 
-#: includes/class-admin-interface.php:789
+#: includes/class-admin-interface.php:796
 msgid "If you have any questions or need help, please visit our"
 msgstr ""
 
-#: includes/class-admin-interface.php:909
+#: includes/class-admin-interface.php:916
 #: includes/class-admin-interface.php:1867
-#: includes/class-ai-generator.php:460
-#: includes/class-ai-generator.php:493
-#: includes/class-ai-generator.php:517
+#: includes/class-ai-generator.php:486
+#: includes/class-ai-generator.php:519
 #: includes/class-ai-generator.php:543
+#: includes/class-ai-generator.php:569
 msgid "Security check failed"
 msgstr ""
 
-#: includes/class-admin-interface.php:954
+#: includes/class-admin-interface.php:961
 msgid "Usage Stats"
 msgstr ""
 
-#: includes/class-admin-interface.php:961
+#: includes/class-admin-interface.php:968
 msgid "Limit Type"
 msgstr ""
 
-#: includes/class-admin-interface.php:963
+#: includes/class-admin-interface.php:970
 msgid "Used"
 msgstr ""
 
-#: includes/class-admin-interface.php:965
+#: includes/class-admin-interface.php:972
 msgid "Limit"
 msgstr ""
 
-#: includes/class-admin-interface.php:967
+#: includes/class-admin-interface.php:974
 msgid "Progress"
 msgstr ""
 
-#: includes/class-admin-interface.php:973
+#: includes/class-admin-interface.php:980
 msgid "Requests/Minute"
 msgstr ""
 
-#: includes/class-admin-interface.php:973
-#: includes/class-admin-interface.php:974
+#: includes/class-admin-interface.php:980
+#: includes/class-admin-interface.php:981
 msgid "Resets every 60s"
 msgstr ""
 
-#: includes/class-admin-interface.php:974
+#: includes/class-admin-interface.php:981
 msgid "Tokens/Minute"
 msgstr ""
 
-#: includes/class-admin-interface.php:975
+#: includes/class-admin-interface.php:982
 msgid "Requests/Day"
 msgstr ""
 
-#: includes/class-admin-interface.php:975
+#: includes/class-admin-interface.php:982
 msgid "Resets every 24h"
 msgstr ""
 
-#: includes/class-admin-interface.php:1001
+#: includes/class-admin-interface.php:1008
 msgid "API Usage Statistics"
 msgstr ""
 
-#: includes/class-admin-interface.php:1004
+#: includes/class-admin-interface.php:1011
 msgid "Current Model:"
 msgstr ""
 
-#: includes/class-admin-interface.php:1006
+#: includes/class-admin-interface.php:1013
 msgid "Minute limits reset every 60 seconds. Daily limits reset every 24 hours."
 msgstr ""
 
-#: includes/class-admin-interface.php:1007
+#: includes/class-admin-interface.php:1014
 msgid "For real-time tracking, check your provider dashboard."
 msgstr ""
 
-#: includes/class-admin-interface.php:1010
+#: includes/class-admin-interface.php:1017
 msgid "Total Generations:"
 msgstr ""
 
-#: includes/class-admin-interface.php:1012
+#: includes/class-admin-interface.php:1019
 msgid "Provider Dashboard:"
 msgstr ""
 
-#: includes/class-admin-interface.php:1015
+#: includes/class-admin-interface.php:1022
 msgid "Google AI Studio"
 msgstr ""
 
-#: includes/class-admin-interface.php:1018
+#: includes/class-admin-interface.php:1025
 msgid "OpenAI Platform"
 msgstr ""
 
-#: includes/class-admin-interface.php:1022
+#: includes/class-admin-interface.php:1029
 msgid "Note:"
 msgstr ""
 
-#: includes/class-admin-interface.php:1023
+#: includes/class-admin-interface.php:1030
 msgid "Token usage is estimated. Actual usage may vary."
 msgstr ""
 
-#: includes/class-admin-interface.php:1024
+#: includes/class-admin-interface.php:1031
 msgid "Current minute:"
 msgstr ""
 
-#: includes/class-admin-interface.php:1027
+#: includes/class-admin-interface.php:1034
 msgid "Last updated:"
 msgstr ""
 
-#: includes/class-admin-interface.php:1102
+#: includes/class-admin-interface.php:1109
 msgid "AI Product Descriptions Settings"
 msgstr ""
 
-#: includes/class-admin-interface.php:1103
+#: includes/class-admin-interface.php:1110
 msgid "AI Says Descriptions"
 msgstr ""
 
-#: includes/class-admin-interface.php:1111
+#: includes/class-admin-interface.php:1118
 msgid "AI Product Descriptions"
 msgstr ""
 
-#: includes/class-admin-interface.php:1112
+#: includes/class-admin-interface.php:1119
 msgid "AI Says Product Descriptions"
 msgstr ""
 
-#: includes/class-admin-interface.php:1156
+#: includes/class-admin-interface.php:1163
 msgid "Settings restored to defaults!"
 msgstr ""
 
-#: includes/class-admin-interface.php:1200
+#: includes/class-admin-interface.php:1207
 msgid "AI Provider"
 msgstr ""
 
-#: includes/class-admin-interface.php:1205
+#: includes/class-admin-interface.php:1212
 msgid "Google Gemini (Recommended - Free tier available)"
 msgstr ""
 
-#: includes/class-admin-interface.php:1208
+#: includes/class-admin-interface.php:1215
 msgid "OpenAI GPT (Paid)"
 msgstr ""
 
-#: includes/class-admin-interface.php:1212
+#: includes/class-admin-interface.php:1219
 msgid "Choose which AI provider to use for generating descriptions"
 msgstr ""
 
-#: includes/class-admin-interface.php:1220
+#: includes/class-admin-interface.php:1227
 msgid "Gemini API Key"
 msgstr ""
 
-#: includes/class-admin-interface.php:1231
+#: includes/class-admin-interface.php:1238
 msgid "Get your free API key from"
 msgstr ""
 
-#: includes/class-admin-interface.php:1240
+#: includes/class-admin-interface.php:1247
 msgid "OpenAI API Key"
 msgstr ""
 
-#: includes/class-admin-interface.php:1247
+#: includes/class-admin-interface.php:1254
 msgid "Get your API key from"
 msgstr ""
 
-#: includes/class-admin-interface.php:1256
+#: includes/class-admin-interface.php:1262
 msgid "Gemini Model"
 msgstr ""
 
-#: includes/class-admin-interface.php:1262
-msgid "Gemini API Rate Limits & Pricing (Updated 2025-11-20)"
-msgstr ""
-
-#: includes/class-admin-interface.php:1266
-msgid "Free Tier (No billing account required):"
-msgstr ""
-
-#: includes/class-admin-interface.php:1278
-msgid "Paid Tier Limits (With billing account):"
-msgstr ""
-
-#: includes/class-admin-interface.php:1290
-msgid "Key Context Windows:"
-msgstr ""
-
-#: includes/class-admin-interface.php:1302
-msgid "Pricing (Per 1M Characters):"
-msgstr ""
-
-#: includes/class-admin-interface.php:1314
-msgid "Important Notes:"
-msgstr ""
-
-#: includes/class-admin-interface.php:1316
-msgid "Free tier quotas reset daily at midnight Pacific Time"
-msgstr ""
-
-#: includes/class-admin-interface.php:1318
-msgid "Rate limits are per-project, not per-API-key"
-msgstr ""
-
-#: includes/class-admin-interface.php:1319
-msgid "Thinking tokens count toward your TPM limit"
-msgstr ""
-
-#: includes/class-admin-interface.php:1320
-msgid "Characters ≈ 4 tokens for estimation purposes"
-msgstr ""
-
-#: includes/class-admin-interface.php:1321
-msgid "Paid tiers auto-scale based on usage patterns"
-msgstr ""
-
-#: includes/class-admin-interface.php:1322
-msgid "Gemini 3.0 models offer improved performance and reasoning"
-msgstr ""
-
-#: includes/class-admin-interface.php:1328
-msgid "Official documentation:"
-msgstr ""
-
-#: includes/class-admin-interface.php:1330
-msgid "Rate limits"
-msgstr ""
-
-#: includes/class-admin-interface.php:1332
-msgid "Pricing"
-msgstr ""
-
-#: includes/class-admin-interface.php:1338
+#: includes/class-admin-interface.php:1268
 msgid "Gemini Model Comparison Guide"
 msgstr ""
 
-#: includes/class-admin-interface.php:1346
+#: includes/class-admin-interface.php:1276
 msgid "Model"
 msgstr ""
 
-#: includes/class-admin-interface.php:1349
+#: includes/class-admin-interface.php:1279
 msgid "Speed"
 msgstr ""
 
-#: includes/class-admin-interface.php:1352
-msgid "Quality"
+#: includes/class-admin-interface.php:1282
+msgid "Quality/Reasoning"
 msgstr ""
 
-#: includes/class-admin-interface.php:1355
+#: includes/class-admin-interface.php:1285
 msgid "Free Limits"
 msgstr ""
 
-#: includes/class-admin-interface.php:1358
+#: includes/class-admin-interface.php:1288
 msgid "Cost Efficiency"
 msgstr ""
 
-#: includes/class-admin-interface.php:1361
+#: includes/class-admin-interface.php:1291
 msgid "Best For"
 msgstr ""
 
-#: includes/class-admin-interface.php:1368
-msgid "3.0 Flash"
+#: includes/class-admin-interface.php:1298
+msgid "Experimental"
 msgstr ""
 
+#: includes/class-admin-interface.php:1305
+msgid "Best overall for high-volume tasks"
+msgstr ""
+
+#: includes/class-admin-interface.php:1310
+msgid "3.0 Pro Preview"
+msgstr ""
+
+#: includes/class-admin-interface.php:1317
+msgid "Complex reasoning & detailed analysis"
+msgstr ""
+
+#: includes/class-admin-interface.php:1322
 #: includes/class-admin-interface.php:1375
-msgid "Best overall for product descriptions"
+msgid "Recommended"
 msgstr ""
 
-#: includes/class-admin-interface.php:1380
-msgid "2.0 Flash"
+#: includes/class-admin-interface.php:1329
+msgid "Stable, reliable high-throughput alternative"
 msgstr ""
 
-#: includes/class-admin-interface.php:1387
-msgid "Excellent alternative to 3.0 Flash"
+#: includes/class-admin-interface.php:1334
+msgid "1.5/2.0 Models"
 msgstr ""
 
-#: includes/class-admin-interface.php:1392
-msgid "3.0 Flash Thinking"
+#: includes/class-admin-interface.php:1341
+msgid "Retired/Legacy. Use 2.5 or 3.0."
 msgstr ""
 
-#: includes/class-admin-interface.php:1399
-msgid "Complex reasoning & analysis"
+#: includes/class-admin-interface.php:1350
+msgid "Gemini 3.0 Flash (Fairly new, experimental)"
 msgstr ""
 
-#: includes/class-admin-interface.php:1404
-msgid "1.5 Flash"
+#: includes/class-admin-interface.php:1352
+msgid "Latest generation with improved performance and core reasoning"
 msgstr ""
 
-#: includes/class-admin-interface.php:1411
-msgid "Fast, economical choice"
-msgstr ""
-
-#: includes/class-admin-interface.php:1416
-msgid "1.5 Pro"
-msgstr ""
-
-#: includes/class-admin-interface.php:1423
-msgid "High-quality complex analysis"
-msgstr ""
-
-#: includes/class-admin-interface.php:1428
-msgid "1.0 Pro"
-msgstr ""
-
-#: includes/class-admin-interface.php:1435
-msgid "Legacy applications"
-msgstr ""
-
-#: includes/class-admin-interface.php:1444
-msgid "Gemini 3.0 Flash (Recommended Default)"
-msgstr ""
-
-#: includes/class-admin-interface.php:1446
-msgid "Latest generation with improved performance"
-msgstr ""
-
-#: includes/class-admin-interface.php:1447
-#: includes/class-admin-interface.php:1466
+#: includes/class-admin-interface.php:1354
+#: includes/class-admin-interface.php:1379
 msgid "Free tier: 15 RPM, 1M TPM"
 msgstr ""
 
-#: includes/class-admin-interface.php:1448
-#: includes/class-admin-interface.php:1467
-msgid "1M token context window"
+#: includes/class-admin-interface.php:1355
+msgid "1M token context window (suitable for large inputs)"
 msgstr ""
 
-#: includes/class-admin-interface.php:1449
-msgid "Cost: $0.075/1M input, $0.30/1M output"
+#: includes/class-admin-interface.php:1357
+msgid "Cost: $0.075/1M input tokens, $0.30/1M output tokens"
 msgstr ""
 
-#: includes/class-admin-interface.php:1450
-msgid "Use case: Most product descriptions"
+#: includes/class-admin-interface.php:1359
+msgid "Use case: Most product descriptions, chat, and summarization"
 msgstr ""
 
-#: includes/class-admin-interface.php:1454
-msgid "Gemini 3.0 Flash Thinking (Advanced Reasoning)"
+#: includes/class-admin-interface.php:1364
+msgid "Max Reasoning"
 msgstr ""
 
-#: includes/class-admin-interface.php:1456
-msgid "Enhanced reasoning capabilities"
+#: includes/class-admin-interface.php:1366
+msgid "The most capable model for complex, nuanced tasks"
 msgstr ""
 
-#: includes/class-admin-interface.php:1457
-msgid "Free tier: 2 RPM, 30K TPM"
+#: includes/class-admin-interface.php:1368
+msgid "Free tier: 2 RPM, 30K TPM (Very slow for high volume)"
 msgstr ""
 
-#: includes/class-admin-interface.php:1458
+#: includes/class-admin-interface.php:1370
 msgid "128K token context window"
 msgstr ""
 
-#: includes/class-admin-interface.php:1459
-msgid "Use case: Technical products, detailed analysis"
+#: includes/class-admin-interface.php:1371
+msgid "Use case: Technical products, detailed analysis, coding help"
 msgstr ""
 
-#: includes/class-admin-interface.php:1463
-msgid "Gemini 2.0 Flash (Proven & Reliable)"
+#: includes/class-admin-interface.php:1377
+msgid "Excellent performance with established stability and reliability"
 msgstr ""
 
-#: includes/class-admin-interface.php:1465
-msgid "Excellent performance with proven reliability"
+#: includes/class-admin-interface.php:1380
+msgid "1M token context window"
 msgstr ""
 
-#: includes/class-admin-interface.php:1468
-msgid "Use case: Reliable alternative to 3.0 models"
+#: includes/class-admin-interface.php:1381
+msgid "Use case: Reliable alternative, high-volume classification/extraction"
 msgstr ""
 
-#: includes/class-admin-interface.php:1471
+#: includes/class-admin-interface.php:1385
 msgid "Recommendations:"
 msgstr ""
 
-#: includes/class-admin-interface.php:1473
-msgid "For new users:"
+#: includes/class-admin-interface.php:1387
+msgid "For new users (Recommended):"
 msgstr ""
 
-#: includes/class-admin-interface.php:1474
+#: includes/class-admin-interface.php:1388
 msgid "Start with Gemini 3.0 Flash"
 msgstr ""
 
-#: includes/class-admin-interface.php:1475
-msgid "For complex products:"
+#: includes/class-admin-interface.php:1389
+msgid "For complex products/coding:"
 msgstr ""
 
-#: includes/class-admin-interface.php:1476
-msgid "Use Gemini 3.0 Flash Thinking"
+#: includes/class-admin-interface.php:1390
+msgid "Use Gemini 3.0 Pro Preview or 2.5 Pro"
+msgstr ""
+
+#: includes/class-admin-interface.php:1391
+msgid "For maximum speed/volume:"
+msgstr ""
+
+#: includes/class-admin-interface.php:1392
+msgid "Use Gemini 2.5 Flash-Lite (Highest RPM)"
+msgstr ""
+
+#: includes/class-admin-interface.php:1393
+msgid "Avoid all 1.5 models, and prefer 3.0/2.5 over 2.0/1.0"
+msgstr ""
+
+#: includes/class-admin-interface.php:1397
+msgid "Note: The newer 3.0 and 2.5 models offer better quality and multimodal support (text, image, audio, video) compared to older generations."
+msgstr ""
+
+#: includes/class-admin-interface.php:1402
+msgid "Gemini API Rate Limits & Pricing (Updated 2025-11)"
+msgstr ""
+
+#: includes/class-admin-interface.php:1406
+msgid "Free Tier (No billing account required):"
+msgstr ""
+
+#: includes/class-admin-interface.php:1420
+msgid "Paid Tier Limits (With billing account):"
+msgstr ""
+
+#: includes/class-admin-interface.php:1434
+msgid "Key Context Windows:"
+msgstr ""
+
+#: includes/class-admin-interface.php:1448
+msgid "Pricing (Per 1M Tokens):"
+msgstr ""
+
+#: includes/class-admin-interface.php:1462
+msgid "Important Notes:"
+msgstr ""
+
+#: includes/class-admin-interface.php:1464
+msgid "Free tier quotas reset daily at midnight Pacific Time"
+msgstr ""
+
+#: includes/class-admin-interface.php:1466
+msgid "Rate limits are per-project, not per-API-key"
+msgstr ""
+
+#: includes/class-admin-interface.php:1467
+msgid "Characters ≈ 4 tokens for estimation purposes"
+msgstr ""
+
+#: includes/class-admin-interface.php:1468
+msgid "Gemini 1.5 models are officially retired and should no longer be used."
+msgstr ""
+
+#: includes/class-admin-interface.php:1470
+msgid "Paid tiers auto-scale based on usage patterns"
+msgstr ""
+
+#: includes/class-admin-interface.php:1471
+msgid "Gemini 3.0 models offer improved performance and reasoning"
 msgstr ""
 
 #: includes/class-admin-interface.php:1477
-msgid "For maximum speed:"
-msgstr ""
-
-#: includes/class-admin-interface.php:1478
-msgid "Use Gemini 2.0 Flash"
+msgid "Official documentation:"
 msgstr ""
 
 #: includes/class-admin-interface.php:1479
-msgid "On a tight budget:"
+msgid "Rate limits"
 msgstr ""
 
-#: includes/class-admin-interface.php:1480
-msgid "Gemini 1.0 Pro has highest free limits"
-msgstr ""
-
-#: includes/class-admin-interface.php:1483
-msgid "Note: Gemini 3.0 models offer the latest improvements in reasoning and performance. All models support text and image inputs."
+#: includes/class-admin-interface.php:1481
+msgid "Pricing"
 msgstr ""
 
 #: includes/class-admin-interface.php:1492
@@ -1189,78 +1179,82 @@ msgstr ""
 msgid "Invalid product IDs"
 msgstr ""
 
-#: includes/class-ai-generator.php:88
+#: includes/class-ai-generator.php:91
 msgid "No short description provided"
 msgstr ""
 
-#: includes/class-ai-generator.php:89
+#: includes/class-ai-generator.php:92
 msgid "No categories"
 msgstr ""
 
-#: includes/class-ai-generator.php:90
+#: includes/class-ai-generator.php:93
+msgid "No tags"
+msgstr ""
+
+#: includes/class-ai-generator.php:95
 msgid "No specifications provided"
 msgstr ""
 
-#: includes/class-ai-generator.php:91
+#: includes/class-ai-generator.php:96
 msgid "No image analysis available"
 msgstr ""
 
-#: includes/class-ai-generator.php:117
+#: includes/class-ai-generator.php:127
 msgid "No featured image available for analysis."
 msgstr ""
 
-#: includes/class-ai-generator.php:123
+#: includes/class-ai-generator.php:133
 msgid "Featured image could not be processed."
 msgstr ""
 
 #. translators: %s is the image alt text
-#: includes/class-ai-generator.php:133
+#: includes/class-ai-generator.php:143
 msgid "Image alt text: \"%s\". "
 msgstr ""
 
 #. translators: %s is the image caption
-#: includes/class-ai-generator.php:137
+#: includes/class-ai-generator.php:147
 msgid "Image caption: \"%s\". "
 msgstr ""
 
-#: includes/class-ai-generator.php:140
+#: includes/class-ai-generator.php:150
 msgid "The product has a featured image that shows the actual product. Use visual cues from the image to enhance the description."
 msgstr ""
 
-#: includes/class-ai-generator.php:465
-#: includes/class-ai-generator.php:522
+#: includes/class-ai-generator.php:491
 #: includes/class-ai-generator.php:548
+#: includes/class-ai-generator.php:574
 msgid "Product ID is required"
 msgstr ""
 
-#: includes/class-ai-generator.php:481
+#: includes/class-ai-generator.php:507
 msgid "Failed to generate description. Check your API key and provider settings."
 msgstr ""
 
-#: includes/class-ai-generator.php:498
+#: includes/class-ai-generator.php:524
 msgid "Missing required fields"
 msgstr ""
 
-#: includes/class-ai-generator.php:506
+#: includes/class-ai-generator.php:532
 msgid "Description saved"
 msgstr ""
 
-#: includes/class-ai-generator.php:531
+#: includes/class-ai-generator.php:557
 msgid "No AI description found"
 msgstr ""
 
 #. translators: product name
-#: includes/class-ai-generator.php:569
+#: includes/class-ai-generator.php:595
 msgid "Failed to delete AI description for: %s"
 msgstr ""
 
 #. translators: product name, model name
-#: includes/class-ai-generator.php:633
+#: includes/class-ai-generator.php:659
 msgid "AI description generated and saved for: %1$s via: %2$s"
 msgstr ""
 
 #. translators: product name
-#: includes/class-ai-generator.php:637
+#: includes/class-ai-generator.php:663
 msgid "Failed to generate description for: %s. Check your API key and provider settings."
 msgstr ""
 

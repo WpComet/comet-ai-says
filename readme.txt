@@ -4,7 +4,7 @@ Tags: woocommerce, ai, product descriptions, gpt, custom fields
 Requires at least: 5.8  
 Tested up to: 6.8
 Requires PHP: 7.4  
-Stable tag: 1.1.3
+Stable tag: 1.1.5
 License: GPLv3  
 License URI: https://www.gnu.org/licenses/gpl-3.0.html  
 
@@ -45,6 +45,11 @@ Comet AI Says is a lightweight, privacy-conscious WordPress plugin that generate
 8. Plugin settings panel with API configuration and model selection.
 
 == Changelog ==
+= 1.1.5 =
+- Simplified and solidified Gemini 3.0 models for mid-long term
+- Small update to prompt method for more contextual and accurate descriptions
+- Minor bug fixes
+
 = 1.1.3 =
 - Added proper Gemini 3.0 models w/ necessary adjustments 
 - Up to date information on models comparison

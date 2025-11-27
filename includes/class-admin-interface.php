@@ -260,6 +260,8 @@ for: {product_name}
 Existing information: {short_description}
 
 Categories: {categories}
+Tags: {tags}
+Store Context: {store_context}
 
 Product specifications:
 {attributes}
@@ -369,7 +371,7 @@ Visual context: {image_analysis}
 		$increase = 100000; // 0.1 seconds
 
 		foreach ($product_ids as $i => $product_id) {
-			if ($index > 0) {
+			if ($i > 0) {
 				usleep($delay_between + $i * $increase); // Increasing delay
 			}
 
@@ -397,7 +399,7 @@ Visual context: {image_analysis}
 						// translators: %s: Product name
 						'message' => sprintf(__('Generated for: %s', 'comet-ai-says'), $product->get_name()),
 					];
-					self::track_usage('generation');
+
 				} else {
 					$results['errors']++;
 					$results['details'][] = [
@@ -430,34 +432,34 @@ Visual context: {image_analysis}
 		?>
 		<div style="display:flex">
 			<select id="wpcmt_aisays_gemini_model" name="wpcmt_aisays_gemini_model">
-				<optgroup label="<?php esc_attr_e('🚀 Latest Models (Recommended)', 'comet-ai-says'); ?>">
+				<optgroup label="<?php esc_attr_e('🚀 Latest Stable Models (Recommended)', 'comet-ai-says'); ?>">
 					<option value="gemini-3.0-flash" <?php selected($current_gemini_model, 'gemini-3.0-flash'); ?>>
-						Gemini 3.0 Flash (Free – 15 RPM, 1M TPM)
+						Gemini 3.0 Flash (Fast & Free – 15 RPM, 1M TPM)
 					</option>
-					<option value="gemini-3.0-flash-thinking" <?php selected($current_gemini_model, 'gemini-3.0-flash-thinking'); ?>>
-						Gemini 3.0 Flash Thinking (Free – 2 RPM, 30K TPM)
+					<option value="gemini-2.5-flash" <?php selected($current_gemini_model, 'gemini-2.5-flash'); ?>>
+						Gemini 2.5 Flash (Stable & Free – 15 RPM, 1M TPM)
 					</option>
-				</optgroup>
-				<optgroup label="<?php esc_attr_e('Free Models', 'comet-ai-says'); ?>">
-					<option value="gemini-2.0-flash" <?php selected($current_gemini_model, 'gemini-2.0-flash'); ?>>
-						Gemini 2.0 Flash (Free – 15 RPM, 1M TPM)
-					</option>
-					<option value="gemini-2.0-flash-lite" <?php selected($current_gemini_model, 'gemini-2.0-flash-lite'); ?>>
-						Gemini 2.0 Flash-Lite (Free – 30 RPM, 1M TPM)
-					</option>
-					<option value="gemini-1.5-flash" <?php selected($current_gemini_model, 'gemini-1.5-flash'); ?>>
-						Gemini 1.5 Flash (Free – 15 RPM, 1M TPM)
-					</option>
-					<option value="gemini-1.5-pro" <?php selected($current_gemini_model, 'gemini-1.5-pro'); ?>>
-						Gemini 1.5 Pro (Free – 2 RPM, 32K TPM)
+					<option value="gemini-2.5-flash-lite" <?php selected($current_gemini_model, 'gemini-2.5-flash-lite'); ?>>
+						Gemini 2.5 Flash-Lite (Highest Volume/Cost-Efficient – 30 RPM, 1M TPM)
 					</option>
 				</optgroup>
-				<optgroup label="<?php esc_attr_e('Preview & Experimental Models', 'comet-ai-says'); ?>">
-					<option value="gemini-2.5-flash-preview-04-17" <?php selected($current_gemini_model, 'gemini-2.5-flash-preview-04-17'); ?>>
-						Gemini 2.5 Flash Preview (Limited Free)
+				<optgroup label="<?php esc_attr_e('✨ Latest Premium/Preview Models', 'comet-ai-says'); ?>">
+					<option value="gemini-3.0-pro-preview" <?php selected($current_gemini_model, 'gemini-3.0-pro-preview'); ?>>
+						Gemini 3.0 Pro Preview (Max Reasoning – 2 RPM, 30K TPM)
 					</option>
-					<option value="gemini-2.5-pro-preview-05-06" <?php selected($current_gemini_model, 'gemini-2.5-pro-preview-05-06'); ?>>
-						Gemini 2.5 Pro Preview (Limited Free)
+					<option value="gemini-2.5-pro" <?php selected($current_gemini_model, 'gemini-2.5-pro'); ?>>
+						Gemini 2.5 Pro (Powerful Reasoning – 2 RPM, 32K TPM)
+					</option>
+				</optgroup>
+				<optgroup label="<?php esc_attr_e('🗑️ Legacy/Retired Models (Avoid)', 'comet-ai-says'); ?>">
+					<option value="gemini-2.0-flash-001" <?php selected($current_gemini_model, 'gemini-2.0-flash-001'); ?>>
+						Gemini 2.0 Flash (Legacy – Will Retire)
+					</option>
+					<option value="gemini-1.5-pro-retired" disabled>
+						Gemini 1.5 Pro (Retired/Deprecated)
+					</option>
+					<option value="gemini-1.5-flash-retired" disabled>
+						Gemini 1.5 Flash (Retired/Deprecated)
 					</option>
 				</optgroup>
 			</select>
@@ -469,20 +471,15 @@ Visual context: {image_analysis}
 		</div>
 		<p class="description">
 			<strong><?php esc_html_e('🚀 Recommendation:', 'comet-ai-says'); ?></strong>
-			<?php esc_html_e('Start with "Gemini 3.0 Flash" - latest model improved reasoning and performance.', 'comet-ai-says'); ?>
+			<?php esc_html_e('Start with "Gemini 2.5 Flash" for the best balance of speed, performance, and cost.', 'comet-ai-says'); ?>
 			<hr>
-			Free models recommended for most users, preview models have limited free usage during testing.
+			**Flash** models are built for low-latency, high-volume tasks. **Pro** models are built for maximum reasoning and
+			complex analysis (and are much slower/more expensive).
 			<hr>
-			Consider:<br>
-			Gemini 2.0 Flash - Slightly faster but slightly less refined than 3.0 | Gemini 1.5 Flash - Budget option
-			<hr>
-			Avoid:<br>
-			Gemini 3.0 Flash Thinking - Too slow (2 RPM), overkill | Gemini 1.5 Pro - Very slow (2 RPM), better for complex
-			analysis
+			*Gemini 1.5 models are retired and will return errors if used.*
 		</p>
 		<?php
 	}
-
 	/**
 	 * Render OpenAI model select.
 	 */
@@ -658,6 +655,10 @@ Visual context: {image_analysis}
 			<?php esc_html_e('Existing short description', 'comet-ai-says'); ?><br>
 			<code>{categories}</code> -
 			<?php esc_html_e('Product categories', 'comet-ai-says'); ?><br>
+			<code>{tags}</code> -
+			<?php esc_html_e('Product tags', 'comet-ai-says'); ?><br>
+			<code>{store_context}</code> -
+			<?php esc_html_e('Store context/niche', 'comet-ai-says'); ?><br>
 			<code>{attributes}</code> -
 			<?php esc_html_e('Product attributes/specifications', 'comet-ai-says'); ?><br>
 			<code>{image_analysis}</code> -
@@ -699,6 +700,12 @@ Visual context: {image_analysis}
 				</li>
 				<li><code>{categories}</code> -
 					<?php esc_html_e('Product categories', 'comet-ai-says'); ?>
+				</li>
+				<li><code>{tags}</code> -
+					<?php esc_html_e('Product tags', 'comet-ai-says'); ?>
+				</li>
+				<li><code>{store_context}</code> -
+					<?php esc_html_e('Store context/niche', 'comet-ai-says'); ?>
 				</li>
 				<li><code>{attributes}</code> -
 					<?php esc_html_e('Product attributes and specifications', 'comet-ai-says'); ?>
@@ -1180,7 +1187,7 @@ Write a compelling description that converts visitors into buyers.', 'comet-ai-s
 		$current_provider = get_option('wpcmt_aisays_provider', 'gemini');
 		$current_language = get_option('wpcmt_aisays_language', 'english');
 		$custom_language = get_option('wpcmt_aisays_custom_language', '');
-		$current_gemini_model = get_option('wpcmt_aisays_gemini_model', 'gemini-2.0-flash');
+		$current_gemini_model = get_option('wpcmt_aisays_gemini_model', 'gemini-2.5-flash');
 		$current_openai_model = get_option('wpcmt_aisays_openai_model', 'gpt-4o');
 		$current_prompt_template = get_option('wpcmt_aisays_prompt_template', $this->get_default_prompt_template());
 		$current_display_mode = get_option('wpcmt_aisays_display_mode', 'automatic');
@@ -1250,89 +1257,12 @@ Write a compelling description that converts visitors into buyers.', 'comet-ai-s
 					</td>
 				</tr>
 
-				<!-- Gemini Model Selection -->
 				<tr id="gemini-model-row" style="<?php echo ('gemini' !== $current_provider) ? 'display: none;' : ''; ?>">
 					<th scope="row">
 						<label for="wpcmt_aisays_gemini_model"><?php esc_html_e('Gemini Model', 'comet-ai-says'); ?></label>
 					</th>
 					<td>
-						<?php $this->render_gemini_model_select($current_gemini_model); ?>
-						<details>
-							<summary><strong>📦
-									<?php esc_html_e('Gemini API Rate Limits & Pricing (Updated 2025-11-20)', 'comet-ai-says'); ?></strong>
-							</summary>
-							<br>
-							<strong>🆓
-								<?php esc_html_e('Free Tier (No billing account required):', 'comet-ai-says'); ?></strong><br>
-							<ul>
-								<li><code>Gemini 3.0 Flash</code> – 15 RPM, 1M TPM</li>
-								<li><code>Gemini 3.0 Flash Thinking</code> – 2 RPM, 30K TPM</li>
-								<li><code>Gemini 2.0 Flash</code> – 15 RPM, 1M TPM</li>
-								<li><code>Gemini 2.0 Flash Thinking</code> – 2 RPM, 30K TPM</li>
-								<li><code>Gemini 1.5 Flash</code> – 15 RPM, 1M TPM</li>
-								<li><code>Gemini 1.5 Pro</code> – 2 RPM, 32K TPM</li>
-								<li><code>Gemini 1.0 Pro</code> – 60 RPM, 32K TPM</li>
-							</ul>
-
-							<strong>💳
-								<?php esc_html_e('Paid Tier Limits (With billing account):', 'comet-ai-says'); ?></strong><br>
-							<ul>
-								<li><code>Gemini 3.0 Flash</code> – 1,500 RPM, 15M TPM</li>
-								<li><code>Gemini 3.0 Flash Thinking</code> – 360 RPM, 4M TPM</li>
-								<li><code>Gemini 2.0 Flash</code> – 1,500 RPM, 15M TPM</li>
-								<li><code>Gemini 2.0 Flash Thinking</code> – 360 RPM, 4M TPM</li>
-								<li><code>Gemini 1.5 Flash</code> – 1,500 RPM, 15M TPM</li>
-								<li><code>Gemini 1.5 Pro</code> – 360 RPM, 4M TPM</li>
-								<li><code>Gemini 1.0 Pro</code> – 1,500 RPM, 15M TPM</li>
-							</ul>
-
-							<strong>🧠
-								<?php esc_html_e('Key Context Windows:', 'comet-ai-says'); ?></strong><br>
-							<ul>
-								<li><code>Gemini 3.0 Flash</code> – 1M tokens</li>
-								<li><code>Gemini 3.0 Flash Thinking</code> – 128K tokens</li>
-								<li><code>Gemini 2.0 Flash</code> – 1M tokens</li>
-								<li><code>Gemini 2.0 Flash Thinking</code> – 128K tokens</li>
-								<li><code>Gemini 1.5 Flash</code> – 1M tokens</li>
-								<li><code>Gemini 1.5 Pro</code> – 2M tokens</li>
-								<li><code>Gemini 1.0 Pro</code> – 32K tokens</li>
-							</ul>
-
-							<strong>💰
-								<?php esc_html_e('Pricing (Per 1M Characters):', 'comet-ai-says'); ?></strong><br>
-							<ul>
-								<li><code>Gemini 3.0 Flash</code> – $0.075 (input), $0.30 (output)</li>
-								<li><code>Gemini 3.0 Flash Thinking</code> – $0.30 (input), $0.90 (output)</li>
-								<li><code>Gemini 2.0 Flash</code> – $0.075 (input), $0.30 (output)</li>
-								<li><code>Gemini 2.0 Flash Thinking</code> – $0.30 (input), $0.90 (output)</li>
-								<li><code>Gemini 1.5 Flash</code> – $0.075 (input), $0.30 (output)</li>
-								<li><code>Gemini 1.5 Pro</code> – $3.50 (input), $10.50 (output)</li>
-								<li><code>Gemini 1.0 Pro</code> – $0.50 (input), $1.50 (output)</li>
-							</ul>
-
-							<strong>⚠️
-								<?php esc_html_e('Important Notes:', 'comet-ai-says'); ?></strong><br>
-							<ul>
-								<li><?php esc_html_e('Free tier quotas reset daily at midnight Pacific Time', 'comet-ai-says'); ?>
-								</li>
-								<li><?php esc_html_e('Rate limits are per-project, not per-API-key', 'comet-ai-says'); ?></li>
-								<li><?php esc_html_e('Thinking tokens count toward your TPM limit', 'comet-ai-says'); ?></li>
-								<li><?php esc_html_e('Characters ≈ 4 tokens for estimation purposes', 'comet-ai-says'); ?></li>
-								<li><?php esc_html_e('Paid tiers auto-scale based on usage patterns', 'comet-ai-says'); ?></li>
-								<li><?php esc_html_e('Gemini 3.0 models offer improved performance and reasoning', 'comet-ai-says'); ?>
-								</li>
-							</ul>
-
-							<em>RPM = <?php esc_html_e('Requests per minute', 'comet-ai-says'); ?>,
-								TPM = <?php esc_html_e('Tokens per minute', 'comet-ai-says'); ?></em><br>
-							<?php esc_html_e('Official documentation:', 'comet-ai-says'); ?>
-							<a href="https://ai.google.dev/gemini-api/docs/rate-limits"
-								target="_blank"><?php esc_html_e('Rate limits', 'comet-ai-says'); ?></a> •
-							<a href="https://ai.google.dev/pricing"
-								target="_blank"><?php esc_html_e('Pricing', 'comet-ai-says'); ?></a>
-							<br><small><em>Last updated 2025-11-20 UTC</em></small>
-						</details>
-
+						<?php $this->render_gemini_model_select($current_gemini_model); // This calls the previously revised select box function ?>
 						<details>
 							<summary><strong>🤖
 									<?php esc_html_e('Gemini Model Comparison Guide', 'comet-ai-says'); ?></strong>
@@ -1349,7 +1279,7 @@ Write a compelling description that converts visitors into buyers.', 'comet-ai-s
 											<?php esc_html_e('Speed', 'comet-ai-says'); ?>
 										</th>
 										<th style="padding: 8px; border: 1px solid #ddd; text-align: left;">
-											<?php esc_html_e('Quality', 'comet-ai-says'); ?>
+											<?php esc_html_e('Quality/Reasoning', 'comet-ai-says'); ?>
 										</th>
 										<th style="padding: 8px; border: 1px solid #ddd; text-align: left;">
 											<?php esc_html_e('Free Limits', 'comet-ai-says'); ?>
@@ -1363,76 +1293,52 @@ Write a compelling description that converts visitors into buyers.', 'comet-ai-s
 									</tr>
 								</thead>
 								<tbody>
+									<tr>
+										<td style="padding: 8px; border: 1px solid #ddd;">
+											<strong>🚀 3.0 Flash<?php esc_html_e('Experimental', 'comet-ai-says'); ?></strong>
+										</td>
+										<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐⭐⭐</td>
+										<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐⭐</td>
+										<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐⭐⭐</td>
+										<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐⭐⭐</td>
+										<td style="padding: 8px; border: 1px solid #ddd;">
+											<?php esc_html_e('Best overall for high-volume tasks', 'comet-ai-says'); ?>
+										</td>
+									</tr>
+									<tr>
+										<td style="padding: 8px; border: 1px solid #ddd;">
+											<strong>🧠 <?php esc_html_e('3.0 Pro Preview', 'comet-ai-says'); ?></strong>
+										</td>
+										<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐</td>
+										<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐⭐⭐</td>
+										<td style="padding: 8px; border: 1px solid #ddd;">⭐</td>
+										<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐</td>
+										<td style="padding: 8px; border: 1px solid #ddd;">
+											<?php esc_html_e('Complex reasoning & detailed analysis', 'comet-ai-says'); ?>
+										</td>
+									</tr>
 									<tr style="background: #f0f7ff; border: 2px solid #2271b1;">
 										<td style="padding: 8px; border: 1px solid #ddd;">
-											<strong>🚀 <?php esc_html_e('3.0 Flash', 'comet-ai-says'); ?></strong>
+											<strong>⚡ 2.5 Flash<?php esc_html_e('Recommended', 'comet-ai-says'); ?></strong>
 										</td>
 										<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐⭐⭐</td>
-										<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐⭐⭐</td>
+										<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐</td>
 										<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐⭐⭐</td>
 										<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐⭐⭐</td>
 										<td style="padding: 8px; border: 1px solid #ddd;">
-											<?php esc_html_e('Best overall for product descriptions', 'comet-ai-says'); ?>
+											<?php esc_html_e('Stable, reliable high-throughput alternative', 'comet-ai-says'); ?>
 										</td>
 									</tr>
 									<tr>
-										<td style="padding: 8px; border: 1px solid #ddd;">
-											<strong>🚀 <?php esc_html_e('2.0 Flash', 'comet-ai-says'); ?></strong>
+										<td style="padding: 8px; border: 1px solid #ddd; color: gray;">
+											<del><?php esc_html_e('1.5/2.0 Models', 'comet-ai-says'); ?></del>
 										</td>
-										<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐⭐⭐</td>
-										<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐⭐</td>
-										<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐⭐⭐</td>
-										<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐⭐⭐</td>
-										<td style="padding: 8px; border: 1px solid #ddd;">
-											<?php esc_html_e('Excellent alternative to 3.0 Flash', 'comet-ai-says'); ?>
-										</td>
-									</tr>
-									<tr>
-										<td style="padding: 8px; border: 1px solid #ddd;">
-											<strong><?php esc_html_e('3.0 Flash Thinking', 'comet-ai-says'); ?></strong>
-										</td>
-										<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐</td>
-										<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐⭐⭐</td>
-										<td style="padding: 8px; border: 1px solid #ddd;">⭐</td>
-										<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐</td>
-										<td style="padding: 8px; border: 1px solid #ddd;">
-											<?php esc_html_e('Complex reasoning & analysis', 'comet-ai-says'); ?>
-										</td>
-									</tr>
-									<tr>
-										<td style="padding: 8px; border: 1px solid #ddd;">
-											<strong><?php esc_html_e('1.5 Flash', 'comet-ai-says'); ?></strong>
-										</td>
-										<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐⭐</td>
-										<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐</td>
-										<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐⭐</td>
-										<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐⭐⭐</td>
-										<td style="padding: 8px; border: 1px solid #ddd;">
-											<?php esc_html_e('Fast, economical choice', 'comet-ai-says'); ?>
-										</td>
-									</tr>
-									<tr>
-										<td style="padding: 8px; border: 1px solid #ddd;">
-											<strong><?php esc_html_e('1.5 Pro', 'comet-ai-says'); ?></strong>
-										</td>
-										<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐</td>
-										<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐⭐⭐</td>
-										<td style="padding: 8px; border: 1px solid #ddd;">⭐</td>
-										<td style="padding: 8px; border: 1px solid #ddd;">⭐</td>
-										<td style="padding: 8px; border: 1px solid #ddd;">
-											<?php esc_html_e('High-quality complex analysis', 'comet-ai-says'); ?>
-										</td>
-									</tr>
-									<tr>
-										<td style="padding: 8px; border: 1px solid #ddd;">
-											<strong><?php esc_html_e('1.0 Pro', 'comet-ai-says'); ?></strong>
-										</td>
-										<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐</td>
-										<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐</td>
-										<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐⭐⭐</td>
-										<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐</td>
-										<td style="padding: 8px; border: 1px solid #ddd;">
-											<?php esc_html_e('Legacy applications', 'comet-ai-says'); ?>
+										<td style="padding: 8px; border: 1px solid #ddd; color: gray;">-</td>
+										<td style="padding: 8px; border: 1px solid #ddd; color: gray;">-</td>
+										<td style="padding: 8px; border: 1px solid #ddd; color: gray;">-</td>
+										<td style="padding: 8px; border: 1px solid #ddd; color: gray;">-</td>
+										<td style="padding: 8px; border: 1px solid #ddd; color: gray;">
+											<del><?php esc_html_e('Retired/Legacy. Use 2.5 or 3.0.', 'comet-ai-says'); ?></del>
 										</td>
 									</tr>
 								</tbody>
@@ -1441,50 +1347,144 @@ Write a compelling description that converts visitors into buyers.', 'comet-ai-s
 							<br>
 
 							<strong>🚀
-								<?php esc_html_e('Gemini 3.0 Flash (Recommended Default)', 'comet-ai-says'); ?></strong><br>
+								<?php esc_html_e('Gemini 3.0 Flash (Fairly new, experimental)', 'comet-ai-says'); ?></strong><br>
 							<ul>
-								<li><?php esc_html_e('Latest generation with improved performance', 'comet-ai-says'); ?></li>
+								<li><?php esc_html_e('Latest generation with improved performance and core reasoning', 'comet-ai-says'); ?>
+								</li>
 								<li><?php esc_html_e('Free tier: 15 RPM, 1M TPM', 'comet-ai-says'); ?></li>
-								<li><?php esc_html_e('1M token context window', 'comet-ai-says'); ?></li>
-								<li><?php esc_html_e('Cost: $0.075/1M input, $0.30/1M output', 'comet-ai-says'); ?></li>
-								<li><?php esc_html_e('Use case: Most product descriptions', 'comet-ai-says'); ?></li>
-							</ul>
-
-							<strong>🧠
-								<?php esc_html_e('Gemini 3.0 Flash Thinking (Advanced Reasoning)', 'comet-ai-says'); ?></strong><br>
-							<ul>
-								<li><?php esc_html_e('Enhanced reasoning capabilities', 'comet-ai-says'); ?></li>
-								<li><?php esc_html_e('Free tier: 2 RPM, 30K TPM', 'comet-ai-says'); ?></li>
-								<li><?php esc_html_e('128K token context window', 'comet-ai-says'); ?></li>
-								<li><?php esc_html_e('Use case: Technical products, detailed analysis', 'comet-ai-says'); ?>
+								<li><?php esc_html_e('1M token context window (suitable for large inputs)', 'comet-ai-says'); ?>
+								</li>
+								<li><?php esc_html_e('Cost: $0.075/1M input tokens, $0.30/1M output tokens', 'comet-ai-says'); ?>
+								</li>
+								<li><?php esc_html_e('Use case: Most product descriptions, chat, and summarization', 'comet-ai-says'); ?>
 								</li>
 							</ul>
 
-							<strong>⚡ <?php esc_html_e('Gemini 2.0 Flash (Proven & Reliable)', 'comet-ai-says'); ?></strong><br>
+							<strong>🧠
+								Gemini 3.0 Pro Preview <?php esc_html_e('Max Reasoning', 'comet-ai-says'); ?></strong><br>
 							<ul>
-								<li><?php esc_html_e('Excellent performance with proven reliability', 'comet-ai-says'); ?></li>
+								<li><?php esc_html_e('The most capable model for complex, nuanced tasks', 'comet-ai-says'); ?>
+								</li>
+								<li><?php esc_html_e('Free tier: 2 RPM, 30K TPM (Very slow for high volume)', 'comet-ai-says'); ?>
+								</li>
+								<li><?php esc_html_e('128K token context window', 'comet-ai-says'); ?></li>
+								<li><?php esc_html_e('Use case: Technical products, detailed analysis, coding help', 'comet-ai-says'); ?>
+								</li>
+							</ul>
+
+							<strong>⚡ Gemini 2.5 Flash <?php esc_html_e('Recommended', 'comet-ai-says'); ?></strong><br>
+							<ul>
+								<li><?php esc_html_e('Excellent performance with established stability and reliability', 'comet-ai-says'); ?>
+								</li>
 								<li><?php esc_html_e('Free tier: 15 RPM, 1M TPM', 'comet-ai-says'); ?></li>
 								<li><?php esc_html_e('1M token context window', 'comet-ai-says'); ?></li>
-								<li><?php esc_html_e('Use case: Reliable alternative to 3.0 models', 'comet-ai-says'); ?></li>
+								<li><?php esc_html_e('Use case: Reliable alternative, high-volume classification/extraction', 'comet-ai-says'); ?>
+								</li>
 							</ul>
 
 							<strong>💡 <?php esc_html_e('Recommendations:', 'comet-ai-says'); ?></strong><br>
 							<ul>
-								<li><strong><?php esc_html_e('For new users:', 'comet-ai-says'); ?></strong>
+								<li><strong><?php esc_html_e('For new users (Recommended):', 'comet-ai-says'); ?></strong>
 									<?php esc_html_e('Start with Gemini 3.0 Flash', 'comet-ai-says'); ?></li>
-								<li><strong><?php esc_html_e('For complex products:', 'comet-ai-says'); ?></strong>
-									<?php esc_html_e('Use Gemini 3.0 Flash Thinking', 'comet-ai-says'); ?></li>
-								<li><strong><?php esc_html_e('For maximum speed:', 'comet-ai-says'); ?></strong>
-									<?php esc_html_e('Use Gemini 2.0 Flash', 'comet-ai-says'); ?></li>
-								<li><strong><?php esc_html_e('On a tight budget:', 'comet-ai-says'); ?></strong>
-									<?php esc_html_e('Gemini 1.0 Pro has highest free limits', 'comet-ai-says'); ?></li>
+								<li><strong><?php esc_html_e('For complex products/coding:', 'comet-ai-says'); ?></strong>
+									<?php esc_html_e('Use Gemini 3.0 Pro Preview or 2.5 Pro', 'comet-ai-says'); ?></li>
+								<li><strong><?php esc_html_e('For maximum speed/volume:', 'comet-ai-says'); ?></strong>
+									<?php esc_html_e('Use Gemini 2.5 Flash-Lite (Highest RPM)', 'comet-ai-says'); ?></li>
+								<li>**<?php esc_html_e('Avoid all 1.5 models, and prefer 3.0/2.5 over 2.0/1.0', 'comet-ai-says'); ?>**
+								</li>
 							</ul>
 
-							<em><?php esc_html_e('Note: Gemini 3.0 models offer the latest improvements in reasoning and performance. All models support text and image inputs.', 'comet-ai-says'); ?></em>
+							<em><?php esc_html_e('Note: The newer 3.0 and 2.5 models offer better quality and multimodal support (text, image, audio, video) compared to older generations.', 'comet-ai-says'); ?></em>
 						</details>
+
+						<details>
+							<summary><strong>📦
+									<?php esc_html_e('Gemini API Rate Limits & Pricing (Updated 2025-11)', 'comet-ai-says'); ?></strong>
+							</summary>
+							<br>
+							<strong>🆓
+								<?php esc_html_e('Free Tier (No billing account required):', 'comet-ai-says'); ?></strong><br>
+							<ul>
+								<li><code>Gemini 3.0 Flash</code> – 15 RPM, 1M TPM</li>
+								<li>**<code>Gemini 3.0 Pro Preview</code> – 2 RPM, 30K TPM**</li>
+								<li><code>Gemini 2.5 Flash</code> – 15 RPM, 1M TPM</li>
+								<li><code>Gemini 2.5 Pro</code> – 2 RPM, 32K TPM</li>
+								<li>**<code>Gemini 2.0 Flash</code> – 15 RPM, 1M TPM**</li>
+								<li>**<code>Gemini 2.0 Pro</code> – 2 RPM, 32K TPM**</li>
+								<li><del><code>Gemini 1.5 Flash</code> – Retired</del></li>
+								<li><del><code>Gemini 1.5 Pro</code> – Retired</del></li>
+								<li><code>Gemini 1.0 Pro</code> – 60 RPM, 32K TPM</li>
+							</ul>
+
+							<strong>💳
+								<?php esc_html_e('Paid Tier Limits (With billing account):', 'comet-ai-says'); ?></strong><br>
+							<ul>
+								<li><code>Gemini 3.0 Flash</code> – 1,500 RPM, 15M TPM</li>
+								<li>**<code>Gemini 3.0 Pro Preview</code> – 360 RPM, 4M TPM**</li>
+								<li><code>Gemini 2.5 Flash</code> – 1,500 RPM, 15M TPM</li>
+								<li><code>Gemini 2.5 Pro</code> – 360 RPM, 4M TPM</li>
+								<li>**<code>Gemini 2.0 Flash</code> – 1,500 RPM, 15M TPM**</li>
+								<li>**<code>Gemini 2.0 Pro</code> – 360 RPM, 4M TPM**</li>
+								<li><del><code>Gemini 1.5 Flash</code> – Retired</del></li>
+								<li><del><code>Gemini 1.5 Pro</code> – Retired</del></li>
+								<li><code>Gemini 1.0 Pro</code> – 1,500 RPM, 15M TPM</li>
+							</ul>
+
+							<strong>🧠
+								<?php esc_html_e('Key Context Windows:', 'comet-ai-says'); ?></strong><br>
+							<ul>
+								<li><code>Gemini 3.0 Flash</code> – 1M tokens</li>
+								<li>**<code>Gemini 3.0 Pro Preview</code> – 128K tokens**</li>
+								<li><code>Gemini 2.5 Flash</code> – 1M tokens</li>
+								<li><code>Gemini 2.5 Pro</code> – 2M tokens</li>
+								<li>**<code>Gemini 2.0 Flash</code> – 1M tokens**</li>
+								<li>**<code>Gemini 2.0 Pro</code> – 128K tokens**</li>
+								<li><del><code>Gemini 1.5 Flash</code> – Retired</del></li>
+								<li><del><code>Gemini 1.5 Pro</code> – Retired</del></li>
+								<li><code>Gemini 1.0 Pro</code> – 32K tokens</li>
+							</ul>
+
+							<strong>💰
+								<?php esc_html_e('Pricing (Per 1M Tokens):', 'comet-ai-says'); ?></strong><br>
+							<ul>
+								<li><code>Gemini 3.0 Flash</code> – $0.075 (input), $0.30 (output)</li>
+								<li>**<code>Gemini 3.0 Pro Preview</code> – $0.30 (input), $0.90 (output)**</li>
+								<li><code>Gemini 2.5 Flash</code> – $0.075 (input), $0.30 (output)</li>
+								<li><code>Gemini 2.5 Pro</code> – $3.50 (input), $10.50 (output)</li>
+								<li>**<code>Gemini 2.0 Flash</code> – $0.075 (input), $0.30 (output)**</li>
+								<li>**<code>Gemini 2.0 Pro</code> – $3.50 (input), $10.50 (output)**</li>
+								<li><del><code>Gemini 1.5 Flash</code> – Retired</del></li>
+								<li><del><code>Gemini 1.5 Pro</code> – Retired</del></li>
+								<li><code>Gemini 1.0 Pro</code> – $0.50 (input), $1.50 (output)</li>
+							</ul>
+
+							<strong>⚠️
+								<?php esc_html_e('Important Notes:', 'comet-ai-says'); ?></strong><br>
+							<ul>
+								<li><?php esc_html_e('Free tier quotas reset daily at midnight Pacific Time', 'comet-ai-says'); ?>
+								</li>
+								<li><?php esc_html_e('Rate limits are per-project, not per-API-key', 'comet-ai-says'); ?></li>
+								<li><?php esc_html_e('Characters ≈ 4 tokens for estimation purposes', 'comet-ai-says'); ?></li>
+								<li>**<?php esc_html_e('Gemini 1.5 models are officially retired and should no longer be used.', 'comet-ai-says'); ?>**
+								</li>
+								<li><?php esc_html_e('Paid tiers auto-scale based on usage patterns', 'comet-ai-says'); ?></li>
+								<li><?php esc_html_e('Gemini 3.0 models offer improved performance and reasoning', 'comet-ai-says'); ?>
+								</li>
+							</ul>
+
+							<em>RPM = <?php esc_html_e('Requests per minute', 'comet-ai-says'); ?>,
+								TPM = <?php esc_html_e('Tokens per minute', 'comet-ai-says'); ?></em><br>
+							<?php esc_html_e('Official documentation:', 'comet-ai-says'); ?>
+							<a href="https://ai.google.dev/gemini-api/docs/rate-limits"
+								target="_blank"><?php esc_html_e('Rate limits', 'comet-ai-says'); ?></a> •
+							<a href="https://ai.google.dev/pricing"
+								target="_blank"><?php esc_html_e('Pricing', 'comet-ai-says'); ?></a>
+							<br><small><em>Last updated 2025-11 UTC</em></small>
+						</details>
+
+
 					</td>
 				</tr>
-
 				<!-- Max Tokens -->
 				<tr id="max-tokens-row">
 					<th scope="row">

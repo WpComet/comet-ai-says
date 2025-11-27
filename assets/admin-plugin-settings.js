@@ -118,18 +118,51 @@
     var capacityInfo = $("#token-capacity-info");
 
     var configs = {
+      // --- 3.0 Generation ---
+      "gemini-3.0-pro-preview": {
+        min: 1500,
+        max: 7000,
+        default: 3000,
+        rec: wpcmt_aisays.i18n.tokens_2000_8000 || "2000-8000 tokens for complex reasoning (Pro)",
+        cap: wpcmt_aisays.i18n.cap_30k_2 || "30K TPM, 2 RPM",
+      },
       "gemini-3.0-flash": {
+        min: 1000,
+        max: 4000,
+        default: 2000,
+        rec: wpcmt_aisays.i18n.tokens_1000_4000 || "1000-4000 tokens for balanced performance",
+        cap: wpcmt_aisays.i18n.cap_1m_15 || "1M TPM, 15 RPM",
+      },
+
+      // --- 2.5 Generation ---
+      "gemini-2.5-pro": {
+        min: 1500,
+        max: 7000,
+        default: 3000,
+        rec: wpcmt_aisays.i18n.tokens_2000_8000 || "2000-8000 tokens for high-quality analysis",
+        cap: wpcmt_aisays.i18n.cap_32k_2 || "32K TPM, 2 RPM",
+      },
+      "gemini-2.5-flash-lite": {
+        min: 800,
+        max: 2000,
+        default: 1200,
+        rec: wpcmt_aisays.i18n.tokens_800_2000 || "800-2000 tokens for lightweight/fast tasks",
+        cap: wpcmt_aisays.i18n.cap_1m_30 || "1M TPM, 30 RPM (High Volume)",
+      },
+      "gemini-2.5-flash": {
         min: 1000,
         max: 4000,
         default: 2500,
         rec: wpcmt_aisays.i18n.tokens_1000_4000 || "1000-4000 tokens for balanced performance",
         cap: wpcmt_aisays.i18n.cap_1m_15 || "1M TPM, 15 RPM",
       },
-      "gemini-3.0-flash-thinking": {
+
+      // --- Legacy / Fallbacks ---
+      "gemini-3.0-flash-thinking": { // Legacy fallback
         min: 2000,
         max: 6000,
         default: 3000,
-        rec: wpcmt_aisays.i18n.tokens_2000_6000 || "2000-6000 tokens for complex reasoning",
+        rec: wpcmt_aisays.i18n.tokens_2000_6000 || "2000-6000 tokens for thinking models",
         cap: wpcmt_aisays.i18n.cap_30k_2 || "30K TPM, 2 RPM",
       },
       "gemini-2.0-flash": {
@@ -139,41 +172,8 @@
         rec: wpcmt_aisays.i18n.tokens_1000_4000 || "1000-4000 tokens for balanced performance",
         cap: wpcmt_aisays.i18n.cap_1m_15 || "1M TPM, 15 RPM",
       },
-      "gemini-2.0-flash-lite": {
-        min: 800,
-        max: 2000,
-        default: 1200,
-        rec: wpcmt_aisays.i18n.tokens_800_2000 || "800-2000 tokens for lightweight tasks",
-        cap: wpcmt_aisays.i18n.cap_1m_30 || "1M TPM, 30 RPM",
-      },
-      "gemini-1.5-flash": {
-        min: 1000,
-        max: 4000,
-        default: 2500,
-        rec: wpcmt_aisays.i18n.tokens_1000_4000 || "1000-4000 tokens for balanced performance",
-        cap: wpcmt_aisays.i18n.cap_1m_15 || "1M TPM, 15 RPM",
-      },
-      "gemini-1.5-pro": {
-        min: 2000,
-        max: 8000,
-        default: 4000,
-        rec: wpcmt_aisays.i18n.tokens_2000_8000 || "2000-8000 tokens for high-quality analysis",
-        cap: wpcmt_aisays.i18n.cap_32k_2 || "32K TPM, 2 RPM",
-      },
-      "gemini-2.5-flash-preview-04-17": {
-        min: 1500,
-        max: 4000,
-        default: 2500,
-        rec: wpcmt_aisays.i18n.tokens_1500_4000 || "1500-4000 tokens for preview testing",
-        cap: wpcmt_aisays.i18n.cap_limited_free || "Limited Free Tier",
-      },
-      "gemini-2.5-pro-preview-05-06": {
-        min: 3000,
-        max: 8000,
-        default: 4000,
-        rec: wpcmt_aisays.i18n.tokens_3000_8000 || "3000-8000 tokens for pro preview",
-        cap: wpcmt_aisays.i18n.cap_limited_free || "Limited Free Tier",
-      },
+
+      // --- Default ---
       default: {
         min: 1000,
         max: 5000,
@@ -184,6 +184,7 @@
     };
 
     var config = configs.default;
+    // Iterate to find the best matching config
     for (var key in configs) {
       if (key !== "default" && geminiModel.includes(key)) {
         config = configs[key];
@@ -195,35 +196,40 @@
     recommended.text(config.rec);
     capacityInfo.text(config.cap);
 
-    var currentVal = parseInt(maxTokensInput.val());
+    // Reset to default on change:
     maxTokensInput.val(config.default);
 
-    // Alternatively only set default if current value is outside new range
-
+    // Or Alternatively only set default if current value is outside new range
     /*if (currentVal < config.min || currentVal > config.max) {
       maxTokensInput.val(config.default);
     }*/
 
+
     tokensValue.text(maxTokensInput.val() + " " + (wpcmt_aisays.i18n.tokens || "tokens"));
   };
+
   window.updateCapacityInfo = function () {
     var geminiModel = $("#wpcmt_aisays_gemini_model").val();
     var capacityInfo = $("#token-capacity-info");
 
     var capacityText = wpcmt_aisays.i18n.cap_standard || "Standard configuration";
 
-    if (geminiModel.includes("3.0-flash") && !geminiModel.includes("thinking")) {
+    // Logic updated to match new slugs and prioritize specific suffixes (like lite/pro)
+    if (geminiModel.includes("3.0-pro") || geminiModel.includes("thinking")) {
+      // Covers 3.0-pro-preview and legacy thinking slugs
+      capacityText = wpcmt_aisays.i18n.cap_30k_2 || "30K TPM, 2 RPM (High Reasoning)";
+    } else if (geminiModel.includes("3.0-flash")) {
       capacityText = wpcmt_aisays.i18n.cap_1m_15 || "1M TPM, 15 RPM";
-    } else if (geminiModel.includes("3.0-flash-thinking")) {
-      capacityText = wpcmt_aisays.i18n.cap_30k_2 || "30K TPM, 2 RPM";
-    } else if (geminiModel.includes("2.0-flash") && !geminiModel.includes("lite")) {
+    } else if (geminiModel.includes("2.5-pro")) {
+      capacityText = wpcmt_aisays.i18n.cap_32k_2 || "32K TPM, 2 RPM (High Quality)";
+    } else if (geminiModel.includes("lite")) {
+      // Covers 2.5-flash-lite and 2.0-flash-lite
+      capacityText = wpcmt_aisays.i18n.cap_1m_30 || "1M TPM, 30 RPM (High Volume)";
+    } else if (geminiModel.includes("flash")) {
+      // Catch-all for 2.5-flash, 2.0-flash, etc.
       capacityText = wpcmt_aisays.i18n.cap_1m_15 || "1M TPM, 15 RPM";
-    } else if (geminiModel.includes("2.0-flash-lite")) {
-      capacityText = wpcmt_aisays.i18n.cap_1m_30 || "1M TPM, 30 RPM";
-    } else if (geminiModel.includes("1.5-flash")) {
-      capacityText = wpcmt_aisays.i18n.cap_1m_15 || "1M TPM, 15 RPM";
-    } else if (geminiModel.includes("1.5-pro")) {
-      capacityText = wpcmt_aisays.i18n.cap_32k_2 || "32K TPM, 2 RPM";
+    } else if (geminiModel.includes("1.5")) {
+      capacityText = "Retired Model";
     }
 
     capacityInfo.text(capacityText);
