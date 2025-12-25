@@ -4,7 +4,7 @@ Tags: woocommerce, ai, product descriptions, gpt, custom fields
 Requires at least: 5.8  
 Tested up to: 6.8
 Requires PHP: 7.4  
-Stable tag: 1.1.6
+Stable tag: 1.1.7
 License: GPLv3  
 License URI: https://www.gnu.org/licenses/gpl-3.0.html  
 
@@ -45,6 +45,15 @@ Comet AI Says is a lightweight, privacy-conscious WordPress plugin that generate
 8. Plugin settings panel with API configuration and model selection.
 
 == Changelog ==
+
+= 1.1.7 =
+* Added: Support for Gemini 3 Flash and Gemini 3 Pro (Preview).
+* Added: Native "Deep Think" reasoning support for Gemini 3 models.
+* Added: Support for Gemini 2.5 Flash-Lite for high-speed, cost-efficient processing.
+* Updated: Model selection UI with categorized groups (Next-Gen, Stable, Legacy).
+* Updated: Rate limit indicators and model descriptions for the late 2025 API landscape.
+* Deprecated: Gemini 2.0 Flash models moved to the Legacy section.
+
 = 1.1.5 =
 - Simplified and solidified Gemini 3.0 models for mid-long term
 - Small update to prompt method for more contextual and accurate descriptions
@@ -84,7 +93,7 @@ Comet AI Says is a lightweight, privacy-conscious WordPress plugin that generate
 
 == Upgrade Notice ==
 
-No breaking changes in version 1.0.0.
+No breaking changes.
 
 == Features ==
 
@@ -97,6 +106,10 @@ No breaking changes in version 1.0.0.
 - Supports multiple AI platforms: OpenAI, Gemini
 - Choose from models like GPT-4o, Gemini 2.0 Flash
 - Clean, bloat-free interface
+
+== Limitations ==
+
+Google Gemini does not support AVIF files as of late 2025
 
 == External Services ==
 
