@@ -155,6 +155,7 @@ class Plugin
      */
     public static function activate()
     {
+        delete_transient('wpcmt_aisays_onboarding_skipped');
         require_once self::$plugin_path . 'includes/class-admin-interface.php';
 
         // Set default settings

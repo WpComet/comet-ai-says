@@ -46,6 +46,12 @@ Comet AI Says is a lightweight, privacy-conscious WordPress plugin that generate
 
 == Changelog ==
 
+= 1.2.0 =
+* Added: Support latest 3.1 model
+* Added: Onboarding screen for new installs.
+* Updated: Info sections and model comparisons
+* Bugfix: Added missing $categories param for generation
+
 = 1.1.7 =
 * Added: Support for Gemini 3 Flash and Gemini 3 Pro (Preview).
 * Added: Native "Deep Think" reasoning support for Gemini 3 models.
