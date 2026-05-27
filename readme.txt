@@ -2,9 +2,9 @@
 Contributors: wpcomet  
 Tags: woocommerce, ai, product descriptions, gpt, custom fields  
 Requires at least: 5.8  
-Tested up to: 6.8
+Tested up to: 7.0
 Requires PHP: 7.4  
-Stable tag: 1.2.0
+Stable tag: 1.3.0
 License: GPLv3  
 License URI: https://www.gnu.org/licenses/gpl-3.0.html  
 
@@ -45,6 +45,12 @@ Comet AI Says is a lightweight, privacy-conscious WordPress plugin that generate
 8. Plugin settings panel with API configuration and model selection.
 
 == Changelog ==
+
+= 1.3.0 =
+* Added: Support for Gemini 3.5 Flash model
+* Updated: Default model is now Gemini 3.5 Flash
+* Updated: WordPress 7.0 "Armstrong" compatibility
+* Removed: Sunset Gemini 2.0 Flash model support
 
 = 1.2.0 =
 * Added: Support latest 3.1 model
@@ -110,7 +116,7 @@ No breaking changes.
 - On-demand generation only — no background tasks
 - Customizable prompt and language
 - Supports multiple AI platforms: OpenAI, Gemini
-- Choose from models like GPT-4o, Gemini 2.0 Flash
+- Choose from models like GPT-4o, Gemini 3.5 Flash
 - Clean, bloat-free interface
 
 == Limitations ==

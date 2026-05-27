@@ -155,13 +155,14 @@ class AIGenerator {
     private function normalize_gemini_model($model) {
         $mappings = [
             'gemini-flash-latest'           => 'gemini-flash-latest',
+            'gemini-3.5-flash'              => 'gemini-3.5-flash',
             'gemini-3.1-pro-preview'        => 'gemini-3.1-pro-preview',
             'gemini-3.1-flash-lite-preview' => 'gemini-3.1-flash-lite-preview',
             'gemini-3-flash-preview'        => 'gemini-3-flash-preview',
             'gemini-2.5-flash'              => 'gemini-2.5-flash',
             'gemini-2.5-pro'                => 'gemini-2.5-pro',
             'gemini-2.5-flash-lite'         => 'gemini-2.5-flash-lite',
-            //  gemini-2.0-flash, gemini-2.0-flash-001, gemini-3-flash
+            'gemini-2.0-flash'              => 'gemini-3.5-flash', // Migration for sunset model
         ];
         
         return $mappings[$model] ?? $model;
@@ -171,7 +172,7 @@ class AIGenerator {
      * Unified Gemini API call that handles both text and image prompts.
      */
     private function call_gemini_api($prompt, $product_id = null) {
-        $raw_model = get_option('wpcmt_aisays_gemini_model', 'gemini-2.5-flash');
+        $raw_model = get_option('wpcmt_aisays_gemini_model', 'gemini-3.5-flash');
         $gemini_model = $this->normalize_gemini_model($raw_model);
 
         $max_tokens = (int) get_option('wpcmt_aisays_max_tokens', 1500);
@@ -394,8 +395,45 @@ class AIGenerator {
         return false;
     }
 
+    /**
+     * Send webhook notification after a successful AI description save.
+     */
+    private function trigger_webhook_notification($product, string $description, string $event = 'ai_description_generated'): void
+    {
+        $webhook_url = get_option('wpcmt_aisays_webhook_url', '');
+        if (empty($webhook_url)) {
+            return;
+        }
+
+        $payload = [
+            'event' => $event,
+            'product_id' => $product->get_id(),
+            'product_name' => $product->get_name(),
+            'product_sku' => $product->get_sku(),
+            'provider' => $this->provider,
+            'model' => $this->get_current_model_name(),
+            'language' => get_post_meta($product->get_id(), '_wpcmt_aisays_language', true) ?: get_option('wpcmt_aisays_language', 'english'),
+            'description' => $description,
+            'generated_at' => gmdate('c'),
+            'site_url' => get_site_url(),
+            'post_url' => get_edit_post_link($product->get_id(), 'raw'),
+        ];
+
+        $response = wp_remote_post($webhook_url, [
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ],
+            'body' => wp_json_encode($payload),
+            'timeout' => 10,
+        ]);
+
+        if (is_wp_error($response) && Plugin::$debug && defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {
+            error_log('Comet AI Says - Webhook Error: '.$response->get_error_message());
+        }
+    }
+
     private function fallback_gemini_api($prompt) {
-        $api_url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key='.$this->api_key;
+        $api_url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key='.$this->api_key;
         $max_tokens = (int) get_option('wpcmt_aisays_max_tokens', 1500);
 
         $args = [
@@ -442,7 +480,7 @@ class AIGenerator {
         $provider = get_option('wpcmt_aisays_provider', 'gemini');
 
         if ('gemini' === $provider) {
-            $model = get_option('wpcmt_aisays_gemini_model', 'gemini-3-flash');
+            $model = get_option('wpcmt_aisays_gemini_model', 'gemini-3.5-flash');
             $model = str_replace(['gemini-', '-preview'], ['Gemini ', ''], $model);
             $model = str_replace('-', ' ', $model);
 
@@ -516,6 +554,11 @@ class AIGenerator {
 
         update_post_meta($product_id, '_wpcmt_aisays_description', $description);
 
+        $product = wc_get_product($product_id);
+        if ($product) {
+            $this->trigger_webhook_notification($product, $description, 'ai_description_saved');
+        }
+
         wp_send_json_success(esc_html__('Description saved', 'comet-ai-says'));
     }
 
@@ -567,6 +610,7 @@ class AIGenerator {
                 'message' => sprintf(__('AI description deleted for: %s', 'comet-ai-says'), $product->get_name()),
             ]);
         } else {
+            /* translators: %s is the product name */
             wp_send_json_error(sprintf(__('Failed to delete AI description for: %s', 'comet-ai-says'), $product->get_name()));
         }
     }
@@ -616,15 +660,19 @@ class AIGenerator {
             update_post_meta($product_id, '_wpcmt_aisays_description', $description);
 
             $instance = self::get_instance();
+            $instance->trigger_webhook_notification($product, $description, 'ai_description_generated');
+
             $model_name = $instance->get_current_model_name();
 
             wp_send_json_success([
                 'product_id' => $product_id,
                 'product_name' => $product->get_name(),
                 'description' => $description,
+                /* translators: %1$s is the product name, %2$s is the AI model name */
                 'message' => sprintf(__('AI description generated and saved for: %1$s via: %2$s', 'comet-ai-says'), $product->get_name(), $model_name),
             ]);
         } else {
+            /* translators: %s is the product name */
             wp_send_json_error(sprintf(__('Failed to generate description for: %s. Check your API key and provider settings.', 'comet-ai-says'), $product->get_name()));
         }
     }
