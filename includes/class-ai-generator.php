@@ -2,7 +2,8 @@
 
 namespace WpComet\AISays;
 
-class AIGenerator {
+class AIGenerator
+{
     private $provider;
     private $api_key;
     private static $instance;
@@ -153,29 +154,34 @@ class AIGenerator {
     /**
      * Normalize Gemini model names for API compatibility (Updated March 2026)
      * Support: Latest-flash (permanent), Pro & Flash for newest branch, Flash for wider - older branch, finally slug correction for renamed, misnamed, removed branches - meaning 3.x,2.x,1.x etc.
-     * Fallback to $model if no mapping found, to allow for future models without code changes. Ex: gemini-2.0-flash, gemini-2.0-flash-001, gemini-3-flash
+     * Fallback to $model if no mapping found, to allow for future models without code changes. Ex: gemini-2.0-flash, gemini-2.0-flash-001, gemini-3-flash.
+     *
+     * @param mixed $model
      */
     private function normalize_gemini_model($model) {
         $mappings = [
-            'gemini-flash-latest'           => 'gemini-3.5-flash',
-            'gemini-3.5-flash'              => 'gemini-3.5-flash',
-            'gemini-3.1-pro'                => 'gemini-3.1-pro',
-            'gemini-3.1-pro-preview'        => 'gemini-3.1-pro',
-            'gemini-3.1-flash-lite'         => 'gemini-3.1-flash-lite',
+            'gemini-flash-latest' => 'gemini-3.5-flash',
+            'gemini-3.5-flash' => 'gemini-3.5-flash',
+            'gemini-3.1-pro' => 'gemini-3.1-pro-preview',
+            'gemini-3.1-pro-preview' => 'gemini-3.1-pro-preview',
+            'gemini-3.1-flash-lite' => 'gemini-3.1-flash-lite',
             'gemini-3.1-flash-lite-preview' => 'gemini-3.1-flash-lite',
-            'gemini-3.1-flash-preview'      => 'gemini-3.5-flash',
-            'gemini-3-flash-preview'        => 'gemini-3-flash-preview',
-            'gemini-2.5-flash'              => 'gemini-3.5-flash', // Migration
-            'gemini-2.5-pro'                => 'gemini-3.1-pro', // Migration
-            'gemini-2.5-flash-lite'         => 'gemini-3.1-flash-lite', // Migration
-            'gemini-2.0-flash'              => 'gemini-3.5-flash', // Migration for sunset model
+            'gemini-3.1-flash-preview' => 'gemini-3.5-flash',
+            'gemini-3-flash-preview' => 'gemini-3-flash-preview',
+            'gemini-2.5-flash' => 'gemini-3.5-flash', // Migration
+            'gemini-2.5-pro' => 'gemini-3.1-pro-preview', // Migration
+            'gemini-2.5-flash-lite' => 'gemini-3.1-flash-lite', // Migration
+            'gemini-2.0-flash' => 'gemini-3.5-flash', // Migration for sunset model
         ];
-        
+
         return $mappings[$model] ?? $model;
     }
 
     /**
      * Unified Gemini API call that handles both text and image prompts.
+     *
+     * @param mixed      $prompt
+     * @param null|mixed $product_id
      */
     private function call_gemini_api($prompt, $product_id = null) {
         $raw_model = get_option('wpcmt_aisays_gemini_model', 'gemini-3.5-flash');
@@ -183,8 +189,8 @@ class AIGenerator {
 
         $max_tokens = (int) get_option('wpcmt_aisays_max_tokens', 1500);
 
-        $api_version = (strpos($gemini_model, 'gemini-3') !== false) ? 'v1beta' : 'v1';
-        $api_url = "https://generativelanguage.googleapis.com/{$api_version}/models/{$gemini_model}:generateContent?key=" . $this->api_key;
+        $api_version = (false !== strpos($gemini_model, 'gemini-3')) ? 'v1beta' : 'v1';
+        $api_url = "https://generativelanguage.googleapis.com/{$api_version}/models/{$gemini_model}:generateContent?key=".$this->api_key;
 
         $parts = [['text' => $prompt]];
 
@@ -194,7 +200,7 @@ class AIGenerator {
                 $parts[] = [
                     'inline_data' => [
                         'mime_type' => $image_data['mime_type'],
-                        'data'     => $image_data['base64'],
+                        'data' => $image_data['base64'],
                     ],
                 ];
             }
@@ -203,19 +209,19 @@ class AIGenerator {
         $request_body = [
             'contents' => [['parts' => $parts]],
             'generationConfig' => [
-                'temperature'    => 0.7,
+                'temperature' => 0.7,
                 'maxOutputTokens' => $max_tokens,
             ],
         ];
 
         $response = wp_remote_post($api_url, [
             'headers' => ['Content-Type' => 'application/json'],
-            'body'    => wp_json_encode($request_body),
+            'body' => wp_json_encode($request_body),
             'timeout' => 60,
         ]);
 
         if (is_wp_error($response)) {
-            return 'Network Error: ' . $response->get_error_message();
+            return 'Network Error: '.$response->get_error_message();
         }
 
         $response_code = wp_remote_retrieve_response_code($response);
@@ -224,35 +230,36 @@ class AIGenerator {
         if (200 === $response_code && isset($body['candidates'][0]['content']['parts'])) {
             $output_text = '';
             foreach ($body['candidates'][0]['content']['parts'] as $part) {
-                if (isset($part['thought']) && $part['thought'] === true) {
+                if (isset($part['thought']) && true === $part['thought']) {
                     continue;
                 }
                 if (isset($part['text'])) {
                     $output_text .= $part['text'];
                 }
             }
+
             return trim($output_text);
         }
 
         // ==================== IMPROVED ERROR HANDLING ====================
-        $error         = $body['error'] ?? [];
-        $error_code    = $error['code'] ?? $response_code;
+        $error = $body['error'] ?? [];
+        $error_code = $error['code'] ?? $response_code;
         $error_message = $error['message'] ?? 'Unknown Gemini API error';
-        $status        = $error['status'] ?? '';
+        $status = $error['status'] ?? '';
 
-        if ($error_code == 429 || $status === 'RESOURCE_EXHAUSTED') {
+        if (429 == $error_code || 'RESOURCE_EXHAUSTED' === $status) {
             if (Plugin::$debug && defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {
-                error_log('Comet AI Says - Gemini Quota Error | Model: ' . $gemini_model . ' | ' . $error_message);
+                error_log('Comet AI Says - Gemini Quota Error | Model: '.$gemini_model.' | '.$error_message);
             }
 
-            if (strpos($gemini_model, '3.') !== false || strpos($gemini_model, 'pro') !== false) {
+            if (false !== strpos($gemini_model, '3.') || false !== strpos($gemini_model, 'pro')) {
                 $fallback = $this->fallback_gemini_api($prompt);
                 if ($fallback) {
                     return $fallback;
                 }
             }
 
-            return 'AI Quota Error: ' . esc_html__('Gemini API quota exceeded for the selected model. Please try a lighter model (e.g. Gemini 3 Flash) or check your usage at https://ai.dev/rate-limit', 'comet-ai-says');
+            return 'AI Quota Error: '.esc_html__('Gemini API quota exceeded for the selected model. Please try a lighter model (e.g. Gemini 3 Flash) or check your usage at https://ai.dev/rate-limit', 'comet-ai-says');
         }
 
         return sprintf(
@@ -266,6 +273,8 @@ class AIGenerator {
 
     /**
      * Prepare image data for Gemini API (Bugs Fixed).
+     *
+     * @param mixed $product_id
      */
     private function prepare_gemini_image_data($product_id) {
         $featured_image_id = get_post_thumbnail_id($product_id);
@@ -286,7 +295,7 @@ class AIGenerator {
         $raw_image_data = wp_remote_retrieve_body($image_response);
         $content_type = wp_remote_retrieve_header($image_response, 'content-type');
         $mime_type = $content_type ? $content_type : 'image/jpeg';
-        
+
         $supported_mimes = ['image/png', 'image/jpeg', 'image/webp', 'image/heic', 'image/heif', 'image/gif'];
         $image_data = '';
 
@@ -318,6 +327,9 @@ class AIGenerator {
 
     /**
      * Unified OpenAI API call that handles both text and image prompts.
+     *
+     * @param mixed      $prompt
+     * @param null|mixed $product_id
      */
     private function call_openai_api($prompt, $product_id = null) {
         $api_url = 'https://api.openai.com/v1/chat/completions';
@@ -382,6 +394,7 @@ class AIGenerator {
             if (Plugin::$debug && defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {
                 error_log('Comet AI Says - OpenAI API Error: '.$response->get_error_message());
             }
+
             return false;
         }
 
@@ -400,6 +413,8 @@ class AIGenerator {
 
     /**
      * Send webhook notification after a successful AI description save.
+     *
+     * @param mixed $product
      */
     private function trigger_webhook_notification($product, string $description, string $event = 'ai_description_generated'): void
     {
@@ -536,7 +551,7 @@ class AIGenerator {
         if ($description && false === strpos($description, 'AI Error') && false === strpos($description, 'Network Error')) {
             wp_send_json_success(['description' => $description]);
         } else {
-            $error_msg = ($description && (strpos($description, 'AI Error') !== false || strpos($description, 'Network Error') !== false)) ? $description : 'Check your API key and provider settings.';
+            $error_msg = ($description && (false !== strpos($description, 'AI Error') || false !== strpos($description, 'Network Error'))) ? $description : 'Check your API key and provider settings.';
             wp_send_json_error(sprintf(__('Failed to generate description. Error: %s', 'comet-ai-says'), esc_html($error_msg)));
         }
     }
@@ -614,7 +629,7 @@ class AIGenerator {
                 'message' => sprintf(__('AI description deleted for: %s', 'comet-ai-says'), $product->get_name()),
             ]);
         } else {
-            /* translators: %s is the product name */
+            // translators: %s is the product name
             wp_send_json_error(sprintf(__('Failed to delete AI description for: %s', 'comet-ai-says'), $product->get_name()));
         }
     }
@@ -672,12 +687,12 @@ class AIGenerator {
                 'product_id' => $product_id,
                 'product_name' => $product->get_name(),
                 'description' => $description,
-                /* translators: %1$s is the product name, %2$s is the AI model name */
+                // translators: %1$s is the product name, %2$s is the AI model name
                 'message' => sprintf(__('AI description generated and saved for: %1$s via: %2$s', 'comet-ai-says'), $product->get_name(), $model_name),
             ]);
         } else {
-            $error_msg = ($description && (strpos($description, 'AI Error') !== false || strpos($description, 'Network Error') !== false)) ? $description : 'Check your API key and provider settings.';
-            /* translators: %1$s is the product name, %2$s is the error message */
+            $error_msg = ($description && (false !== strpos($description, 'AI Error') || false !== strpos($description, 'Network Error'))) ? $description : 'Check your API key and provider settings.';
+            // translators: %1$s is the product name, %2$s is the error message
             wp_send_json_error(sprintf(__('Failed to generate description for: %1$s. Error: %2$s', 'comet-ai-says'), $product->get_name(), esc_html($error_msg)));
         }
     }
