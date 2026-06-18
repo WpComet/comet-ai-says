@@ -150,3 +150,11 @@ This plugin connects to third-party AI services directly to generate product des
 * No data is stored by the AI services beyond the immediate request processing
 * You must obtain and configure your own API keys for these services
 * The plugin does not send any personally identifiable information (PII) unless included in your product data
+
+== Changelog ==
+
+= 1.3.0 =
+* Fixed: Gemini API generation failing with generic error on 3.1 Pro and 3.5 Flash models
+* Improved: Detail specific AI/Network errors in UI
+* Updated: Migrated to Gemini 3.5 Flash and 3.1 Pro stable GA equivalents
+* Updated: Fallback mechanism for legacy model settings

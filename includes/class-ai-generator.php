@@ -208,12 +208,6 @@ class AIGenerator {
             ],
         ];
 
-        if (strpos($gemini_model, 'gemini-3') !== false) {
-            $request_body['generationConfig']['thinking_config'] = [
-                'include_thoughts' => false,
-            ];
-        }
-
         $response = wp_remote_post($api_url, [
             'headers' => ['Content-Type' => 'application/json'],
             'body'    => wp_json_encode($request_body),
@@ -230,6 +224,9 @@ class AIGenerator {
         if (200 === $response_code && isset($body['candidates'][0]['content']['parts'])) {
             $output_text = '';
             foreach ($body['candidates'][0]['content']['parts'] as $part) {
+                if (isset($part['thought']) && $part['thought'] === true) {
+                    continue;
+                }
                 if (isset($part['text'])) {
                     $output_text .= $part['text'];
                 }
@@ -536,10 +533,11 @@ class AIGenerator {
 
         $description = $this->generate_description($product);
 
-        if ($description) {
+        if ($description && false === strpos($description, 'AI Error') && false === strpos($description, 'Network Error')) {
             wp_send_json_success(['description' => $description]);
         } else {
-            wp_send_json_error(esc_html__('Failed to generate description. Check your API key and provider settings.', 'comet-ai-says'));
+            $error_msg = ($description && (strpos($description, 'AI Error') !== false || strpos($description, 'Network Error') !== false)) ? $description : 'Check your API key and provider settings.';
+            wp_send_json_error(sprintf(__('Failed to generate description. Error: %s', 'comet-ai-says'), esc_html($error_msg)));
         }
     }
 
@@ -662,7 +660,7 @@ class AIGenerator {
 
         $description = self::generate_for_product($product);
 
-        if ($description && false === strpos($description, 'AI Error')) {
+        if ($description && false === strpos($description, 'AI Error') && false === strpos($description, 'Network Error')) {
             update_post_meta($product_id, '_wpcmt_aisays_description', $description);
 
             $instance = self::get_instance();
@@ -678,8 +676,9 @@ class AIGenerator {
                 'message' => sprintf(__('AI description generated and saved for: %1$s via: %2$s', 'comet-ai-says'), $product->get_name(), $model_name),
             ]);
         } else {
-            /* translators: %s is the product name */
-            wp_send_json_error(sprintf(__('Failed to generate description for: %s. Check your API key and provider settings.', 'comet-ai-says'), $product->get_name()));
+            $error_msg = ($description && (strpos($description, 'AI Error') !== false || strpos($description, 'Network Error') !== false)) ? $description : 'Check your API key and provider settings.';
+            /* translators: %1$s is the product name, %2$s is the error message */
+            wp_send_json_error(sprintf(__('Failed to generate description for: %1$s. Error: %2$s', 'comet-ai-says'), $product->get_name(), esc_html($error_msg)));
         }
     }
 }
