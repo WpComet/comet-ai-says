@@ -6,8 +6,6 @@ class AdminInterface
 {
     private const MODEL_LIMITS = [
         '3.5-flash' => ['rpm' => 15, 'tpm' => 1000000, 'rpd' => 1500],
-        '2.5-pro' => ['rpm' => 5, 'tpm' => 125000, 'rpd' => 100],
-        '2.5-flash' => ['rpm' => 10, 'tpm' => 250000, 'rpd' => 250],
         '3.0-flash' => ['rpm' => 15, 'tpm' => 1000000, 'rpd' => 200],
         '3.1-flash' => ['rpm' => 15, 'tpm' => 1000000, 'rpd' => 200],
         '3.1-pro' => ['rpm' => 5, 'tpm' => 125000, 'rpd' => 100],
@@ -253,7 +251,7 @@ class AdminInterface
     /**
      * Get default prompt template.
      */
-    private function get_default_prompt_template(): string
+    private static function get_default_prompt_template(): string
     {
         return '{introduction} 
 for: {product_name}
@@ -445,24 +443,11 @@ Visual context: {image_analysis}
 		<option value="gemini-3-flash-preview" <?php selected($current_gemini_model, 'gemini-3-flash-preview'); ?>>
 			Gemini 3 Flash – Balanced performance
 		</option>
-		<option value="gemini-3.1-pro-preview" <?php selected($current_gemini_model, 'gemini-3.1-pro-preview'); ?>>
-			Gemini 3.1 Pro Preview – Best reasoning, complex tasks & agentic workflows
+		<option value="gemini-3.1-pro" <?php selected($current_gemini_model, 'gemini-3.1-pro'); ?>>
+			Gemini 3.1 Pro – Best reasoning, complex tasks & agentic workflows
 		</option>
-		<option value="gemini-3.1-flash-lite-preview" <?php selected($current_gemini_model, 'gemini-3.1-flash-lite-preview'); ?>>
+		<option value="gemini-3.1-flash-lite" <?php selected($current_gemini_model, 'gemini-3.1-flash-lite'); ?>>
 			Gemini 3.1 Flash-Lite – High volume, cost-efficient workhorse
-		</option>
-	</optgroup>
-
-	<optgroup
-		label="<?php esc_attr_e('⚖️ Gemini 2.5 (Retiring Oct 2026)', 'comet-ai-says'); ?>">
-		<option value="gemini-2.5-flash" <?php selected($current_gemini_model, 'gemini-2.5-flash'); ?>>
-			Gemini 2.5 Flash – Balanced speed & quality
-		</option>
-		<option value="gemini-2.5-pro" <?php selected($current_gemini_model, 'gemini-2.5-pro'); ?>>
-			Gemini 2.5 Pro – Strong reasoning
-		</option>
-		<option value="gemini-2.5-flash-lite" <?php selected($current_gemini_model, 'gemini-2.5-flash-lite'); ?>>
-			Gemini 2.5 Flash-Lite – Lowest cost / highest throughput
 		</option>
 	</optgroup>
 </select>
@@ -480,12 +465,9 @@ Visual context: {image_analysis}
 	<strong><?php esc_html_e('🚀 Recommendation (2026):', 'comet-ai-says'); ?></strong>
 	<?php esc_html_e('Start with "Gemini 3.5 Flash" — best balance of speed, intelligence, and multimodal (vision) performance for most users.', 'comet-ai-says'); ?>
 	<hr>
-	<?php esc_html_e('Gemini 3.1 Pro Preview for the most demanding reasoning, coding, and agentic tasks.', 'comet-ai-says'); ?>
+	<?php esc_html_e('Gemini 3.1 Pro for the most demanding reasoning, coding, and agentic tasks.', 'comet-ai-says'); ?>
 	<br>
 	<?php esc_html_e('Use Gemini 3.1 Flash-Lite for high-volume / cost-sensitive workloads.', 'comet-ai-says'); ?>
-	<hr>
-	<strong><?php esc_html_e('Consider:', 'comet-ai-says'); ?></strong><br>
-	<?php esc_html_e('Gemini 2.5 series — still very solid and stable for production (Retiring Oct 2026).', 'comet-ai-says'); ?>
 	<hr>
 	<strong><?php esc_html_e('Avoid if possible:', 'comet-ai-says'); ?></strong><br>
 	<?php esc_html_e('Experimental "latest" alias unless you need bleeding-edge changes.', 'comet-ai-says'); ?>
@@ -670,7 +652,7 @@ Visual context: {image_analysis}
 </div>
 <textarea id="wpcmt_aisays_prompt_template" name="wpcmt_aisays_prompt_template" rows="10"
 	style="width: 100%; font-family: monospace;"
-	placeholder="<?php echo esc_attr($this->get_default_prompt_template()); ?>"><?php echo esc_textarea($current_prompt_template); ?></textarea>
+	placeholder="<?php echo esc_attr(self::get_default_prompt_template_public()); ?>"><?php echo esc_textarea($current_prompt_template); ?></textarea>
 <p class="description">
 	<?php esc_html_e('Customize the prompt template. Available variables:', 'comet-ai-says'); ?><br>
 	<code>{language}</code> -
@@ -690,7 +672,7 @@ Visual context: {image_analysis}
 	<code>{image_analysis}</code> -
 	<?php esc_html_e('Featured image analysis and context', 'comet-ai-says'); ?><br>
 	<button type="button" class="button button-small"
-		onclick="document.getElementById('wpcmt_aisays_prompt_template').value = '<?php echo esc_js($this->get_default_prompt_template()); ?>'">
+		onclick="document.getElementById('wpcmt_aisays_prompt_template').value = '<?php echo esc_js(self::get_default_prompt_template_public()); ?>'">
 		<?php esc_html_e('Reset to Default', 'comet-ai-says'); ?>
 	</button>
 	<hr>
@@ -930,9 +912,9 @@ Write a compelling description that converts visitors into buyers.', 'comet-ai-s
 				<label style="display: block; font-weight: 600; margin-bottom: 10px; font-size: 16px;">
 					<?php esc_html_e('3. Select Gemini Model', 'comet-ai-says'); ?>
 				</label>
-				<?php $this->render_gemini_model_select(get_option('wpcmt_aisays_gemini_model', 'gemini-3.1-flash-preview')); ?>
+				<?php $this->render_gemini_model_select(get_option('wpcmt_aisays_gemini_model', 'gemini-3.5-flash')); ?>
 				<p class="description" style="margin-top: 8px;">
-					<?php esc_html_e('Gemini 3.1 Flash is recommended for most e-commerce use cases.', 'comet-ai-says'); ?>
+					<?php esc_html_e('Gemini 3.5 Flash is recommended for most e-commerce use cases.', 'comet-ai-says'); ?>
 				</p>
 			</div>
 
@@ -1126,7 +1108,7 @@ Write a compelling description that converts visitors into buyers.', 'comet-ai-s
             'wpcmt_aisays_display_mode' => 'automatic',
             'wpcmt_aisays_display_position' => 'after_description',
             'wpcmt_aisays_shortcode' => '[comet-ai-says-product-description]',
-            'wpcmt_aisays_prompt_template' => $this->get_default_prompt_template(),
+            'wpcmt_aisays_prompt_template' => self::get_default_prompt_template_public(),
             'wpcmt_aisays_webhook_url' => '',
             'wpcmt_aisays_max_tokens' => 1500,
         ];
@@ -1332,6 +1314,24 @@ Write a compelling description that converts visitors into buyers.', 'comet-ai-s
      */
     public function register_settings(): void
     {
+        // Auto-migrate legacy saved model settings to Gemini 3.5 Flash / GA equivalents
+        $saved_model = get_option('wpcmt_aisays_gemini_model');
+        if ($saved_model) {
+            $legacy_mappings = [
+                'gemini-2.5-flash'              => 'gemini-3.5-flash',
+                'gemini-2.5-pro'                => 'gemini-3.1-pro',
+                'gemini-2.5-flash-lite'         => 'gemini-3.1-flash-lite',
+                'gemini-2.0-flash'              => 'gemini-3.5-flash',
+                'gemini-3.1-pro-preview'        => 'gemini-3.1-pro',
+                'gemini-3.1-flash-lite-preview' => 'gemini-3.1-flash-lite',
+                'gemini-3.1-flash-preview'      => 'gemini-3.5-flash',
+                'gemini-3-flash-preview'        => 'gemini-3-flash-preview',
+            ];
+            if (isset($legacy_mappings[$saved_model])) {
+                update_option('wpcmt_aisays_gemini_model', $legacy_mappings[$saved_model]);
+            }
+        }
+
         $settings = [
             'wpcmt_aisays_provider' => ['string', 'gemini'],
             'wpcmt_aisays_gemini_api_key' => ['string', ''],
@@ -1343,7 +1343,7 @@ Write a compelling description that converts visitors into buyers.', 'comet-ai-s
             'wpcmt_aisays_display_mode' => ['string', 'automatic'],
             'wpcmt_aisays_display_position' => ['string', 'after_description'],
             'wpcmt_aisays_shortcode' => ['string', '[comet-ai-says-product-description]'],
-            'wpcmt_aisays_prompt_template' => ['string', $this->get_default_prompt_template(), 'sanitize_textarea_field'],
+            'wpcmt_aisays_prompt_template' => ['string', self::get_default_prompt_template_public(), 'sanitize_textarea_field'],
             'wpcmt_aisays_webhook_url' => ['string', '', 'esc_url_raw'],
             'wpcmt_aisays_max_tokens' => ['integer', 1500, 'absint'],
         ];
@@ -1397,9 +1397,12 @@ Write a compelling description that converts visitors into buyers.', 'comet-ai-s
         $current_provider = get_option('wpcmt_aisays_provider', 'gemini');
         $current_language = get_option('wpcmt_aisays_language', 'english');
         $custom_language = get_option('wpcmt_aisays_custom_language', '');
-        $current_gemini_model = get_option('wpcmt_aisays_gemini_model', 'gemini-2.5-flash');
+        $current_gemini_model = get_option('wpcmt_aisays_gemini_model', 'gemini-3.5-flash');
         $current_openai_model = get_option('wpcmt_aisays_openai_model', 'gpt-4o');
-        $current_prompt_template = get_option('wpcmt_aisays_prompt_template', $this->get_default_prompt_template());
+        $current_prompt_template = get_option('wpcmt_aisays_prompt_template', '');
+        if (empty($current_prompt_template)) {
+            $current_prompt_template = self::get_default_prompt_template();
+        }
         $current_webhook_url = get_option('wpcmt_aisays_webhook_url', '');
         $current_display_mode = get_option('wpcmt_aisays_display_mode', 'automatic');
         $current_display_position = get_option('wpcmt_aisays_display_position', 'after_description');
@@ -2060,9 +2063,7 @@ Write a compelling description that converts visitors into buyers.', 'comet-ai-s
      */
     public static function get_default_prompt_template_public(): string
     {
-        $instance = new self();
-
-        return $instance->get_default_prompt_template();
+        return self::get_default_prompt_template();
     }
 
     /**

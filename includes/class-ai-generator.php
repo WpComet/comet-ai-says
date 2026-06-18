@@ -46,7 +46,10 @@ class AIGenerator {
         $store_context = get_bloginfo('name');
 
         // Get the custom prompt template or use default
-        $prompt_template = get_option('wpcmt_aisays_prompt_template', AdminInterface::get_default_prompt_template_public());
+        $prompt_template = get_option('wpcmt_aisays_prompt_template', '');
+        if (empty($prompt_template)) {
+            $prompt_template = AdminInterface::get_default_prompt_template_public();
+        }
 
         // Prepare attributes string
         $attributes_string = '';
@@ -156,12 +159,15 @@ class AIGenerator {
         $mappings = [
             'gemini-flash-latest'           => 'gemini-flash-latest',
             'gemini-3.5-flash'              => 'gemini-3.5-flash',
-            'gemini-3.1-pro-preview'        => 'gemini-3.1-pro-preview',
-            'gemini-3.1-flash-lite-preview' => 'gemini-3.1-flash-lite-preview',
+            'gemini-3.1-pro'                => 'gemini-3.1-pro',
+            'gemini-3.1-pro-preview'        => 'gemini-3.1-pro',
+            'gemini-3.1-flash-lite'         => 'gemini-3.1-flash-lite',
+            'gemini-3.1-flash-lite-preview' => 'gemini-3.1-flash-lite',
+            'gemini-3.1-flash-preview'      => 'gemini-3.5-flash',
             'gemini-3-flash-preview'        => 'gemini-3-flash-preview',
-            'gemini-2.5-flash'              => 'gemini-2.5-flash',
-            'gemini-2.5-pro'                => 'gemini-2.5-pro',
-            'gemini-2.5-flash-lite'         => 'gemini-2.5-flash-lite',
+            'gemini-2.5-flash'              => 'gemini-3.5-flash', // Migration
+            'gemini-2.5-pro'                => 'gemini-3.1-pro', // Migration
+            'gemini-2.5-flash-lite'         => 'gemini-3.1-flash-lite', // Migration
             'gemini-2.0-flash'              => 'gemini-3.5-flash', // Migration for sunset model
         ];
         

@@ -49,8 +49,9 @@ Comet AI Says is a lightweight, privacy-conscious WordPress plugin that generate
 = 1.3.0 =
 * Added: Support for Gemini 3.5 Flash model
 * Updated: Default model is now Gemini 3.5 Flash
+* Updated: Gemini 3.1 models promoted out of Preview to General Availability (GA)
 * Updated: WordPress 7.0 "Armstrong" compatibility
-* Removed: Sunset Gemini 2.0 Flash model support
+* Removed: Sunset Gemini 2.x models (2.0 Flash, 2.5 series) support
 
 = 1.2.0 =
 * Added: Support latest 3.1 model
