@@ -160,16 +160,16 @@ class AIGenerator
      */
     private function normalize_gemini_model($model) {
         $mappings = [
-            'gemini-flash-latest' => 'gemini-3.5-flash',
+            'gemini-flash-latest' => 'gemini-flash-latest',
             'gemini-3.5-flash' => 'gemini-3.5-flash',
-            'gemini-3.1-pro' => 'gemini-3.1-pro-preview',
-            'gemini-3.1-pro-preview' => 'gemini-3.1-pro-preview',
+            'gemini-3.1-pro' => 'gemini-3.1-pro',
+            'gemini-3.1-pro-preview' => 'gemini-3.1-pro',
             'gemini-3.1-flash-lite' => 'gemini-3.1-flash-lite',
             'gemini-3.1-flash-lite-preview' => 'gemini-3.1-flash-lite',
             'gemini-3.1-flash-preview' => 'gemini-3.5-flash',
             'gemini-3-flash-preview' => 'gemini-3-flash-preview',
             'gemini-2.5-flash' => 'gemini-3.5-flash', // Migration
-            'gemini-2.5-pro' => 'gemini-3.1-pro-preview', // Migration
+            'gemini-2.5-pro' => 'gemini-3.1-pro', // Migration
             'gemini-2.5-flash-lite' => 'gemini-3.1-flash-lite', // Migration
             'gemini-2.0-flash' => 'gemini-3.5-flash', // Migration for sunset model
         ];
@@ -180,6 +180,11 @@ class AIGenerator
     /**
      * Unified Gemini API call that handles both text and image prompts.
      *
+     * Note: Gemini 3.x models are optimized for default settings. Sampling parameters
+     * (temperature, top_p, top_k) are no longer recommended and have been removed.
+     * Reasoning is controlled by thinking_level (defaults to 'medium' for Gemini 3.5 Flash).
+     * See: https://ai.google.dev/gemini-api/docs/whats-new-gemini-3.5
+     *
      * @param mixed      $prompt
      * @param null|mixed $product_id
      */
@@ -188,10 +193,14 @@ class AIGenerator
         $gemini_model = $this->normalize_gemini_model($raw_model);
 
         $max_tokens = (int) get_option('wpcmt_aisays_max_tokens', 1500);
-
-        $api_version = (false !== strpos($gemini_model, 'gemini-3')) ? 'v1beta' : 'v1';
-        $api_url = "https://generativelanguage.googleapis.com/{$api_version}/models/{$gemini_model}:generateContent?key=".$this->api_key;
-
+        /**
+         * The v1beta endpoint is backward‑compatible and supports every model according to current docs. Kept for future reference.
+         *
+         * $beta_aliases = ['gemini-flash-latest','gemini-3'];
+         * $api_version = \in_array($gemini_model, $beta_aliases) ? 'v1beta' : 'v1';
+         */
+        $api_version = 'v1beta';
+        $api_url = "https://generativelanguage.googleapis.com/{$api_version}/models/{$gemini_model}:generateContent?key=" . $this->api_key;
         $parts = [['text' => $prompt]];
 
         if ($product_id && get_post_thumbnail_id($product_id)) {
@@ -209,7 +218,6 @@ class AIGenerator
         $request_body = [
             'contents' => [['parts' => $parts]],
             'generationConfig' => [
-                'temperature' => 0.7,
                 'maxOutputTokens' => $max_tokens,
             ],
         ];

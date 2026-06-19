@@ -440,10 +440,7 @@ Visual context: {image_analysis}
 		<option value="gemini-3.5-flash" <?php selected($current_gemini_model, 'gemini-3.5-flash'); ?>>
 			Gemini 3.5 Flash – Fast, intelligent, excellent vision & agentic performance (recommended default)
 		</option>
-		<option value="gemini-3-flash-preview" <?php selected($current_gemini_model, 'gemini-3-flash-preview'); ?>>
-			Gemini 3 Flash – Balanced performance
-		</option>
-		<option value="gemini-3.1-pro" <?php selected($current_gemini_model, 'gemini-3.1-pro'); ?>>
+		<option value="gemini-3.1-pro-preview" <?php selected($current_gemini_model, 'gemini-3.1-pro-preview'); ?>>
 			Gemini 3.1 Pro – Best reasoning, complex tasks & agentic workflows
 		</option>
 		<option value="gemini-3.1-flash-lite" <?php selected($current_gemini_model, 'gemini-3.1-flash-lite'); ?>>
@@ -1501,7 +1498,7 @@ Write a compelling description that converts visitors into buyers.', 'comet-ai-s
 				<?php $this->render_gemini_model_select($current_gemini_model); ?>
 
 				<details>
-					<summary><strong>🤖 Gemini Model Comparison Guide</strong></summary>
+					<summary><strong>🤖 Gemini Model Comparison Guide (June 2026)</strong></summary>
 					<br>
 					<table style="width: 100%; border-collapse: collapse; margin: 10px 0;">
 						<thead>
@@ -1510,136 +1507,126 @@ Write a compelling description that converts visitors into buyers.', 'comet-ai-s
 								<th style="padding: 8px; border: 1px solid #ddd; text-align: left;">Speed</th>
 								<th style="padding: 8px; border: 1px solid #ddd; text-align: left;">Quality/Reasoning
 								</th>
-								<th style="padding: 8px; border: 1px solid #ddd; text-align: left;">Free Tier</th>
-								<th style="padding: 8px; border: 1px solid #ddd; text-align: left;">Cost Efficiency</th>
+								<th style="padding: 8px; border: 1px solid #ddd; text-align: left;">Vision (Multimodal)</th>
+								<th style="padding: 8px; border: 1px solid #ddd; text-align: left;">Cost</th>
 								<th style="padding: 8px; border: 1px solid #ddd; text-align: left;">Best For</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr style="background: #f0f7ff; border: 2px solid #2271b1;">
-								<td style="padding: 8px; border: 1px solid #ddd;"><strong>⚡ Gemini 2.5 Flash</strong>
+								<td style="padding: 8px; border: 1px solid #ddd;"><strong>🚀 Gemini 3.5 Flash (GA)</strong>
 								</td>
 								<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐⭐⭐</td>
-								<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐⭐</td>
 								<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐⭐⭐</td>
+								<td style="padding: 8px; border: 1px solid #ddd;">✓ Excellent</td>
 								<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐⭐⭐</td>
-								<td style="padding: 8px; border: 1px solid #ddd;">High-volume tasks, vision,
-									low-latency, best overall balance</td>
+								<td style="padding: 8px; border: 1px solid #ddd;"><strong>Recommended default</strong> — most intelligent Flash, agentic tasks, vision</td>
 							</tr>
 							<tr>
-								<td style="padding: 8px; border: 1px solid #ddd;"><strong>🧠 Gemini 2.5 Pro</strong>
+								<td style="padding: 8px; border: 1px solid #ddd;"><strong>🧠 Gemini 3.1 Pro (GA)</strong>
 								</td>
 								<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐</td>
 								<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐⭐⭐</td>
-								<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐</td>
+								<td style="padding: 8px; border: 1px solid #ddd;">✓ Full support</td>
 								<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐</td>
-								<td style="padding: 8px; border: 1px solid #ddd;">Complex reasoning, technical tasks,
-									deep analysis</td>
+								<td style="padding: 8px; border: 1px solid #ddd;">Complex reasoning, deep analysis, coding</td>
 							</tr>
 							<tr>
-								<td style="padding: 8px; border: 1px solid #ddd;"><strong>🚀 Gemini 3 Flash
-										(Preview)</strong></td>
+								<td style="padding: 8px; border: 1px solid #ddd;"><strong>💰 Gemini 3.1 Flash-Lite (GA)</strong></td>
 								<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐⭐⭐</td>
 								<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐⭐</td>
-								<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐⭐</td>
-								<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐⭐</td>
-								<td style="padding: 8px; border: 1px solid #ddd;">Cutting-edge performance at lower cost
-									(experimental)</td>
-							</tr>
-							<tr>
-								<td style="padding: 8px; border: 1px solid #ddd; color: gray;">
-									<del>Gemini 2.0 / 1.5 Series</del>
-								</td>
-								<td style="padding: 8px; border: 1px solid #ddd; color: gray;">-</td>
-								<td style="padding: 8px; border: 1px solid #ddd; color: gray;">-</td>
-								<td style="padding: 8px; border: 1px solid #ddd; color: gray;">-</td>
-								<td style="padding: 8px; border: 1px solid #ddd; color: gray;">-</td>
-								<td style="padding: 8px; border: 1px solid #ddd; color: gray;">
-									<del>Deprecated / Retired</del>
-								</td>
+								<td style="padding: 8px; border: 1px solid #ddd;">✓ Yes</td>
+								<td style="padding: 8px; border: 1px solid #ddd;">⭐⭐⭐⭐⭐</td>
+								<td style="padding: 8px; border: 1px solid #ddd;">High-volume, cost-sensitive, bulk generation</td>
 							</tr>
 						</tbody>
 					</table>
 
 					<a href="https://ai.google.dev/gemini-api/docs/models" target="_blank">Official Models
-						Documentation</a><br><br>
+						Documentation</a> | <a href="https://ai.google.dev/gemini-api/docs/whats-new-gemini-3.5" target="_blank">What's New in Gemini 3.5</a><br><br>
 
-					<strong>⚡ Gemini 2.5 Flash (Stable / Recommended Default)</strong><br>
+					<strong>🚀 Gemini 3.5 Flash (Recommended Default — June 2026)</strong><br>
 					<ul>
-						<li>Excellent balance of speed, cost, and multimodal capabilities (text + vision)</li>
-						<li>1M token context window</li>
-						<li>Best price-performance for most production use cases</li>
+						<li>Our most intelligent Flash model — best balance of speed, reasoning, and cost</li>
+						<li>1M token context window, 65k max output tokens</li>
+						<li>Excellent multimodal (vision) performance</li>
+						<li>Default thinking level: <code>medium</code> (optimal for most tasks)</li>
 					</ul>
 
-					<strong>🧠 Gemini 2.5 Pro (Stable)</strong><br>
+					<strong>🧠 Gemini 3.1 Pro (Complex Reasoning)</strong><br>
 					<ul>
-						<li>Most capable model for complex reasoning and technical tasks</li>
-						<li>Higher cost and lower rate limits than Flash</li>
+						<li>Best for complex reasoning, advanced problem-solving, coding</li>
+						<li>Lower rate limits and higher cost than Flash models</li>
+						<li>Use when 3.5 Flash isn't sufficient for your task</li>
 					</ul>
 
-					<strong>🚀 Gemini 3 Flash (Preview) — Cutting Edge</strong><br>
+					<strong>💰 Gemini 3.1 Flash-Lite (Cost-Efficient)</strong><br>
 					<ul>
-						<li>Newer frontier-class performance at competitive pricing</li>
-						<li>Good for users who want the latest capabilities (hint of risk as it's in preview)</li>
+						<li>Optimized for high-volume, cost-sensitive operations</li>
+						<li>Significantly cheaper than 3.5 Flash with strong quality for simple tasks</li>
+						<li>Great for bulk product description generation</li>
 					</ul>
 
-					<strong>💡 Recommendations:</strong><br>
+					<strong>💡 Recommendations (2026):</strong><br>
 					<ul>
-						<li><strong>For most apps & e-commerce:</strong> Use <strong>Gemini 2.5 Flash</strong> — best
-							overall balance.</li>
-						<li><strong>For deep technical / complex logic:</strong> Use <strong>Gemini 2.5 Pro</strong>.
-						</li>
-						<li><strong>For cutting-edge / experimental:</strong> Try <strong>Gemini 3 Flash
-								Preview</strong> (riskier but potentially stronger).</li>
-						<li><strong>Avoid</strong> deprecated 1.5 / 2.0 series models.</li>
+						<li><strong>For most products & use cases:</strong> Use <strong>Gemini 3.5 Flash</strong> (default) — best overall quality.</li>
+						<li><strong>For complex reasoning / technical tasks:</strong> Use <strong>Gemini 3.1 Pro</strong>.</li>
+						<li><strong>For bulk / high-volume at lower cost:</strong> Use <strong>Gemini 3.1 Flash-Lite</strong>.</li>
 					</ul>
 				</details>
 				<details>
-					<summary><strong>📦 Gemini API Rate Limits & Pricing (March 2026)</strong></summary>
+					<summary><strong>📦 Gemini API Rate Limits & Pricing (June 2026)</strong></summary>
 					<br>
 
 					<strong>🆓 Free Tier (No billing required):</strong><br>
 					<ul>
-						<li><code>Gemini 2.5 Flash</code> — Generous daily limits (exact RPM/TPM varies by
-							region/project)</li>
-						<li><code>Gemini 2.5 Pro</code> — More restricted daily limits</li>
-						<li><code>Gemini 3 Flash (Preview)</code> — Free tier available with limits</li>
-						<li>Exact quotas are dynamic and best checked in <strong>Google AI Studio</strong></li>
+						<li><code>Gemini 3.5 Flash</code> — 1M TPM free quota / 15 RPM</li>
+						<li><code>Gemini 3.1 Pro</code> — 125K TPM free quota / 5 RPM</li>
+						<li><code>Gemini 3.1 Flash-Lite</code> — 1M TPM free quota / 15 RPM</li>
+						<li>Free tier quotas reset daily at midnight Pacific Time</li>
+						<li>Check <strong>Google AI Studio</strong> for exact quota status</li>
 					</ul>
 
-					<strong>💳 Paid Tier:</strong><br>
+					<strong>📊 Standard Rate Limits (GA Models):</strong><br>
 					<ul>
-						<li>Significantly higher limits (thousands of RPM possible depending on tier)</li>
-						<li>Access to context caching, batch API, and higher reliability</li>
+						<li><strong>Gemini 3.5 Flash:</strong> 15 RPM, 1M TPM, 1500 RPD</li>
+						<li><strong>Gemini 3.1 Pro:</strong> 5 RPM, 125K TPM, 100 RPD</li>
+						<li><strong>Gemini 3.1 Flash-Lite:</strong> 15 RPM, 1M TPM, 200+ RPD</li>
 					</ul>
 
-					<strong>💰 Current Pricing (per 1M tokens):</strong><br>
+					<strong>💳 Paid Tier (With billing):</strong><br>
 					<ul>
-						<li><strong>Gemini 2.5 Flash</strong><br>
-							Input: <strong>$0.15</strong> | Output: <strong>$1.25</strong></li>
-						<li><strong>Gemini 2.5 Pro</strong><br>
-							Input: <strong>$0.625</strong> (≤200k) / $1.25 (>200k) | Output: <strong>$5.00</strong>
-							(≤200k) / $7.50 (>200k)</li>
-						<li><strong>Gemini 3 Flash (Preview)</strong><br>
-							Input: <strong>$0.25</strong> | Output: <strong>$1.50</strong></li>
+						<li>Higher limits available (negotiated tiers and priority inference)</li>
+						<li>Access to context caching, batch API, webhooks, and flex inference</li>
 					</ul>
 
-					<strong>⚠️ Important Notes:</strong><br>
+					<strong>💰 Current Pricing (per 1M tokens, June 2026):</strong><br>
 					<ul>
-						<li>Free tier quotas are daily and reset at midnight Pacific Time.</li>
-						<li>Rate limits are shared across the entire Google Cloud project.</li>
-						<li>All models support multimodal input (text + images, and some support video/audio).</li>
-						<li>Preview models (Gemini 3 series) may have less stable behavior and can change.</li>
+						<li><strong>Gemini 3.5 Flash</strong><br>
+							Input: <strong>$0.075</strong> | Output: <strong>$0.30</strong></li>
+						<li><strong>Gemini 3.1 Pro</strong><br>
+							Input: <strong>$3.50</strong> | Output: <strong>$14.00</strong></li>
+						<li><strong>Gemini 3.1 Flash-Lite</strong><br>
+							Input: <strong>$0.038</strong> | Output: <strong>$0.15</strong></li>
 					</ul>
 
-					<em>RPM = Requests per minute, TPM = Tokens per minute (actual values visible in Google AI
-						Studio)</em><br><br>
+					<strong>⚠️ Key Notes (Gemini 3.x Update):</strong><br>
+					<ul>
+						<li>GA release (stable): All models are production-ready, no preview warnings</li>
+						<li>Sampling parameters (temperature, top_p, top_k) no longer recommended for Gemini 3.x — use defaults</li>
+						<li>Default thinking level is <code>medium</code> for 3.5 Flash (changed from <code>high</code> in Preview)</li>
+						<li>Rate limits are shared across the entire Google Cloud project</li>
+						<li>All models support multimodal input (text + images), 1M token context</li>
+					</ul>
+
+					<em>RPM = Requests per minute, TPM = Tokens per minute, RPD = Requests per day</em><br><br>
 
 					<a href="https://ai.google.dev/gemini-api/docs/rate-limits" target="_blank">Rate Limits</a> •
-					<a href="https://ai.google.dev/pricing" target="_blank">Pricing</a> •
-					<a href="https://ai.google.dev/gemini-api/docs/models" target="_blank">Models</a>
+					<a href="https://ai.google.dev/gemini-api/docs/pricing" target="_blank">Pricing</a> •
+					<a href="https://ai.google.dev/gemini-api/docs/models" target="_blank">Models</a> •
+					<a href="https://ai.google.dev/gemini-api/docs/whats-new-gemini-3.5" target="_blank">Gemini 3.5 Guide</a>
 					<br>
-					<small><em>Last updated: March 2026</em></small>
+					<small><em>Last updated: June 18, 2026</em></small>
 				</details>
 			</td>
 		</tr>
