@@ -128,7 +128,7 @@
       },
 
       // --- 3.1 / 3.0 Generation ---
-      "gemini-3.1-pro": {
+      "gemini-3.1-pro-preview": {
         min: 1500,
         max: 7000,
         default: 3000,

@@ -162,14 +162,13 @@ class AIGenerator
         $mappings = [
             'gemini-flash-latest' => 'gemini-flash-latest',
             'gemini-3.5-flash' => 'gemini-3.5-flash',
-            'gemini-3.1-pro' => 'gemini-3.1-pro',
-            'gemini-3.1-pro-preview' => 'gemini-3.1-pro',
             'gemini-3.1-flash-lite' => 'gemini-3.1-flash-lite',
             'gemini-3.1-flash-lite-preview' => 'gemini-3.1-flash-lite',
             'gemini-3.1-flash-preview' => 'gemini-3.5-flash',
             'gemini-3-flash-preview' => 'gemini-3-flash-preview',
+            'gemini-3.1-pro' => 'gemini-3.1-pro-preview', // alias correction
             'gemini-2.5-flash' => 'gemini-3.5-flash', // Migration
-            'gemini-2.5-pro' => 'gemini-3.1-pro', // Migration
+            'gemini-2.5-pro' => 'gemini-3.1-pro-preview', // Migration
             'gemini-2.5-flash-lite' => 'gemini-3.1-flash-lite', // Migration
             'gemini-2.0-flash' => 'gemini-3.5-flash', // Migration for sunset model
         ];
@@ -391,7 +390,7 @@ class AIGenerator
                 'model' => $model,
                 'messages' => $messages,
                 'max_tokens' => $max_tokens,
-                'temperature' => 0.7,
+                //'temperature' => 0.7,
             ]),
             'timeout' => 30,
         ];
@@ -560,6 +559,7 @@ class AIGenerator
             wp_send_json_success(['description' => $description]);
         } else {
             $error_msg = ($description && (false !== strpos($description, 'AI Error') || false !== strpos($description, 'Network Error'))) ? $description : 'Check your API key and provider settings.';
+            // translators: %s error message that was returned from the API
             wp_send_json_error(sprintf(__('Failed to generate description. Error: %s', 'comet-ai-says'), esc_html($error_msg)));
         }
     }

@@ -440,11 +440,11 @@ Visual context: {image_analysis}
 		<option value="gemini-3.5-flash" <?php selected($current_gemini_model, 'gemini-3.5-flash'); ?>>
 			Gemini 3.5 Flash – Fast, intelligent, excellent vision & agentic performance (recommended default)
 		</option>
-		<option value="gemini-3.1-pro-preview" <?php selected($current_gemini_model, 'gemini-3.1-pro-preview'); ?>>
-			Gemini 3.1 Pro – Best reasoning, complex tasks & agentic workflows
-		</option>
 		<option value="gemini-3.1-flash-lite" <?php selected($current_gemini_model, 'gemini-3.1-flash-lite'); ?>>
 			Gemini 3.1 Flash-Lite – High volume, cost-efficient workhorse
+		</option>
+		<option value="gemini-3.1-pro-preview" <?php selected($current_gemini_model, 'gemini-3.1-pro-preview'); ?>>
+			Gemini 3.1 Pro – Best reasoning, complex tasks & agentic workflows
 		</option>
 	</optgroup>
 </select>
@@ -1316,10 +1316,10 @@ Write a compelling description that converts visitors into buyers.', 'comet-ai-s
         if ($saved_model) {
             $legacy_mappings = [
                 'gemini-2.5-flash'              => 'gemini-3.5-flash',
-                'gemini-2.5-pro'                => 'gemini-3.1-pro',
+                'gemini-2.5-pro'                => 'gemini-3.1-pro-preview',
                 'gemini-2.5-flash-lite'         => 'gemini-3.1-flash-lite',
                 'gemini-2.0-flash'              => 'gemini-3.5-flash',
-                'gemini-3.1-pro-preview'        => 'gemini-3.1-pro',
+                'gemini-3.1-pro'    		    => 'gemini-3.1-pro-preview',
                 'gemini-3.1-flash-lite-preview' => 'gemini-3.1-flash-lite',
                 'gemini-3.1-flash-preview'      => 'gemini-3.5-flash',
                 'gemini-3-flash-preview'        => 'gemini-3-flash-preview',
