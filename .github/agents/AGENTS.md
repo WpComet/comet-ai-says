@@ -12,7 +12,7 @@ Quick checks and commands
 - Manual QA checklist: follow [TESTS.md](../../TESTS.md)
 - Plugin header and release process: follow notes in [TESTS.md](../../TESTS.md) (SVN tagging for wordpress.org)
 
-Release readiness checklist
+Release readiness checklist:
 Use this before suggesting or approving any release changes:
 1. **Version consistency** — verify all three match:
    - Plugin header in [comet-ai-says.php](../../comet-ai-says.php#L5) (`* Version: X.Y.Z`)
