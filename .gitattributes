@@ -13,3 +13,5 @@
 /package-lock.json      export-ignore
 /node_modules           export-ignore
 /vendor                 export-ignore
+/.distignore            export-ignore
+/AGENTS.md              export-ignore

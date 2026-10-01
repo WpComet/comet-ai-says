@@ -150,7 +150,15 @@ async function runRelease() {
         console.log('\n🛡️  Running dry-run integrity and test audit...');
         execSync('node dev/check-integrity.js', { cwd: rootDir, stdio: 'inherit' });
 
-        console.log('\n✅ Dry run complete. No files were committed.');
+        // Deploy clean preview copy to WPlatest for PCP verification
+        console.log('\n📦 Deploying preview copy of what would be a release to WPlatest for PCP verification...');
+        try {
+            execSync('node dev/archive.js --no-zip', { cwd: rootDir, stdio: 'inherit' });
+        } catch (e) {
+            console.warn('⚠️  Could not deploy preview copy to WPlatest:', e.message);
+        }
+
+        console.log('\n✅ Dry run complete. No files were committed or pushed.');
         return;
     }
 
@@ -175,7 +183,11 @@ async function runRelease() {
 
     // 2. Sync to main PHP file and readme.txt
     console.log(`\n2️⃣  Syncing version ${newVersion} to ${mainFileName} and readme.txt...`);
-    execSync('node dev/bump-version.js --sync-only', { cwd: rootDir, stdio: 'inherit' });
+    execSync('node dev/bump-version.js --sync-only', { 
+        cwd: rootDir, 
+        stdio: 'inherit',
+        env: { ...process.env, COMET_IN_RELEASE: '1' }
+    });
 
     // 3. Commit release
     console.log(`\n3️⃣  Committing release v${newVersion}:`);

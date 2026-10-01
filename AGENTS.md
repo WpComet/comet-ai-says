@@ -87,4 +87,6 @@ The release script automatically:
 2. Updates version in `package.json`, `comet-ai-says.php`, and `readme.txt` (`Stable tag:`).
 3. Creates a Git commit and annotated tag.
 4. Generates a production `.zip` in `d:\wamp64\www\public-os\`.
-5. Pushes commits and tags to `origin/main`.
+5. Deploys a clean, isolated release copy (zero dev files) to `D:\wamp64\www\WPlatest\wp-content\plugins\comet-ai-says` for WordPress Plugin Check (PCP) verification.
+6. Pushes commits and tags to `origin/main`.
+
