@@ -1,0 +1,31 @@
+# Version Control & Git
+.git
+.gitignore
+.gitattributes
+.distignore
+
+# IDE & Editor Files
+.vscode
+.idea
+
+# Package Managers & Dependencies
+node_modules
+vendor
+composer.json
+composer.lock
+package.json
+package-lock.json
+
+# Development & Build Artifacts
+dev
+dev_llm
+dist
+
+# Test Suites & Caches
+tests
+phpunit.xml.dist
+.phpunit.result.cache
+.phpunit.cache
+
+# Agent Guidance & Docs
+AGENTS.md
