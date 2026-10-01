@@ -1,0 +1,43 @@
+/**
+ * Comet AI Says - Frontend Product Description Styles
+ */
+.wpcmt-aisays-description {
+    margin: 2em 0;
+    padding: 1.25em 1.5em;
+    background: #f9fafb;
+    border-left: 4px solid #6366f1;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    clear: both;
+    box-sizing: border-box;
+}
+
+.wpcmt-aisays-description .wpcmt-aisays-title {
+    margin: 0 0 0.75em 0;
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #1f2937;
+    display: flex;
+    align-items: center;
+    gap: 0.35em;
+}
+
+.wpcmt-aisays-description .wpcmt-aisays-content {
+    line-height: 1.7;
+    font-size: 1.05em;
+    color: #374151;
+}
+
+.wpcmt-aisays-description .wpcmt-aisays-content p:last-child {
+    margin-bottom: 0;
+}
+
+.wpcmt-aisays-description .wpcmt-aisays-content ul,
+.wpcmt-aisays-description .wpcmt-aisays-content ol {
+    margin: 0.75em 0;
+    padding-left: 1.5em;
+}
+
+.wpcmt-aisays-description .wpcmt-aisays-content li {
+    margin-bottom: 0.35em;
+}

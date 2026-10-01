@@ -1,0 +1,2006 @@
+/* 
+ * Comet AI Says - Bulma Admin & WP UI Overrides
+ * Sourced from the WpComet Design System with adaptive semantic tokens.
+ */
+
+/* ============================================================
+   COMET SEMANTIC DESIGN TOKENS
+   Bound to Bulma 1.0 reactive engine. Supports Light & Dark modes.
+   ============================================================ */
+.comet-aisays {
+    /* Surface & Card Tokens */
+    --comet-surface: var(--bulma-scheme-main, #ffffff);
+    --comet-surface-subtle: var(--bulma-scheme-main-bis, #f9fafb);
+    --comet-surface-tertiary: var(--bulma-scheme-main-ter, #f1f5f9);
+    --comet-surface-card: var(--bulma-card-background-color, var(--bulma-scheme-main, #ffffff));
+    --comet-surface-overlay: rgba(10, 14, 20, 0.42);
+    --comet-surface-overlay-hover: rgba(10, 14, 20, 0.62);
+    --comet-surface-backdrop: rgba(10, 14, 20, 0.85);
+    --comet-surface-interactive: color-mix(in srgb, var(--comet-text) 5%, transparent);
+    --comet-surface-interactive-hover: color-mix(in srgb, var(--comet-text) 10%, transparent);
+
+    /* Text & Typography Tokens */
+    --comet-text: var(--bulma-text, #4a4a4a);
+    --comet-text-strong: var(--bulma-text-strong, #1f242e);
+    --comet-text-muted: var(--bulma-text-weak, #788599);
+    --comet-text-inverse: var(--bulma-scheme-invert, #ffffff);
+    --comet-text-on-overlay: #ffffff;
+
+    /* Border & Divider Tokens */
+    --comet-border: var(--bulma-border, #d8dce2);
+    --comet-border-weak: var(--bulma-border-weak, #ebedf0);
+    --comet-border-subtle: color-mix(in srgb, var(--comet-border-weak) 60%, transparent);
+
+    /* Status & Brand Accents */
+    --comet-primary: var(--bulma-primary, #8a4dff);
+    --comet-primary-hover: hsl(var(--bulma-primary-h, 261deg), var(--bulma-primary-s, 100%), calc(var(--bulma-primary-l, 65%) + var(--bulma-hover-background-l-delta, -5%)));
+    --comet-primary-invert: var(--bulma-primary-invert, #ffffff);
+    --comet-primary-subtle: color-mix(in srgb, var(--comet-primary) 12%, transparent);
+    --comet-primary-subtle-hover: color-mix(in srgb, var(--comet-primary) 20%, transparent);
+    --comet-success: var(--bulma-success, #48c78e);
+    --comet-warning: var(--bulma-warning, #ffe08a);
+    --comet-danger: var(--bulma-danger, #f14668);
+    --comet-info: var(--bulma-info, #3e8ed0);
+}
+
+/* Light Mode Definition */
+.comet-aisays[data-theme="light"],
+.comet-aisays.theme-light {
+    --bulma-scheme-brightness: light;
+    --bulma-scheme-main-l: 100%;
+    --bulma-scheme-main-bis-l: 98%;
+    --bulma-scheme-main-ter-l: 96%;
+    --bulma-background-l: 96%;
+    --bulma-border-weak-l: 93%;
+    --bulma-border-l: 86%;
+    --bulma-text-weak-l: 48%;
+    --bulma-text-l: 29%;
+    --bulma-text-strong-l: 21%;
+    --bulma-shadow-l: 4%;
+    --comet-surface: #ffffff;
+    --comet-surface-subtle: #f9fafb;
+    --comet-surface-tertiary: #f1f5f9;
+    --comet-surface-card: #ffffff;
+    --comet-border: #d8dce2;
+    --comet-border-weak: #ebedf0;
+    --comet-text: #4a4a4a;
+    --comet-text-strong: #1f242e;
+    --comet-text-muted: #788599;
+    --comet-surface-interactive: rgba(138, 77, 255, 0.04);
+}
+
+/* Dark Mode Definition */
+.comet-aisays[data-theme="dark"],
+.comet-aisays.theme-dark {
+    --bulma-scheme-brightness: dark;
+    --bulma-scheme-main-l: 11%;
+    --bulma-scheme-main-bis-l: 13%;
+    --bulma-scheme-main-ter-l: 15%;
+    --bulma-background-l: 14%;
+    --bulma-border-weak-l: 21%;
+    --bulma-border-l: 26%;
+    --bulma-text-weak-l: 55%;
+    --bulma-text-l: 75%;
+    --bulma-text-strong-l: 94%;
+    --bulma-shadow-l: 100%;
+    --comet-surface: #0d1117;
+    --comet-surface-subtle: #1c2128;
+    --comet-surface-tertiary: #21262d;
+    --comet-surface-card: #161b22;
+    --comet-border: #30363d;
+    --comet-border-weak: #21262d;
+    --comet-text: #c9d1d9;
+    --comet-text-strong: #f0f6fc;
+    --comet-text-muted: #8b949e;
+    --comet-surface-interactive: rgba(255, 255, 255, 0.05);
+    --comet-surface-overlay: rgba(5, 7, 12, 0.55);
+    --comet-surface-overlay-hover: rgba(5, 7, 12, 0.75);
+    --comet-surface-backdrop: rgba(5, 7, 12, 0.90);
+}
+
+/* Dark mode overrides for native WP inputs inside .comet-aisays */
+.comet-aisays[data-theme="dark"] input[type="text"],
+.comet-aisays[data-theme="dark"] input[type="url"],
+.comet-aisays[data-theme="dark"] input[type="search"],
+.comet-aisays[data-theme="dark"] input[type="number"],
+.comet-aisays[data-theme="dark"] textarea {
+    background-color: var(--comet-surface-card) !important;
+    color: var(--comet-text-strong) !important;
+    border-color: var(--comet-border) !important;
+}
+
+.comet-aisays[data-theme="dark"] input::placeholder,
+.comet-aisays[data-theme="dark"] textarea::placeholder {
+    color: var(--comet-text-muted) !important;
+}
+
+.comet-aisays[data-theme="dark"] pre {
+    background-color: #0d1117 !important;
+    color: #c9d1d9 !important;
+    border-color: #30363d !important;
+}
+
+/* Reset WP Admin Button Hover Bleed on Bulma Buttons */
+.wp-core-ui #wpwrap .comet-aisays .button:where(:not(.button-link)):hover,
+.wp-core-ui #wpwrap .comet-aisays .button:where(:not(.button-link)):active,
+.wp-core-ui #wpwrap .comet-aisays .button:where(:not(.button-link)):focus {
+    background: none;
+    background-color: hsl(var(--bulma-button-h), var(--bulma-button-s), calc(var(--bulma-button-background-l) + var(--bulma-button-background-l-delta)));
+    color: hsl(var(--bulma-button-h), var(--bulma-button-s), var(--bulma-button-color-l));
+}
+
+.wp-core-ui #wpwrap .comet-aisays .button.is-outlined:where(:not(.button-link)):hover,
+.wp-core-ui #wpwrap .comet-aisays .button.is-outlined:where(:not(.button-link)):active,
+.wp-core-ui #wpwrap .comet-aisays .button.is-outlined:where(:not(.button-link)):focus {
+    background: none;
+    background-color: hsl(var(--bulma-button-h), var(--bulma-button-s), calc(var(--bulma-button-color-l) + var(--bulma-button-background-l-delta)));
+    color: hsl(var(--bulma-button-h), var(--bulma-button-s), var(--bulma-button-color-l));
+}
+
+/* ============================================================
+   CONTAINER & HORIZONTAL OVERFLOW PREVENTION
+   Prevents Bulma grid negative margins (.columns) from triggering
+   window horizontal scrollbars while preserving position: sticky.
+   ============================================================ */
+.wrap.comet-aisays,
+.comet-aisays {
+    max-width: 100%;
+    overflow-x: clip;
+    box-sizing: border-box;
+}
+
+@supports not (overflow-x: clip) {
+    .wrap.comet-aisays,
+    .comet-aisays {
+        overflow-x: hidden;
+    }
+}
+
+/* ============================================================
+   HEADER & NAVIGATION TABS
+   ============================================================ */
+.comet-aisays-header {
+    background: var(--comet-surface-card);
+    border-radius: var(--bulma-radius, 8px);
+    border: 1px solid var(--comet-border-weak);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    overflow: hidden;
+}
+
+.comet-aisays .tabs ul {
+    border-bottom: 2px solid var(--comet-border-weak);
+    margin: 0;
+}
+
+.comet-aisays .tabs li a {
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    font-weight: 600;
+    color: var(--comet-text-muted);
+    transition: all 0.2s ease;
+    padding: 0.75rem 1.25rem;
+}
+
+.comet-aisays .tabs li.is-active a {
+    color: var(--comet-primary);
+    border-bottom-color: var(--comet-primary);
+}
+
+/* Theme Toggle Button */
+.comet-theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    background: var(--comet-surface-subtle);
+    border: 1px solid var(--comet-border);
+    cursor: pointer;
+    color: var(--comet-text);
+    transition: all 0.2s ease;
+}
+
+.comet-theme-toggle:hover {
+    background: var(--comet-primary-subtle);
+    color: var(--comet-primary);
+    border-color: var(--comet-primary);
+}
+
+/* ============================================================
+   CARDS & BOXES
+   ============================================================ */
+.comet-aisays .box {
+    background-color: var(--comet-surface-card);
+    border: 1px solid var(--comet-border-weak);
+    border-radius: var(--bulma-radius, 8px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    padding: 1.5rem;
+}
+
+.comet-aisays .card {
+    background-color: var(--comet-surface-card);
+    border: 1px solid var(--comet-border-weak);
+    border-radius: var(--bulma-radius, 8px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    overflow: hidden;
+}
+
+.comet-aisays .card-header {
+    background: var(--comet-surface-subtle);
+    border-bottom: 1px solid var(--comet-border-weak);
+    box-shadow: none;
+}
+
+.comet-aisays .card-header-title {
+    color: var(--comet-text-strong);
+    font-weight: 600;
+}
+
+/* ============================================================
+   VARIABLE PILLS FOR PROMPT BUILDER
+   ============================================================ */
+.comet-var-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.65rem;
+    margin: 0.25rem 0.25rem 0.25rem 0;
+    font-size: 0.8125rem;
+    font-family: var(--bulma-family-code);
+    background: var(--comet-surface-subtle);
+    border: 1px solid var(--comet-border);
+    border-radius: 4px;
+    color: var(--comet-primary);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    user-select: none;
+}
+
+.comet-var-pill:hover {
+    background: var(--comet-primary);
+    color: #ffffff;
+    border-color: var(--comet-primary);
+    transform: translateY(-1px);
+}
+
+.comet-var-pill:active {
+    transform: translateY(0);
+}
+
+/* Guide Toggle Button & Prompt Variables Guide Box */
+#comet-toggle-var-guide-btn {
+    border-color: var(--comet-border, #d8dce2);
+    color: var(--comet-text, #4a4a4a);
+    background: var(--comet-surface-subtle, #f9fafb);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#comet-toggle-var-guide-btn:hover {
+    border-color: var(--comet-primary, #8a4dff);
+    color: var(--comet-primary, #8a4dff);
+    background: var(--comet-surface-card, #ffffff);
+}
+
+#comet-toggle-var-guide-btn.is-active {
+    background-color: var(--comet-primary, #8a4dff) !important;
+    border-color: var(--comet-primary, #8a4dff) !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(138, 77, 255, 0.25);
+}
+
+#comet-toggle-var-guide-btn.is-active .dashicons {
+    color: #ffffff !important;
+}
+
+#comet-prompt-vars-guide-box {
+    background: var(--comet-surface-subtle, #f9fafb);
+    border: 1px solid var(--comet-border-weak, #ebedf0);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+}
+
+.comet-var-card {
+    background: var(--comet-surface-card, #ffffff);
+    border: 1px solid var(--comet-border-weak, #ebedf0);
+    border-radius: 6px;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.comet-var-card:hover {
+    border-color: var(--comet-primary, #8a4dff);
+    box-shadow: 0 2px 8px rgba(138, 77, 255, 0.08);
+}
+
+/* Dark Mode Overrides for Prompt Variables Guide */
+.comet-aisays[data-theme="dark"] #comet-toggle-var-guide-btn {
+    background: var(--comet-surface-tertiary, #21262d);
+    border-color: var(--comet-border, #30363d);
+    color: var(--comet-text, #c9d1d9);
+}
+
+.comet-aisays[data-theme="dark"] #comet-toggle-var-guide-btn:hover {
+    border-color: var(--comet-primary, #9d6fff);
+    color: var(--comet-primary, #9d6fff);
+}
+
+.comet-aisays[data-theme="dark"] #comet-toggle-var-guide-btn.is-active {
+    background-color: var(--comet-primary, #8a4dff) !important;
+    border-color: var(--comet-primary, #8a4dff) !important;
+    color: #ffffff !important;
+}
+
+.comet-aisays[data-theme="dark"] #comet-prompt-vars-guide-box {
+    background: var(--comet-surface-subtle, #1c2128) !important;
+    border-color: var(--comet-border, #30363d) !important;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+}
+
+.comet-aisays[data-theme="dark"] .comet-var-card {
+    background: var(--comet-surface-card, #161b22) !important;
+    border-color: var(--comet-border, #30363d) !important;
+}
+
+.comet-aisays[data-theme="dark"] .comet-var-card:hover {
+    border-color: var(--comet-primary, #9d6fff) !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+/* ============================================================
+   PROMPT TEMPLATE, PREVIEW & TOOLBAR CONTROLS
+   ============================================================ */
+.comet-prompt-preview-box {
+    background: var(--comet-surface-subtle);
+    border: 1px solid var(--comet-border);
+    border-radius: var(--bulma-radius, 6px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    color: var(--comet-text);
+    padding: 0.85rem 1rem;
+    transition: all 0.2s ease;
+}
+
+.comet-prompt-preview-box .is-size-7 {
+    color: var(--comet-text-strong);
+    font-weight: 600;
+}
+
+.comet-prompt-preview-box .tag.is-light {
+    background: var(--comet-surface-interactive);
+    color: var(--comet-text-muted);
+    border: 1px solid var(--comet-border-weak);
+    font-size: 11px;
+}
+
+#preview-content {
+    background: var(--comet-surface-card);
+    border: 1px solid var(--comet-border-weak);
+    border-radius: 4px;
+    color: var(--comet-text);
+    padding: 0.75rem 1rem;
+    font-family: var(--bulma-family-code, monospace);
+    line-height: 1.6;
+}
+
+#wpcmt_aisays_prompt_template {
+    background: var(--comet-surface-card);
+    border: 1px solid var(--comet-border);
+    border-radius: var(--bulma-radius, 6px);
+    color: var(--comet-text);
+    line-height: 1.6;
+    font-family: var(--bulma-family-code, monospace);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    padding: 0.85rem 1rem;
+}
+
+#wpcmt_aisays_prompt_template:focus {
+    border-color: var(--comet-primary);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--comet-primary) 20%, transparent);
+}
+
+.comet-aisays[data-theme="dark"] .comet-prompt-preview-box {
+    background: var(--comet-surface-subtle, #1c2128) !important;
+    border-color: var(--comet-border, #30363d) !important;
+    color: var(--comet-text, #e6edf3) !important;
+}
+
+.comet-aisays[data-theme="dark"] #preview-content {
+    background: #0d1117 !important;
+    border-color: var(--comet-border, #30363d) !important;
+    color: #e6edf3 !important;
+}
+
+.comet-aisays[data-theme="dark"] #wpcmt_aisays_prompt_template {
+    background: #0d1117 !important;
+    border-color: var(--comet-border, #30363d) !important;
+    color: #e6edf3 !important;
+}
+
+.comet-aisays[data-theme="dark"] #wpcmt_aisays_prompt_template:focus {
+    border-color: var(--comet-primary, #8a4dff) !important;
+    box-shadow: 0 0 0 3px rgba(138, 77, 255, 0.25) !important;
+}
+
+/* Reset to Default Template Button */
+#wpcmt-aisays-reset-prompt,
+#wpcmt-aisays-reset-prompt:hover,
+#wpcmt-aisays-reset-prompt:focus,
+#wpcmt-aisays-reset-prompt:active {
+    text-decoration: none !important;
+    box-shadow: none !important;
+}
+
+#wpcmt-aisays-reset-prompt {
+    display: inline-flex;
+    align-items: center;
+    color: var(--comet-text-muted);
+    transition: all 0.2s ease;
+    border-radius: 4px;
+    padding: 0.25rem 0.5rem;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+#wpcmt-aisays-reset-prompt:hover {
+    color: var(--comet-primary);
+    background-color: var(--comet-surface-interactive);
+}
+
+#wpcmt-aisays-reset-prompt .dashicons {
+    transition: transform 0.25s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+#wpcmt-aisays-reset-prompt:hover .dashicons {
+    transform: rotate(-90deg);
+}
+
+/* Vertical centering for inputs with left dashicons */
+.comet-aisays .control.has-icons-left .icon.is-left {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    top: 0;
+    pointer-events: none;
+}
+
+.comet-aisays .control.has-icons-left .icon.is-left .dashicons {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    font-size: 15px;
+    width: 15px;
+    height: 15px;
+    margin: 0 !important;
+}
+
+/* ============================================================
+   API KEY TOGGLE & MASKING
+   ============================================================ */
+.pw-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
+    max-width: 520px;
+    box-sizing: border-box;
+}
+
+.pw-wrap input.api-key-field {
+    width: 100% !important;
+    padding-right: 90px !important; /* Leaves ample space so text never runs under the button */
+    box-sizing: border-box !important;
+}
+
+.pw-wrap input.api-key-field.masked {
+    -webkit-text-security: disc !important;
+    letter-spacing: 2px;
+}
+
+.pw-wrap input.api-key-field:not(.masked) {
+    -webkit-text-security: none !important;
+    letter-spacing: normal;
+}
+
+.pw-wrap .toggle-key-visibility {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 28px !important;
+    line-height: 26px !important;
+    padding: 0 10px !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 5px !important;
+    border-radius: 5px !important;
+    cursor: pointer !important;
+    z-index: 5;
+    background: var(--comet-surface-subtle) !important;
+    border: 1px solid var(--comet-border) !important;
+    color: var(--comet-text) !important;
+    transition: all 0.15s ease !important;
+    text-decoration: none !important;
+    white-space: nowrap !important;
+    box-shadow: none !important;
+    user-select: none;
+}
+
+.pw-wrap .toggle-key-visibility:hover {
+    background: var(--comet-surface-tertiary) !important;
+    color: var(--comet-primary) !important;
+    border-color: var(--comet-primary) !important;
+}
+
+.pw-wrap .toggle-key-visibility .dashicons {
+    font-size: 15px !important;
+    width: 15px !important;
+    height: 15px !important;
+    line-height: 15px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
+    color: inherit !important;
+}
+
+.pw-wrap .toggle-key-visibility .toggle-key-text {
+    font-size: 12px !important;
+    line-height: 1 !important;
+    display: inline-block !important;
+    color: inherit !important;
+}
+
+/* ============================================================
+   STICKY FORM ACTIONS BAR
+   ============================================================ */
+.comet-form-actions {
+    position: sticky;
+    bottom: 1rem;
+    z-index: 50;
+    background: var(--comet-surface-card);
+    border: 1px solid var(--comet-border);
+    border-radius: var(--bulma-radius, 8px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    padding: 1rem 1.5rem;
+    margin-top: 2rem;
+}
+
+/* ============================================================
+   SETTINGS SIDEBAR & GUIDE CARDS
+   ============================================================ */
+.comet-settings-sidebar {
+    position: sticky;
+    top: 32px;
+}
+
+.comet-sidebar-card {
+    border-radius: var(--bulma-radius, 8px);
+    border: 1px solid var(--comet-border-weak);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.comet-var-list {
+    max-height: 480px;
+    overflow-y: auto;
+    padding-right: 2px;
+}
+
+.comet-var-item {
+    transition: all 0.15s ease;
+}
+
+.comet-var-item:hover {
+    border-color: var(--comet-primary) !important;
+}
+
+/* ============================================================
+   PRODUCTS LIST TABLE - SYSTEM DESIGN & DARK/LIGHT THEMES
+   ============================================================ */
+.comet-aisays .wp-list-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    border-radius: var(--bulma-radius, 8px);
+    overflow: hidden;
+    border: 1px solid var(--comet-border) !important;
+    background-color: var(--comet-surface-card) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* Header & Footer Cells */
+.comet-aisays .wp-list-table thead th,
+.comet-aisays .wp-list-table thead td,
+.comet-aisays .wp-list-table tfoot th,
+.comet-aisays .wp-list-table tfoot td {
+    background: var(--comet-surface-tertiary) !important;
+    color: var(--comet-text-strong) !important;
+    font-weight: 700;
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 0.85rem 1rem !important;
+    border-top: none !important;
+    border-bottom: 2px solid var(--comet-border) !important;
+    vertical-align: middle !important;
+}
+
+.comet-aisays .wp-list-table thead th a,
+.comet-aisays .wp-list-table thead th a:visited {
+    color: var(--comet-text-strong) !important;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.comet-aisays .wp-list-table thead th a:hover {
+    color: var(--comet-primary) !important;
+}
+
+.comet-aisays .wp-list-table .sorting-indicator {
+    visibility: visible;
+}
+
+/* Neutralize WordPress Core Striped Row Bleed on TR */
+.wp-core-ui .comet-aisays .wp-list-table.striped > tbody > :nth-child(odd),
+.wp-core-ui .comet-aisays .wp-list-table.striped > tbody > :nth-child(even),
+.wp-core-ui .comet-aisays .wp-list-table tbody tr,
+.comet-aisays .wp-list-table.striped > tbody > :nth-child(odd),
+.comet-aisays .wp-list-table.striped > tbody > :nth-child(even),
+.comet-aisays .wp-list-table tbody tr {
+    background-color: transparent !important;
+}
+
+/* Body Rows: Ensure BOTH th and td have identical backgrounds */
+.comet-aisays .wp-list-table tbody tr th,
+.comet-aisays .wp-list-table tbody tr td,
+.comet-aisays .table.wp-list-table tbody tr th,
+.comet-aisays .table.wp-list-table tbody tr td {
+    background-color: var(--comet-surface-card, #ffffff) !important;
+    color: var(--comet-text, #4a4a4a) !important;
+    border-top: 1px solid var(--comet-border-weak, #ebedf0) !important;
+    border-bottom: none !important;
+    padding: 0.85rem 1rem !important;
+    vertical-align: middle !important;
+    font-size: 0.875rem;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+/* Light Mode Alternate Row Striping */
+.comet-aisays .wp-list-table.striped > tbody > tr:nth-child(even) th,
+.comet-aisays .wp-list-table.striped > tbody > tr:nth-child(even) td,
+.comet-aisays .table.is-striped tbody tr:nth-child(even) th,
+.comet-aisays .table.is-striped tbody tr:nth-child(even) td {
+    background-color: var(--comet-surface-subtle, #f9fafb) !important;
+}
+
+/* Light Mode Row Hover (Both Odd and Even rows!) */
+.comet-aisays .wp-list-table tbody tr:hover th,
+.comet-aisays .wp-list-table tbody tr:hover td,
+.comet-aisays .wp-list-table.striped > tbody > tr:hover th,
+.comet-aisays .wp-list-table.striped > tbody > tr:hover td,
+.comet-aisays .wp-list-table.striped > tbody > tr:nth-child(even):hover th,
+.comet-aisays .wp-list-table.striped > tbody > tr:nth-child(even):hover td,
+.comet-aisays .wp-list-table.striped > tbody > tr:nth-child(odd):hover th,
+.comet-aisays .wp-list-table.striped > tbody > tr:nth-child(odd):hover td,
+.comet-aisays .table.is-hoverable tbody tr:hover th,
+.comet-aisays .table.is-hoverable tbody tr:hover td {
+    background-color: var(--comet-surface-tertiary, #f1f5f9) !important;
+    color: var(--comet-text-strong, #1f242e) !important;
+}
+
+/* Explicit Dark Mode Overrides for WP List Table */
+.comet-aisays[data-theme="dark"] .wp-list-table,
+.comet-aisays[data-theme="dark"] .table.wp-list-table,
+.comet-aisays.theme-dark .wp-list-table {
+    background-color: var(--comet-surface-card, #161b22) !important;
+    border-color: var(--comet-border, #30363d) !important;
+}
+
+.comet-aisays[data-theme="dark"] .wp-list-table thead th,
+.comet-aisays[data-theme="dark"] .wp-list-table thead td,
+.comet-aisays[data-theme="dark"] .wp-list-table tfoot th,
+.comet-aisays[data-theme="dark"] .wp-list-table tfoot td {
+    background-color: var(--comet-surface-tertiary, #21262d) !important;
+    color: var(--comet-text-strong, #f0f6fc) !important;
+    border-bottom: 2px solid var(--comet-border, #30363d) !important;
+}
+
+.comet-aisays[data-theme="dark"] .wp-list-table tbody tr th,
+.comet-aisays[data-theme="dark"] .wp-list-table tbody tr td,
+.comet-aisays[data-theme="dark"] .table tbody tr th,
+.comet-aisays[data-theme="dark"] .table tbody tr td {
+    background-color: var(--comet-surface-card, #161b22) !important;
+    color: var(--comet-text, #c9d1d9) !important;
+    border-color: var(--comet-border-weak, #21262d) !important;
+}
+
+.comet-aisays[data-theme="dark"] .wp-list-table.striped > tbody > tr:nth-child(even) th,
+.comet-aisays[data-theme="dark"] .wp-list-table.striped > tbody > tr:nth-child(even) td,
+.comet-aisays[data-theme="dark"] .table.is-striped tbody tr:nth-child(even) th,
+.comet-aisays[data-theme="dark"] .table.is-striped tbody tr:nth-child(even) td {
+    background-color: var(--comet-surface-subtle, #1c2128) !important;
+}
+
+/* Dark Mode Row Hover: High-specificity solid dark hover for BOTH Odd and Even rows */
+.comet-aisays[data-theme="dark"] .wp-list-table tbody tr:hover th,
+.comet-aisays[data-theme="dark"] .wp-list-table tbody tr:hover td,
+.comet-aisays[data-theme="dark"] .wp-list-table.striped > tbody > tr:hover th,
+.comet-aisays[data-theme="dark"] .wp-list-table.striped > tbody > tr:hover td,
+.comet-aisays[data-theme="dark"] .wp-list-table.striped > tbody > tr:nth-child(even):hover th,
+.comet-aisays[data-theme="dark"] .wp-list-table.striped > tbody > tr:nth-child(even):hover td,
+.comet-aisays[data-theme="dark"] .wp-list-table.striped > tbody > tr:nth-child(odd):hover th,
+.comet-aisays[data-theme="dark"] .wp-list-table.striped > tbody > tr:nth-child(odd):hover td,
+.comet-aisays[data-theme="dark"] .table.is-hoverable tbody tr:hover th,
+.comet-aisays[data-theme="dark"] .table.is-hoverable tbody tr:hover td {
+    background-color: #262c36 !important;
+    color: var(--comet-text-strong, #f0f6fc) !important;
+}
+
+.comet-aisays[data-theme="dark"] .wp-list-table tbody tr:hover .comet-product-title,
+.comet-aisays[data-theme="dark"] .table.is-hoverable tbody tr:hover .comet-product-title {
+    color: #ffffff !important;
+}
+
+
+/* Check Column alignment */
+.comet-aisays .wp-list-table .check-column {
+    width: 2.75rem !important;
+    text-align: center !important;
+    padding: 0.75rem 0.5rem !important;
+    vertical-align: middle !important;
+}
+
+.comet-aisays .wp-list-table .check-column input[type="checkbox"] {
+    margin: 0 !important;
+    vertical-align: middle !important;
+    position: static !important;
+    cursor: pointer;
+}
+
+/* Product Cell Layout */
+.comet-product-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.comet-product-thumb {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--comet-border);
+    background: var(--comet-surface-subtle);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.comet-product-thumb:hover {
+    border-color: var(--comet-primary);
+    transform: scale(1.05);
+}
+
+.comet-product-thumb img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    border: none !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    display: block;
+}
+
+.comet-product-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.comet-product-title {
+    color: var(--comet-text-strong) !important;
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.35;
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.comet-product-title:hover {
+    color: var(--comet-primary) !important;
+}
+
+.comet-external-link {
+    display: inline-flex;
+    align-items: center;
+    color: var(--comet-text-muted);
+    font-size: 13px;
+    margin-left: 2px;
+    vertical-align: middle;
+    transition: color 0.15s ease;
+}
+
+.comet-external-link:hover {
+    color: var(--comet-primary);
+}
+
+.comet-product-sku small {
+    font-size: 0.75rem;
+    font-family: var(--bulma-family-code);
+    color: var(--comet-text-muted);
+}
+
+/* Descriptions & Previews */
+.comet-desc-preview {
+    max-height: 60px;
+    overflow: hidden;
+    color: var(--comet-text);
+    line-height: 1.45;
+    font-size: 0.8125rem;
+}
+
+.comet-table-empty {
+    display: inline-block;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-style: italic;
+    color: var(--comet-danger);
+    background: color-mix(in srgb, var(--comet-danger) 10%, transparent);
+    border: 1px solid color-mix(in srgb, var(--comet-danger) 20%, transparent);
+}
+
+/* ============================================================
+   TABLE ACTION BUTTONS
+   ============================================================ */
+.comet-aisays .action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+}
+
+.comet-aisays .action-buttons .button {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    line-height: 1 !important;
+    height: 30px !important;
+    min-height: 30px !important;
+    padding: 0 10px !important;
+    border-radius: 5px !important;
+    text-decoration: none !important;
+    transition: all 0.15s ease !important;
+    cursor: pointer !important;
+    white-space: nowrap !important;
+    box-sizing: border-box !important;
+    width: auto !important;
+}
+
+.comet-aisays .action-buttons .button .dashicons {
+    font-size: 14px !important;
+    width: 14px !important;
+    height: 14px !important;
+    margin-right: 4px !important;
+    line-height: 14px !important;
+}
+
+/* Primary generate / regenerate button */
+.comet-aisays .action-buttons .button.button-primary,
+.comet-aisays .action-buttons .generate-single-ai {
+    background: var(--comet-primary) !important;
+    border: 1px solid var(--comet-primary) !important;
+    color: #ffffff !important;
+    text-shadow: none !important;
+    box-shadow: 0 1px 3px rgba(138, 77, 255, 0.25) !important;
+}
+
+.comet-aisays .action-buttons .button.button-primary:hover,
+.comet-aisays .action-buttons .generate-single-ai:hover {
+    background: var(--comet-primary-hover) !important;
+    border-color: var(--comet-primary-hover) !important;
+    color: #ffffff !important;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(138, 77, 255, 0.35) !important;
+}
+
+/* View AI Description button */
+.comet-aisays .action-buttons .view-ai-desc {
+    background: var(--comet-surface-subtle) !important;
+    border: 1px solid var(--comet-border) !important;
+    color: var(--comet-text-strong) !important;
+    text-shadow: none !important;
+}
+
+.comet-aisays .action-buttons .view-ai-desc:hover {
+    background: var(--comet-surface-card) !important;
+    border-color: var(--comet-info) !important;
+    color: var(--comet-info) !important;
+    transform: translateY(-1px);
+}
+
+/* Delete AI Description button */
+.comet-aisays .action-buttons .button-link-delete,
+.comet-aisays .action-buttons .delete-ai-desc {
+    background: transparent !important;
+    border: 1px solid var(--comet-border-weak) !important;
+    color: var(--comet-text-muted) !important;
+}
+
+.comet-aisays .action-buttons .button-link-delete:hover,
+.comet-aisays .action-buttons .delete-ai-desc:hover {
+    background: rgba(241, 70, 104, 0.08) !important;
+    border-color: var(--comet-danger) !important;
+    color: var(--comet-danger) !important;
+}
+
+/* Status Indicator */
+.comet-aisays .status-indicator {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ============================================================
+   TABLE CONTROLS, SEARCH BOX & PAGINATION
+   ============================================================ */
+.comet-aisays .tablenav {
+    margin: 1rem 0;
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.comet-aisays .tablenav .actions {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0;
+}
+
+.comet-aisays .tablenav input[type="text"],
+.comet-aisays .tablenav input[type="search"],
+.comet-aisays .search-box input[type="search"] {
+    height: 32px;
+    border-radius: 6px;
+    font-size: 13px;
+    border: 1px solid var(--comet-border);
+    background-color: var(--comet-surface-card);
+    color: var(--comet-text-strong);
+    padding: 0 0.75rem;
+    box-sizing: border-box;
+}
+
+/* ============================================================
+   UNIFIED SELECT DROPDOWNS (LIGHT & DARK MODE)
+   ============================================================ */
+.wp-core-ui .comet-aisays select,
+.wp-core-ui .comet-aisays .tablenav select,
+.wp-core-ui .comet-aisays .tablenav .actions select,
+.wp-core-ui .comet-aisays .select select,
+.comet-aisays select,
+.comet-aisays .tablenav select,
+.comet-aisays .tablenav .actions select,
+.comet-aisays .select select {
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    height: 32px !important;
+    line-height: 30px !important;
+    padding: 0 2.25rem 0 0.85rem !important; /* 36px right padding guarantees text never collides with arrow */
+    border-radius: 6px !important;
+    font-size: 13px !important;
+    border: 1px solid var(--comet-border) !important;
+    background-repeat: no-repeat !important;
+    background-position: right 0.75rem center !important;
+    background-size: 14px 14px !important;
+    cursor: pointer !important;
+    box-sizing: border-box !important;
+    vertical-align: middle !important;
+    box-shadow: none !important;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+}
+
+/* Settings Page Select Sizing */
+.wp-core-ui .comet-aisays .select select,
+.comet-aisays .select select {
+    height: 38px !important;
+    line-height: 36px !important;
+    border-radius: 8px !important;
+}
+
+/* Light Mode Arrow: Crisp Slate Chevron (#334155) */
+.wp-core-ui .comet-aisays select,
+.wp-core-ui .comet-aisays .tablenav select,
+.wp-core-ui .comet-aisays .tablenav .actions select,
+.wp-core-ui .comet-aisays .select select,
+.comet-aisays:not([data-theme="dark"]) select,
+.comet-aisays:not([data-theme="dark"]) .tablenav select,
+.comet-aisays:not([data-theme="dark"]) .tablenav .actions select,
+.comet-aisays:not([data-theme="dark"]) .select select,
+.comet-aisays[data-theme="light"] select,
+.comet-aisays[data-theme="light"] .tablenav select,
+.comet-aisays[data-theme="light"] .tablenav .actions select,
+.comet-aisays[data-theme="light"] .select select {
+    background-color: #ffffff !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23334155' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") !important;
+    color: #0f172a !important;
+    border-color: #cbd5e1 !important;
+}
+
+/* Dark Mode Arrow: Bright Luminous Silver-White Chevron (#f1f5f9) */
+.wp-core-ui .comet-aisays[data-theme="dark"] select,
+.wp-core-ui .comet-aisays[data-theme="dark"] .tablenav select,
+.wp-core-ui .comet-aisays[data-theme="dark"] .tablenav .actions select,
+.wp-core-ui .comet-aisays[data-theme="dark"] .select select,
+.comet-aisays[data-theme="dark"] select,
+.comet-aisays[data-theme="dark"] .tablenav select,
+.comet-aisays[data-theme="dark"] .tablenav .actions select,
+.comet-aisays[data-theme="dark"] .select select {
+    background-color: var(--comet-surface-card) !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f1f5f9' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") !important;
+    color: var(--comet-text-strong) !important;
+    border-color: var(--comet-border) !important;
+}
+
+/* Dark Mode Native Option Elements */
+.comet-aisays[data-theme="dark"] select option,
+.comet-aisays[data-theme="dark"] .tablenav select option,
+.comet-aisays[data-theme="dark"] .select select option {
+    background-color: #161b22 !important;
+    color: #f0f6fc !important;
+}
+
+/* Hover & Focus States */
+.wp-core-ui .comet-aisays select:hover,
+.wp-core-ui .comet-aisays .tablenav select:hover,
+.comet-aisays select:hover,
+.comet-aisays .tablenav select:hover,
+.comet-aisays .select select:hover {
+    border-color: var(--comet-primary) !important;
+}
+
+.wp-core-ui .comet-aisays select:focus,
+.wp-core-ui .comet-aisays .tablenav select:focus,
+.comet-aisays select:focus,
+.comet-aisays .tablenav select:focus,
+.comet-aisays .select select:focus {
+    border-color: var(--comet-primary) !important;
+    box-shadow: 0 0 0 2px var(--comet-primary-subtle) !important;
+    outline: none !important;
+}
+
+/* Suppress Bulma's pseudo-element arrow to avoid double chevrons */
+.comet-aisays .select:not(.is-multiple):not(.is-loading)::after {
+    display: none !important;
+}
+
+/* Minimum widths for Products Table filters */
+.wp-core-ui .comet-aisays .tablenav select[name="status"],
+.comet-aisays .tablenav select[name="status"] {
+    min-width: 140px !important;
+}
+
+.wp-core-ui .comet-aisays .tablenav select[name="category"],
+.comet-aisays .tablenav select[name="category"] {
+    min-width: 155px !important;
+}
+
+.wp-core-ui .comet-aisays .tablenav select[name="desc_status"],
+.comet-aisays .tablenav select[name="desc_status"] {
+    min-width: 175px !important;
+}
+
+.wp-core-ui .comet-aisays .tablenav select[name="orderby"],
+.comet-aisays .tablenav select[name="orderby"] {
+    min-width: 145px !important;
+}
+
+.wp-core-ui .comet-aisays .tablenav input[name="s"],
+.comet-aisays .tablenav input[name="s"] {
+    min-width: 180px !important;
+}
+
+.wp-core-ui .comet-aisays .tablenav #bulk-action-selector-top,
+.wp-core-ui .comet-aisays .tablenav #bulk-action-selector-bottom,
+.comet-aisays .tablenav #bulk-action-selector-top,
+.comet-aisays .tablenav #bulk-action-selector-bottom {
+    min-width: 150px !important;
+}
+
+.comet-aisays .tablenav .button,
+.comet-aisays .search-box input[type="submit"] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    height: 32px;
+    line-height: 30px;
+    padding: 0 0.85rem;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid var(--comet-border);
+    background: var(--comet-surface-subtle);
+    color: var(--comet-text-strong);
+    transition: all 0.15s ease;
+    cursor: pointer;
+}
+
+.comet-aisays .tablenav .button:hover,
+.comet-aisays .search-box input[type="submit"]:hover {
+    border-color: var(--comet-primary);
+    color: var(--comet-primary);
+}
+
+.comet-aisays .tablenav-pages {
+    color: var(--comet-text-muted);
+    font-size: 13px;
+}
+
+.comet-aisays .tablenav-pages .pagination-links a,
+.comet-aisays .tablenav-pages .pagination-links .tablenav-pages-navspan {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 30px;
+    height: 30px;
+    padding: 0 4px;
+    border-radius: 4px;
+    border: 1px solid var(--comet-border);
+    background: var(--comet-surface-card);
+    color: var(--comet-text-strong);
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.comet-aisays .tablenav-pages .pagination-links a:hover {
+    background: var(--comet-primary-subtle);
+    border-color: var(--comet-primary);
+    color: var(--comet-primary);
+}
+
+.comet-aisays .tablenav-pages .pagination-links .tablenav-pages-navspan {
+    opacity: 0.45;
+}
+
+.comet-aisays .tablenav-pages .current-page {
+    background-color: var(--comet-surface-card) !important;
+    color: var(--comet-text-strong) !important;
+    border: 1px solid var(--comet-border) !important;
+    border-radius: 4px !important;
+    height: 28px !important;
+    line-height: 26px !important;
+    text-align: center !important;
+    padding: 0 4px !important;
+    min-width: 32px !important;
+}
+
+/* Status Text Helpers */
+.text-success { color: var(--comet-success) !important; }
+.text-warning { color: var(--comet-warning) !important; }
+.text-danger  { color: var(--comet-danger) !important; }
+
+/* ============================================================
+   WORDPRESS NOTICES IN BULMA STYLE
+   ============================================================ */
+
+.comet-aisays .notice,
+.comet-aisays div.updated,
+.comet-aisays div.error,
+.comet-aisays .settings-error {
+    background-color: var(--comet-surface-subtle);
+    border: 1px solid var(--comet-border);
+    border-left-width: 1px;
+    border-radius: var(--bulma-radius, 6px);
+    box-shadow: var(--bulma-card-shadow, var(--bulma-shadow));
+    color: var(--comet-text);
+    padding: 0.85rem 2.5rem 0.85rem 1.15rem;
+    position: relative;
+    margin: 0.75rem 0 1.25rem 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+}
+
+.comet-aisays .notice p,
+.comet-aisays div.updated p,
+.comet-aisays div.error p,
+.comet-aisays .settings-error p {
+    margin: 0;
+    padding: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: inherit;
+    flex: 1 1 auto;
+}
+
+.comet-aisays .notice p strong,
+.comet-aisays div.updated p strong,
+.comet-aisays div.error p strong,
+.comet-aisays .settings-error p strong {
+    color: inherit;
+    font-weight: 600;
+}
+
+/* Prepend relevant Dashicon */
+.comet-aisays .notice::before,
+.comet-aisays div.updated::before,
+.comet-aisays div.error::before,
+.comet-aisays .settings-error::before {
+    font-family: dashicons;
+    font-size: 19px;
+    width: 20px;
+    height: 20px;
+    line-height: 1.25;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+/* Success notice (Bulma is-success is-light) */
+.comet-aisays .notice-success,
+.comet-aisays div.updated {
+    background-color: color-mix(in srgb, var(--comet-success) 12%, var(--comet-surface));
+    border-color: var(--comet-success);
+    color: color-mix(in srgb, var(--comet-success) 70%, var(--comet-text));
+}
+
+.comet-aisays .notice-success::before,
+.comet-aisays div.updated::before {
+    content: "\f147";
+    /* dashicons-yes-alt */
+    color: var(--comet-success);
+}
+
+/* Info notice (Bulma is-info is-light) */
+.comet-aisays .notice-info {
+    background-color: color-mix(in srgb, var(--comet-info) 12%, var(--comet-surface));
+    border-color: var(--comet-info);
+    color: color-mix(in srgb, var(--comet-info) 70%, var(--comet-text));
+}
+
+.comet-aisays .notice-info::before {
+    content: "\f348";
+    /* dashicons-info */
+    color: var(--comet-info);
+}
+
+/* Warning notice (Bulma is-warning is-light) */
+.comet-aisays .notice-warning {
+    background-color: color-mix(in srgb, var(--comet-warning) 14%, var(--comet-surface));
+    border-color: var(--comet-warning);
+    color: color-mix(in srgb, var(--comet-warning) 70%, var(--comet-text));
+}
+
+.comet-aisays .notice-warning::before {
+    content: "\f534";
+    /* dashicons-warning */
+    color: var(--comet-warning);
+}
+
+/* Error notice (Bulma is-danger is-light) */
+.comet-aisays .notice-error,
+.comet-aisays div.error {
+    background-color: color-mix(in srgb, var(--comet-danger) 12%, var(--comet-surface));
+    border-color: var(--comet-danger);
+    color: color-mix(in srgb, var(--comet-danger) 70%, var(--comet-text));
+}
+
+.comet-aisays .notice-error::before,
+.comet-aisays div.error::before {
+    content: "\f153";
+    /* dashicons-dismiss */
+    color: var(--comet-danger);
+}
+
+/* Inline notice adjustments */
+.comet-aisays .notice.inline {
+    margin: 0.75rem 0;
+}
+
+/* Dismiss button styled like Bulma's .delete */
+.comet-aisays .notice.is-dismissible {
+    padding-right: 2.75rem;
+}
+
+.comet-aisays .notice .notice-dismiss {
+    position: absolute;
+    top: 50%;
+    right: 0.75rem;
+    transform: translateY(-50%);
+    padding: 0;
+    width: 22px;
+    height: 22px;
+    min-height: 22px;
+    min-width: 22px;
+    border-radius: 9999px;
+    background-color: var(--comet-surface-interactive);
+    color: currentColor;
+    opacity: 0.65;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.comet-aisays .notice .notice-dismiss:hover {
+    background-color: var(--comet-surface-interactive-hover);
+    opacity: 1;
+    color: currentColor;
+}
+
+.comet-aisays .notice .notice-dismiss::before {
+    font-size: 15px;
+    width: 16px;
+    height: 16px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    color: currentColor;
+}
+
+.comet-aisays .notice .notice-dismiss:focus {
+    box-shadow: 0 0 0 2px var(--comet-border);
+    outline: none;
+}
+
+
+/* Modal flex display when triggered by legacy JS */
+.comet-aisays .modal[style*="display: block"],
+.comet-aisays .modal[style*="display:block"] {
+    display: flex !important;
+}
+
+/* ============================================================
+   TOOLTIP COMPONENT FOR (i) INFO ICONS
+   ============================================================ */
+.comet-tooltip-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.comet-info-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--comet-surface-subtle);
+    border: 1.5px solid var(--comet-border);
+    color: var(--comet-info);
+    font-size: 12px;
+    font-weight: 700;
+    font-family: var(--bulma-family-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+    font-style: italic;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    user-select: none;
+    outline: none;
+}
+
+.comet-info-icon:hover,
+.comet-info-icon:focus-visible,
+.comet-tooltip-wrap:hover .comet-info-icon,
+.comet-tooltip-wrap:focus-within .comet-info-icon {
+    background: var(--comet-info);
+    color: #ffffff;
+    border-color: var(--comet-info);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--comet-info) 25%, transparent);
+    transform: scale(1.08);
+}
+
+.comet-tooltip-content {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    right: -6px;
+    width: 320px;
+    padding: 10px 14px;
+    background: #1e2430;
+    color: #e2e8f0;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+    font-size: 0.775rem;
+    line-height: 1.5;
+    font-weight: 400;
+    white-space: normal;
+    text-align: left;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+    z-index: 99999;
+}
+
+.comet-tooltip-wrap:hover .comet-tooltip-content,
+.comet-tooltip-wrap:focus-within .comet-tooltip-content {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.comet-tooltip-arrow {
+    position: absolute;
+    top: 100%;
+    right: 10px;
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #1e2430;
+}
+
+.comet-tooltip-content strong {
+    color: #60a5fa;
+    font-weight: 600;
+}
+
+.comet-tooltip-content code {
+    background: rgba(255, 255, 255, 0.14);
+    color: #93c5fd;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 4px;
+    padding: 1px 5px;
+    font-size: 0.75rem;
+    font-family: var(--bulma-family-code, monospace);
+}
+
+/* Dark mode adjustment */
+.comet-aisays[data-theme="dark"] .comet-tooltip-content {
+    background: #0d1117;
+    border-color: #30363d;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.65);
+}
+
+.comet-aisays[data-theme="dark"] .comet-tooltip-arrow {
+    border-top-color: #0d1117;
+}
+
+/* Bulk Action Progress Bar Styling */
+#wpcmt-aisays-bulk-progress {
+    border-left: 4px solid #6366f1 !important;
+    background: var(--comet-card-bg, #ffffff) !important;
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.08) !important;
+}
+
+#wpcmt-aisays-bulk-progress progress.progress,
+progress#wpcmt-aisays-progress-bar {
+    height: 12px !important;
+    border-radius: 9999px !important;
+    background-color: var(--comet-border-weak, #e5e7eb) !important;
+    overflow: hidden !important;
+    border: none !important;
+    width: 100% !important;
+}
+
+#wpcmt-aisays-bulk-progress progress.progress::-webkit-progress-bar,
+progress#wpcmt-aisays-progress-bar::-webkit-progress-bar {
+    background-color: var(--comet-border-weak, #e5e7eb) !important;
+    border-radius: 9999px !important;
+}
+
+#wpcmt-aisays-bulk-progress progress.progress::-webkit-progress-value,
+progress#wpcmt-aisays-progress-bar::-webkit-progress-value {
+    background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%) !important;
+    border-radius: 9999px !important;
+    transition: width 0.3s ease !important;
+}
+
+#wpcmt-aisays-bulk-progress progress.progress::-moz-progress-bar,
+progress#wpcmt-aisays-progress-bar::-moz-progress-bar {
+    background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%) !important;
+    border-radius: 9999px !important;
+    transition: width 0.3s ease !important;
+}
+
+.comet-aisays[data-theme="dark"] #wpcmt-aisays-bulk-progress progress.progress,
+.comet-aisays[data-theme="dark"] progress#wpcmt-aisays-progress-bar,
+.comet-aisays[data-theme="dark"] progress#wpcmt-aisays-progress-bar::-webkit-progress-bar {
+    background-color: #21262d !important;
+}
+
+/* Usage Toggle Button & Drawer */
+#comet-usage-toggle-btn {
+    white-space: nowrap !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.02em;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+#comet-usage-toggle-btn.is-active {
+    background-color: var(--comet-primary, #8a4dff) !important;
+    border-color: var(--comet-primary, #8a4dff) !important;
+    color: #ffffff !important;
+}
+
+#comet-usage-toggle-btn.is-active span,
+#comet-usage-toggle-btn.is-active .dashicons {
+    color: #ffffff !important;
+}
+
+#comet-aisays-usage-drawer {
+    background: var(--comet-surface-subtle, #f9fafb);
+    border-top: 1px solid var(--comet-border-weak, #ebedf0);
+    transition: all 0.25s ease;
+}
+
+.comet-aisays[data-theme="dark"] #comet-aisays-usage-drawer {
+    background: var(--comet-surface-subtle, #1c2128) !important;
+    border-top-color: var(--comet-border-weak, #21262d) !important;
+    box-shadow: none;
+}
+
+.comet-aisays[data-theme="dark"] #comet-aisays-usage-drawer .card {
+    background: var(--comet-surface-card, #161b22) !important;
+    border-color: var(--comet-border, #30363d) !important;
+}
+
+.comet-aisays[data-theme="dark"] .tag.is-light {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    color: var(--comet-text, #e6edf3) !important;
+    border: 1px solid var(--comet-border, #30363d);
+}
+
+.comet-aisays[data-theme="dark"] .tag.is-primary.is-light {
+    background-color: rgba(142, 68, 173, 0.25) !important;
+    color: #e8d5f5 !important;
+    border: 1px solid rgba(142, 68, 173, 0.45);
+}
+
+.comet-aisays[data-theme="dark"] .tag.is-info.is-light {
+    background-color: rgba(33, 150, 243, 0.2) !important;
+    color: #90caf9 !important;
+    border: 1px solid rgba(33, 150, 243, 0.4);
+}
+
+.comet-aisays[data-theme="dark"] .tag.is-info.is-light strong {
+    color: #ffffff !important;
+}
+
+/* ==========================================================================
+   Model Selection Tiles (Google AI Studio / Docs Style)
+   ========================================================================== */
+
+.comet-model-tiles-wrapper {
+    width: 100%;
+    max-width: 100%;
+}
+
+.comet-model-tiles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+    width: 100%;
+}
+
+.comet-model-tile {
+    position: relative;
+    display: flex;
+    cursor: pointer;
+    user-select: none;
+    margin: 0 !important;
+    outline: none;
+}
+
+/* Visually hidden accessible native radio */
+.comet-tile-radio {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    margin: 0;
+    pointer-events: none;
+}
+
+.comet-tile-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 152px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: var(--comet-surface-card, #ffffff);
+    border: 1.5px solid var(--comet-border, #e2e8f0);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+}
+
+.comet-model-tile:hover .comet-tile-card {
+    border-color: var(--comet-primary, #8a4dff);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(138, 77, 255, 0.12);
+}
+
+/* Selected state via native :checked & is-selected */
+.comet-tile-radio:checked + .comet-tile-card,
+.comet-model-tile.is-selected .comet-tile-card {
+    border-color: var(--comet-primary, #8a4dff) !important;
+    background: rgba(138, 77, 255, 0.04) !important;
+    box-shadow: 0 0 0 1px var(--comet-primary, #8a4dff), 0 4px 16px rgba(138, 77, 255, 0.15) !important;
+}
+
+/* Keyboard accessibility */
+.comet-tile-radio:focus-visible + .comet-tile-card {
+    outline: 2px solid var(--comet-primary, #8a4dff);
+    outline-offset: 2px;
+}
+
+.comet-tile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.comet-tile-title-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    overflow: hidden;
+}
+
+.comet-tile-icon {
+    font-size: 1.15rem;
+    line-height: 1;
+    color: var(--comet-primary, #8a4dff);
+    flex-shrink: 0;
+}
+
+.comet-tile-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--comet-text-strong, #1f242e);
+    line-height: 1.25;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.comet-tile-radio-circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 1.5px solid var(--comet-border, #cbd5e1);
+    background: transparent;
+    transition: all 0.15s ease;
+    flex-shrink: 0;
+    margin-left: 8px;
+}
+
+.comet-tile-radio:checked + .comet-tile-card .comet-tile-radio-circle,
+.comet-model-tile.is-selected .comet-tile-radio-circle {
+    border-color: var(--comet-primary, #8a4dff);
+    background-color: var(--comet-primary, #8a4dff);
+    box-shadow: inset 0 0 0 3px #ffffff;
+}
+
+.comet-tile-desc {
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    color: var(--comet-text, #4a4a4a);
+    margin: 0 0 12px 0;
+    flex-grow: 1;
+}
+
+.comet-tile-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: auto;
+}
+
+.comet-tile-badges {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.comet-tile-quota {
+    font-size: 0.72rem;
+    font-weight: 500;
+    font-family: var(--bulma-family-code, monospace);
+    color: var(--comet-text-muted, #788599);
+}
+
+/* Dark Mode Overrides for Model Tiles */
+.comet-aisays[data-theme="dark"] .comet-tile-card {
+    background: var(--comet-surface-card, #161b22) !important;
+    border-color: var(--comet-border, #30363d) !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+}
+
+.comet-aisays[data-theme="dark"] .comet-model-tile:hover .comet-tile-card {
+    border-color: var(--comet-primary, #9d6fff) !important;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(157, 111, 255, 0.3);
+}
+
+.comet-aisays[data-theme="dark"] .comet-tile-radio:checked + .comet-tile-card,
+.comet-aisays[data-theme="dark"] .comet-model-tile.is-selected .comet-tile-card {
+    background: rgba(138, 77, 255, 0.12) !important;
+    border-color: var(--comet-primary, #9d6fff) !important;
+    box-shadow: 0 0 0 1px var(--comet-primary, #9d6fff), 0 4px 20px rgba(0, 0, 0, 0.45) !important;
+}
+
+.comet-aisays[data-theme="dark"] .comet-tile-title {
+    color: var(--comet-text-strong, #f0f6fc) !important;
+}
+
+.comet-aisays[data-theme="dark"] .comet-tile-desc {
+    color: var(--comet-text, #c9d1d9) !important;
+}
+
+.comet-aisays[data-theme="dark"] .comet-tile-radio-circle {
+    border-color: var(--comet-border, #30363d);
+}
+
+.comet-aisays[data-theme="dark"] .comet-tile-radio:checked + .comet-tile-card .comet-tile-radio-circle,
+.comet-aisays[data-theme="dark"] .comet-model-tile.is-selected .comet-tile-radio-circle {
+    border-color: var(--comet-primary, #9d6fff);
+    background-color: var(--comet-primary, #9d6fff);
+    box-shadow: inset 0 0 0 3px #161b22;
+}
+
+.comet-aisays[data-theme="dark"] .comet-tile-quota {
+    color: var(--comet-text-muted, #8b949e);
+}
+
+/* ==========================================================================
+   Comet AI Says: Onboarding Wizard (Bulma Integration)
+   ========================================================================== */
+.comet-onboarding-wrap {
+    min-height: calc(100vh - 120px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 32px 16px;
+}
+
+.comet-onboarding-box {
+    max-width: 680px;
+    width: 100%;
+    border-radius: 16px !important;
+    border: 1px solid var(--comet-border, #e2e8f0);
+    background: var(--comet-surface, #ffffff);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.comet-onboarding-header {
+    background: linear-gradient(180deg, rgba(138, 77, 255, 0.06) 0%, transparent 100%);
+    border-bottom: 1px solid var(--comet-border-weak, #edf2f7);
+    padding: 28px 28px 20px 28px;
+    text-align: center;
+    position: relative;
+}
+
+.comet-onboarding-logo-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 68px;
+    height: 68px;
+    border-radius: 20px;
+    background: var(--comet-surface, #ffffff);
+    box-shadow: 0 4px 16px rgba(138, 77, 255, 0.15);
+    margin-bottom: 14px;
+    border: 1px solid rgba(138, 77, 255, 0.15);
+}
+
+.comet-onboarding-steps {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.comet-onboarding-step-pill {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: var(--comet-surface-alt, #f1f5f9);
+    color: var(--comet-text-muted, #64748b);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.comet-onboarding-step-pill.is-active {
+    background: rgba(138, 77, 255, 0.12);
+    color: var(--comet-primary, #8a4dff);
+}
+
+.comet-onboarding-body {
+    padding: 28px;
+}
+
+.comet-provider-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+@media screen and (max-width: 600px) {
+    .comet-provider-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.comet-provider-tile {
+    position: relative;
+    cursor: pointer;
+    border-radius: 12px;
+    border: 1.5px solid var(--comet-border, #e2e8f0);
+    background: var(--comet-surface-card, #ffffff);
+    padding: 16px;
+    transition: all 0.18s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 130px;
+}
+
+.comet-provider-tile:hover {
+    border-color: var(--comet-primary, #8a4dff);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(138, 77, 255, 0.12);
+}
+
+.comet-provider-tile.is-selected {
+    border-color: var(--comet-primary, #8a4dff) !important;
+    background: rgba(138, 77, 255, 0.04) !important;
+    box-shadow: 0 0 0 1px var(--comet-primary, #8a4dff), 0 4px 16px rgba(138, 77, 255, 0.15) !important;
+}
+
+.comet-provider-tile.is-selected .comet-tile-radio-circle {
+    border-color: var(--comet-primary, #8a4dff);
+    background-color: var(--comet-primary, #8a4dff);
+    box-shadow: inset 0 0 0 3px #ffffff;
+}
+
+.comet-onboarding-guide-callout {
+    background: var(--comet-surface-alt, #f8fafc);
+    border: 1px dashed var(--comet-border, #cbd5e1);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-top: 10px;
+    font-size: 0.8125rem;
+}
+
+.comet-onboarding-features-bar {
+    border-top: 1px solid var(--comet-border-weak, #edf2f7);
+    background: var(--comet-surface-alt, #f8fafc);
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    font-size: 0.78rem;
+    color: var(--comet-text-muted, #64748b);
+}
+
+@media screen and (max-width: 600px) {
+    .comet-onboarding-features-bar {
+        flex-direction: column;
+        gap: 8px;
+    }
+}
+
+/* Dark mode specific for onboarding */
+.comet-aisays[data-theme="dark"] .comet-onboarding-box {
+    background: var(--comet-surface, #161b22);
+    border-color: var(--comet-border, #30363d);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+}
+
+.comet-aisays[data-theme="dark"] .comet-onboarding-header {
+    background: linear-gradient(180deg, rgba(138, 77, 255, 0.15) 0%, transparent 100%);
+    border-bottom-color: var(--comet-border, #30363d);
+}
+
+.comet-aisays[data-theme="dark"] .comet-onboarding-logo-badge {
+    background: var(--comet-surface-card, #21262d);
+    border-color: rgba(157, 111, 255, 0.3);
+    box-shadow: 0 4px 16px rgba(138, 77, 255, 0.25);
+}
+
+.comet-aisays[data-theme="dark"] .comet-onboarding-step-pill {
+    background: var(--comet-surface-card, #21262d);
+    color: var(--comet-text-muted, #8b949e);
+}
+
+.comet-aisays[data-theme="dark"] .comet-onboarding-step-pill.is-active {
+    background: rgba(138, 77, 255, 0.25);
+    color: var(--comet-primary, #b794f6);
+}
+
+.comet-aisays[data-theme="dark"] .comet-provider-tile {
+    background: var(--comet-surface-card, #21262d);
+    border-color: var(--comet-border, #30363d);
+}
+
+.comet-aisays[data-theme="dark"] .comet-provider-tile.is-selected {
+    background: rgba(138, 77, 255, 0.12) !important;
+    border-color: var(--comet-primary, #9d6fff) !important;
+}
+
+.comet-aisays[data-theme="dark"] .comet-provider-tile.is-selected .comet-tile-radio-circle {
+    box-shadow: inset 0 0 0 3px #161b22;
+}
+
+.comet-aisays[data-theme="dark"] .comet-onboarding-guide-callout {
+    background: var(--comet-surface-card, #21262d);
+    border-color: var(--comet-border, #30363d);
+    color: var(--comet-text, #c9d1d9);
+}
+
+.comet-aisays[data-theme="dark"] .comet-onboarding-features-bar {
+    background: var(--comet-surface-alt, #0d1117);
+    border-top-color: var(--comet-border, #30363d);
+    color: var(--comet-text-muted, #8b949e);
+}
+
+#wpcmt-aisays-skip-onboarding {
+    text-decoration: none !important;
+    color: var(--comet-text-muted, #64748b) !important;
+    font-size: 0.825rem;
+    cursor: pointer;
+    transition: color 0.15s ease;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+#wpcmt-aisays-skip-onboarding:hover {
+    color: var(--comet-primary, #8a4dff) !important;
+    text-decoration: underline !important;
+}
+
+.comet-aisays[data-theme="dark"] #wpcmt-aisays-skip-onboarding {
+    color: var(--comet-text-muted, #8b949e) !important;
+}
+
+.comet-aisays[data-theme="dark"] #wpcmt-aisays-skip-onboarding:hover {
+    color: var(--comet-primary, #b794f6) !important;
+}

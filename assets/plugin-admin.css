@@ -1,0 +1,15 @@
+/*
+ * Comet AI Says - Legacy Admin Styles Compatibility
+ * Cleared of destructive unscoped rules (.card, yellow borders, fixed button widths)
+ */
+
+
+.comet-aisays .api-key-field.masked {
+    letter-spacing: 1px;
+    -webkit-text-security: disc !important;
+}
+
+.comet-aisays .api-key-field:not(.masked) {
+    letter-spacing: normal;
+    -webkit-text-security: none !important;
+}

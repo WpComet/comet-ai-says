@@ -1,0 +1,15 @@
+# Git export-ignore rules for clean WordPress.org & production distributions
+/.github                export-ignore
+/.gitignore             export-ignore
+/.gitattributes         export-ignore
+/.phpunit.result.cache  export-ignore
+/tests                  export-ignore
+/dev                    export-ignore
+/dev_llm                export-ignore
+/phpunit.xml.dist       export-ignore
+/composer.json          export-ignore
+/composer.lock          export-ignore
+/package.json           export-ignore
+/package-lock.json      export-ignore
+/node_modules           export-ignore
+/vendor                 export-ignore
