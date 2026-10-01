@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Comet AI Says: Product Descriptions
  * Description: Generate contextual AI product descriptions on-the-fly and store them in custom fields without messing with your existing descriptions.
- * Version: 1.3.11
+ * Version: 1.4.0
  * Author: WpComet
  * Plugin URI: https://wpcomet.com/ai-says/
  * Author URI: https://wpcomet.com/
@@ -30,7 +30,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin version constant
-define('COMET_AISAYS_VERSION', '1.3.11');
+define('COMET_AISAYS_VERSION', '1.4.0');
 
 // Require PSR-4 Autoloader
 require_once __DIR__ . '/includes/Autoload.php';
