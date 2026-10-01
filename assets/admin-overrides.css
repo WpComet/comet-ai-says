@@ -120,21 +120,177 @@
     border-color: #30363d !important;
 }
 
-/* Reset WP Admin Button Hover Bleed on Bulma Buttons */
-.wp-core-ui #wpwrap .comet-aisays .button:where(:not(.button-link)):hover,
-.wp-core-ui #wpwrap .comet-aisays .button:where(:not(.button-link)):active,
-.wp-core-ui #wpwrap .comet-aisays .button:where(:not(.button-link)):focus {
-    background: none;
-    background-color: hsl(var(--bulma-button-h), var(--bulma-button-s), calc(var(--bulma-button-background-l) + var(--bulma-button-background-l-delta)));
-    color: hsl(var(--bulma-button-h), var(--bulma-button-s), var(--bulma-button-color-l));
+/* ============================================================
+   BUTTON STYLES & HOVER STATES (Light and Dark Mode)
+   Eliminates WP core bleed, low-contrast text, and harsh borders
+   ============================================================ */
+
+/* Global Button Base & Focus Reset */
+.wp-core-ui #wpwrap .comet-aisays .button,
+.comet-aisays .button {
+    font-family: inherit;
+    font-weight: 500;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+    box-shadow: none;
+    text-decoration: none !important;
 }
 
-.wp-core-ui #wpwrap .comet-aisays .button.is-outlined:where(:not(.button-link)):hover,
-.wp-core-ui #wpwrap .comet-aisays .button.is-outlined:where(:not(.button-link)):active,
-.wp-core-ui #wpwrap .comet-aisays .button.is-outlined:where(:not(.button-link)):focus {
-    background: none;
-    background-color: hsl(var(--bulma-button-h), var(--bulma-button-s), calc(var(--bulma-button-color-l) + var(--bulma-button-background-l-delta)));
-    color: hsl(var(--bulma-button-h), var(--bulma-button-s), var(--bulma-button-color-l));
+.wp-core-ui #wpwrap .comet-aisays .button:hover,
+.wp-core-ui #wpwrap .comet-aisays .button:focus,
+.wp-core-ui #wpwrap .comet-aisays .button:active,
+.comet-aisays .button:hover,
+.comet-aisays .button:focus,
+.comet-aisays .button:active {
+    outline: none !important;
+    text-decoration: none !important;
+}
+
+/* 1. Primary Buttons (.is-primary, .button-primary) */
+.wp-core-ui #wpwrap .comet-aisays .button.is-primary,
+.wp-core-ui #wpwrap .comet-aisays .button.button-primary,
+.comet-aisays .button.is-primary,
+.comet-aisays .button.button-primary {
+    background-color: var(--comet-primary, #8a4dff) !important;
+    border-color: var(--comet-primary, #8a4dff) !important;
+    color: #ffffff !important;
+    box-shadow: 0 1px 3px rgba(138, 77, 255, 0.2) !important;
+}
+
+.wp-core-ui #wpwrap .comet-aisays .button.is-primary:hover,
+.wp-core-ui #wpwrap .comet-aisays .button.is-primary:focus,
+.wp-core-ui #wpwrap .comet-aisays .button.button-primary:hover,
+.wp-core-ui #wpwrap .comet-aisays .button.button-primary:focus,
+.comet-aisays .button.is-primary:hover,
+.comet-aisays .button.is-primary:focus,
+.comet-aisays .button.button-primary:hover,
+.comet-aisays .button.button-primary:focus {
+    background-color: var(--comet-primary-hover, #7839ee) !important;
+    border-color: var(--comet-primary-hover, #7839ee) !important;
+    color: #ffffff !important;
+    box-shadow: 0 3px 10px rgba(138, 77, 255, 0.35) !important;
+    transform: translateY(-1px);
+}
+
+.wp-core-ui #wpwrap .comet-aisays .button.is-primary:active,
+.wp-core-ui #wpwrap .comet-aisays .button.button-primary:active,
+.comet-aisays .button.is-primary:active,
+.comet-aisays .button.button-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(138, 77, 255, 0.2) !important;
+}
+
+/* 2. Outlined Primary Buttons (.button.is-outlined.is-primary) */
+.wp-core-ui #wpwrap .comet-aisays .button.is-outlined.is-primary,
+.comet-aisays .button.is-outlined.is-primary {
+    background: transparent !important;
+    border: 1px solid var(--comet-primary, #8a4dff) !important;
+    color: var(--comet-primary, #8a4dff) !important;
+}
+
+.wp-core-ui #wpwrap .comet-aisays .button.is-outlined.is-primary .dashicons,
+.comet-aisays .button.is-outlined.is-primary .dashicons {
+    color: var(--comet-primary, #8a4dff) !important;
+    transition: color 0.15s ease;
+}
+
+.wp-core-ui #wpwrap .comet-aisays .button.is-outlined.is-primary:hover,
+.wp-core-ui #wpwrap .comet-aisays .button.is-outlined.is-primary:focus,
+.comet-aisays .button.is-outlined.is-primary:hover,
+.comet-aisays .button.is-outlined.is-primary:focus {
+    background-color: var(--comet-primary, #8a4dff) !important;
+    border-color: var(--comet-primary, #8a4dff) !important;
+    color: #ffffff !important;
+    box-shadow: 0 3px 10px rgba(138, 77, 255, 0.35) !important;
+    transform: translateY(-1px);
+}
+
+.wp-core-ui #wpwrap .comet-aisays .button.is-outlined.is-primary:hover .dashicons,
+.wp-core-ui #wpwrap .comet-aisays .button.is-outlined.is-primary:focus .dashicons,
+.comet-aisays .button.is-outlined.is-primary:hover .dashicons,
+.comet-aisays .button.is-outlined.is-primary:focus .dashicons {
+    color: #ffffff !important;
+}
+
+/* 3. Subtle / Light Buttons (.button.is-light, standard secondary buttons) */
+/* Light Mode */
+.comet-aisays:not([data-theme="dark"]) .button.is-light,
+.comet-aisays:not([data-theme="dark"]) .button:not(.is-primary):not(.button-primary):not(.is-outlined):not(.is-danger):not(.is-success):not(.button-link) {
+    background-color: #f1f5f9 !important;
+    border: 1px solid #d8dce2 !important;
+    color: #334155 !important;
+}
+
+.comet-aisays:not([data-theme="dark"]) .button.is-light .dashicons,
+.comet-aisays:not([data-theme="dark"]) .button:not(.is-primary):not(.button-primary):not(.is-outlined):not(.is-danger):not(.is-success):not(.button-link) .dashicons {
+    color: #475569 !important;
+}
+
+.comet-aisays:not([data-theme="dark"]) .button.is-light:hover,
+.comet-aisays:not([data-theme="dark"]) .button.is-light:focus,
+.comet-aisays:not([data-theme="dark"]) .button:not(.is-primary):not(.button-primary):not(.is-outlined):not(.is-danger):not(.is-success):not(.button-link):hover,
+.comet-aisays:not([data-theme="dark"]) .button:not(.is-primary):not(.button-primary):not(.is-outlined):not(.is-danger):not(.is-success):not(.button-link):focus {
+    background-color: #e2e8f0 !important;
+    border-color: #cbd5e1 !important;
+    color: #0f172a !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05) !important;
+    transform: translateY(-1px);
+}
+
+.comet-aisays:not([data-theme="dark"]) .button.is-light:hover .dashicons,
+.comet-aisays:not([data-theme="dark"]) .button.is-light:focus .dashicons,
+.comet-aisays:not([data-theme="dark"]) .button:not(.is-primary):not(.button-primary):not(.is-outlined):not(.is-danger):not(.is-success):not(.button-link):hover .dashicons,
+.comet-aisays:not([data-theme="dark"]) .button:not(.is-primary):not(.button-primary):not(.is-outlined):not(.is-danger):not(.is-success):not(.button-link):focus .dashicons {
+    color: var(--comet-primary, #8a4dff) !important;
+}
+
+/* Dark Mode */
+.comet-aisays[data-theme="dark"] .button.is-light,
+.comet-aisays[data-theme="dark"] .button:not(.is-primary):not(.button-primary):not(.is-outlined):not(.is-danger):not(.is-success):not(.button-link) {
+    background-color: #1c2128 !important;
+    border: 1px solid #30363d !important;
+    color: #c9d1d9 !important;
+}
+
+.comet-aisays[data-theme="dark"] .button.is-light .dashicons,
+.comet-aisays[data-theme="dark"] .button:not(.is-primary):not(.button-primary):not(.is-outlined):not(.is-danger):not(.is-success):not(.button-link) .dashicons {
+    color: #8b949e !important;
+}
+
+.comet-aisays[data-theme="dark"] .button.is-light:hover,
+.comet-aisays[data-theme="dark"] .button.is-light:focus,
+.comet-aisays[data-theme="dark"] .button:not(.is-primary):not(.button-primary):not(.is-outlined):not(.is-danger):not(.is-success):not(.button-link):hover,
+.comet-aisays[data-theme="dark"] .button:not(.is-primary):not(.button-primary):not(.is-outlined):not(.is-danger):not(.is-success):not(.button-link):focus {
+    background-color: #262c36 !important;
+    border-color: #484f58 !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+    transform: translateY(-1px);
+}
+
+.comet-aisays[data-theme="dark"] .button.is-light:hover .dashicons,
+.comet-aisays[data-theme="dark"] .button.is-light:focus .dashicons,
+.comet-aisays[data-theme="dark"] .button:not(.is-primary):not(.button-primary):not(.is-outlined):not(.is-danger):not(.is-success):not(.button-link):hover .dashicons,
+.comet-aisays[data-theme="dark"] .button:not(.is-primary):not(.button-primary):not(.is-outlined):not(.is-danger):not(.is-success):not(.button-link):focus .dashicons {
+    color: #a87ffb !important;
+}
+
+/* 4. Danger Outlined Buttons (.button.is-outlined.is-danger) */
+.wp-core-ui #wpwrap .comet-aisays .button.is-outlined.is-danger,
+.comet-aisays .button.is-outlined.is-danger {
+    background: transparent !important;
+    border: 1px solid var(--comet-danger, #f14668) !important;
+    color: var(--comet-danger, #f14668) !important;
+}
+
+.wp-core-ui #wpwrap .comet-aisays .button.is-outlined.is-danger:hover,
+.wp-core-ui #wpwrap .comet-aisays .button.is-outlined.is-danger:focus,
+.comet-aisays .button.is-outlined.is-danger:hover,
+.comet-aisays .button.is-outlined.is-danger:focus {
+    background-color: var(--comet-danger, #f14668) !important;
+    border-color: var(--comet-danger, #f14668) !important;
+    color: #ffffff !important;
+    box-shadow: 0 3px 10px rgba(241, 70, 104, 0.35) !important;
+    transform: translateY(-1px);
 }
 
 /* ============================================================
@@ -167,23 +323,69 @@
     overflow: hidden;
 }
 
+/* Neutralize focus/hover blue lines, outlines, and border artifacts on tabs */
+.wp-core-ui #wpwrap .comet-aisays .tabs a,
+.wp-core-ui #wpwrap .comet-aisays .tabs a:hover,
+.wp-core-ui #wpwrap .comet-aisays .tabs a:focus,
+.wp-core-ui #wpwrap .comet-aisays .tabs a:focus-visible,
+.wp-core-ui #wpwrap .comet-aisays .tabs a:active,
+.comet-aisays .tabs a,
+.comet-aisays .tabs a:hover,
+.comet-aisays .tabs a:focus,
+.comet-aisays .tabs a:focus-visible,
+.comet-aisays .tabs a:active,
+.comet-aisays .tabs li a,
+.comet-aisays .tabs li a:hover,
+.comet-aisays .tabs li a:focus,
+.comet-aisays .tabs li a:focus-visible,
+.comet-aisays .tabs li a:active {
+    outline: none !important;
+    box-shadow: none !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    text-decoration: none !important;
+}
+
 .comet-aisays .tabs ul {
-    border-bottom: 2px solid var(--comet-border-weak);
-    margin: 0;
+    border-bottom: 2px solid var(--comet-border-weak) !important;
+    margin: 0 !important;
+    gap: 0.25rem;
+}
+
+.comet-aisays .tabs li {
+    margin: 0 !important;
 }
 
 .comet-aisays .tabs li a {
-    border-bottom: 2px solid transparent;
-    margin-bottom: -2px;
+    border: none !important;
+    border-bottom: 2px solid transparent !important;
+    margin-bottom: -2px !important;
     font-weight: 600;
-    color: var(--comet-text-muted);
-    transition: all 0.2s ease;
-    padding: 0.75rem 1.25rem;
+    color: var(--comet-text-muted) !important;
+    background: transparent !important;
+    transition: color 0.15s ease, border-color 0.15s ease !important;
+    padding: 0.75rem 1.25rem !important;
+    border-radius: 0 !important;
 }
 
-.comet-aisays .tabs li.is-active a {
-    color: var(--comet-primary);
-    border-bottom-color: var(--comet-primary);
+.comet-aisays .tabs li a .dashicons {
+    color: inherit !important;
+}
+
+.comet-aisays .tabs li a:hover {
+    color: var(--comet-primary) !important;
+    border-bottom-color: color-mix(in srgb, var(--comet-primary) 50%, transparent) !important;
+    background: transparent !important;
+}
+
+.comet-aisays .tabs li.is-active a,
+.comet-aisays .tabs li.is-active a:hover,
+.comet-aisays .tabs li.is-active a:focus,
+.comet-aisays .tabs li.is-active a:active {
+    color: var(--comet-primary) !important;
+    border-bottom: 2px solid var(--comet-primary) !important;
+    background: transparent !important;
 }
 
 /* Theme Toggle Button */
@@ -750,19 +952,58 @@
 }
 
 
-/* Check Column alignment */
-.comet-aisays .wp-list-table .check-column {
-    width: 2.75rem !important;
+/* ============================================================
+   TABLE CHECKBOX ALIGNMENT (Header and Body Rows)
+   Centers checkboxes perfectly both horizontally and vertically
+   ============================================================ */
+
+.wp-core-ui .comet-aisays .wp-list-table th.check-column,
+.wp-core-ui .comet-aisays .wp-list-table td.check-column,
+.comet-aisays .table th.check-column,
+.comet-aisays .table td.check-column,
+.comet-aisays .wp-list-table th.check-column,
+.comet-aisays .wp-list-table td.check-column,
+.comet-aisays .check-column,
+.comet-aisays .column-cb,
+.comet-aisays th#cb,
+.comet-aisays td#cb {
+    width: 3.25rem !important;
+    min-width: 3.25rem !important;
+    max-width: 3.5rem !important;
     text-align: center !important;
+    vertical-align: middle !important;
     padding: 0.75rem 0.5rem !important;
+}
+
+.comet-aisays .check-column label,
+.comet-aisays .column-cb label,
+.comet-aisays .comet-table-cb-label {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    cursor: pointer !important;
+    line-height: 1 !important;
     vertical-align: middle !important;
 }
 
-.comet-aisays .wp-list-table .check-column input[type="checkbox"] {
-    margin: 0 !important;
+.wp-core-ui .comet-aisays .check-column input[type="checkbox"],
+.wp-core-ui .comet-aisays .column-cb input[type="checkbox"],
+.comet-aisays .check-column input[type="checkbox"],
+.comet-aisays .column-cb input[type="checkbox"],
+.comet-aisays .wp-list-table th.check-column input[type="checkbox"],
+.comet-aisays .wp-list-table td.check-column input[type="checkbox"],
+.comet-aisays th#cb input[type="checkbox"],
+.comet-aisays td#cb input[type="checkbox"] {
+    margin: 0 auto !important;
+    display: inline-block !important;
     vertical-align: middle !important;
+    float: none !important;
     position: static !important;
-    cursor: pointer;
+    cursor: pointer !important;
 }
 
 /* Product Cell Layout */

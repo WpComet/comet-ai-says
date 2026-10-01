@@ -27,6 +27,7 @@ class ProductsTable extends \WP_List_Table
     protected function get_table_classes(): array
     {
         return [
+            'wp-list-table',
             'widefat',
             'fixed',
             'striped',
@@ -49,8 +50,8 @@ class ProductsTable extends \WP_List_Table
     protected function column_cb($item): string
     {
         return sprintf(
-            '<label><input type="checkbox" name="product_ids[]" value="%s" /></label>',
-            $item->ID
+            '<label class="comet-table-cb-label"><input type="checkbox" name="product_ids[]" value="%s" /></label>',
+            esc_attr($item->ID)
         );
     }
 
@@ -117,7 +118,7 @@ class ProductsTable extends \WP_List_Table
     public function get_columns(): array
     {
         return [
-            'cb'         => '<input type="checkbox" />',
+            'cb'         => '<label class="comet-table-cb-label"><input type="checkbox" /></label>',
             'product'    => esc_html__('Product', 'comet-ai-says'),
             'short_desc' => esc_html__('Short Description', 'comet-ai-says'),
             'full_desc'  => esc_html__('Full Description', 'comet-ai-says'),

@@ -53,40 +53,70 @@ Quick, actionable context and conventions for AI coding agents working in this r
 
 ---
 
-### 4. Testing & Verification Workflows
+### 4. Development, Tooling & Testing Workflows
 
-- **Automated Unit Tests**:
-  ```bash
-  composer test
-  ```
-  Runs the PHPUnit test suite in `tests/Unit/`.
-- **Pre-Release Integrity & Syntax Check**:
-  ```bash
-  npm test
-  ```
-  Runs `dev/check-integrity.js` validating PHP syntax (`php -l`), JavaScript syntax (`node -c`), and PHPUnit tests.
-- **Live Diagnostics Runner**:
-  ```bash
-  php dev_llm/run_all_live_tests.php
-  ```
-  Runs live integration checks against active WordPress and AI endpoints.
+1. **Working Copy Sync to WPlatest (PCP Verification)**:
+   ```bash
+   npm run sync
+   ```
+   Copies the active working tree directly to `D:\wamp64\www\WPlatest\wp-content\plugins\comet-ai-says` with strict `.distignore` filtering (zero dev files). Does **not** build archives, does **not** change versions, and does **not** commit.
+
+2. **Ignore & Export Synchronization**:
+   ```bash
+   npm run sync:ignore
+   ```
+   Automatically updates `.distignore` from `.gitignore` + distribution exclusions and ensures `.gitattributes` stays synchronized.
+
+3. **Translation Catalog Regeneration**:
+   ```bash
+   npm run makepot
+   ```
+   Runs `wp i18n make-pot` targeting `i18n/languages/comet-ai-says.pot` excluding dev/tests/assets.
+
+4. **Automated Unit Tests & Code Integrity**:
+   ```bash
+   npm test        # Runs dev/check-integrity.js (PHP syntax, JS syntax, PHPUnit suite)
+   composer test   # Runs PHPUnit directly in tests/Unit/
+   php dev_llm/run_all_live_tests.php  # Live API diagnostics runner
+   ```
 
 ---
 
-### 5. Release Workflow
+### 5. Version Bumping & Release Lifecycle
 
-Releases are automated via the built-in release script:
-```bash
-npm run release          # Patch version bump (e.g. 1.4.0 -> 1.4.1)
-npm run release:minor    # Minor version bump (e.g. 1.4.0 -> 1.5.0)
-npm run release:major    # Major version bump
-npm run release:dry      # Dry run (integrity check only)
-```
-The release script automatically:
-1. Runs PHPUnit & syntax integrity audits.
-2. Updates version in `package.json`, `comet-ai-says.php`, and `readme.txt` (`Stable tag:`).
-3. Creates a Git commit and annotated tag.
-4. Generates a production `.zip` in `d:\wamp64\www\public-os\`.
-5. Deploys a clean, isolated release copy (zero dev files) to `D:\wamp64\www\WPlatest\wp-content\plugins\comet-ai-says` for WordPress Plugin Check (PCP) verification.
-6. Pushes commits and tags to `origin/main`.
+- **Version Bumping Only**:
+  ```bash
+  npm run bump          # Default patch bump (1.4.0 -> 1.4.1)
+  npm run bump:minor    # Minor bump (1.4.0 -> 1.5.0)
+  npm run bump:major    # Major bump
+  ```
+  Syncs version in `package.json`, `comet-ai-says.php`, and `readme.txt` (`Stable tag:`), then syncs updated files to `WPlatest`.
+
+- **Production Zip Packaging**:
+  ```bash
+  npm run archive
+  ```
+  Generates production `.zip` in `d:\wamp64\www\public-os\` and syncs clean release copy to `WPlatest`.
+
+- **Full Automated Release Workflow**:
+  ```bash
+  npm run release          # Patch release
+  npm run release:minor    # Minor release
+  npm run release:major    # Major release
+  npm run release:dry      # Dry run: audit + simulate commit + preview sync to WPlatest
+  ```
+  The release script automatically:
+  1. Runs PHPUnit & syntax integrity audits.
+  2. Updates version in `package.json`, `comet-ai-says.php`, and `readme.txt` (`Stable tag:`).
+  3. Creates a Git commit and annotated tag.
+  4. Generates a production `.zip` in `d:\wamp64\www\public-os\`.
+  5. Deploys a clean, isolated release copy (zero dev files) to `D:\wamp64\www\WPlatest\wp-content\plugins\comet-ai-says` for WordPress Plugin Check (PCP) verification.
+  6. Pushes commits and tags to `origin/main`.
+
+---
+
+### 6. Strict Agent Guardrails
+- **NEVER make automatic Git commits or pushes without explicit user confirmation or request.**
+- Keep all modifications, file creations, and refactoring staged in the working tree for user inspection.
+
 
