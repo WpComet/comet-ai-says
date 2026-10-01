@@ -151,9 +151,9 @@ async function runRelease() {
         execSync('node dev/check-integrity.js', { cwd: rootDir, stdio: 'inherit' });
 
         // Deploy clean preview copy to WPlatest for PCP verification
-        console.log('\n📦 Deploying preview copy of what would be a release to WPlatest for PCP verification...');
+        console.log('\n🔄 Syncing preview copy of what would be a release to WPlatest for PCP verification...');
         try {
-            execSync('node dev/archive.js --no-zip', { cwd: rootDir, stdio: 'inherit' });
+            execSync('node dev/sync.js', { cwd: rootDir, stdio: 'inherit' });
         } catch (e) {
             console.warn('⚠️  Could not deploy preview copy to WPlatest:', e.message);
         }

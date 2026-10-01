@@ -74,12 +74,13 @@ for (const rFile of readmeFiles) {
     }
 }
 
-// Automatically deploy clean copy to WPlatest for PCP verification if not invoked from release script
+// Automatically sync clean copy to WPlatest for PCP verification if not invoked from release script
 if (!process.env.COMET_IN_RELEASE) {
     try {
-        console.log('\n📦 Packaging and deploying clean test copy to WPlatest...');
-        execSync('node dev/archive.js --working-copy', { cwd: rootDir, stdio: 'inherit' });
+        console.log('\n🔄 Syncing updated working copy to WPlatest...');
+        execSync('node dev/sync.js', { cwd: rootDir, stdio: 'inherit' });
     } catch (e) {
-        console.warn('⚠️  Could not deploy clean copy to WPlatest:', e.message);
+        console.warn('⚠️  Could not sync copy to WPlatest:', e.message);
     }
 }
+
