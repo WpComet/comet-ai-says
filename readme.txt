@@ -35,14 +35,12 @@ Comet AI Says is a lightweight, privacy-conscious WordPress plugin that generate
 
 == Screenshots ==
 
-1. Bulk generation interface for WooCommerce products.
-2. Sample bulk generating descriptions.
-3. Single product without AI desc
-4. Single product with AI desc
-5. Admin single edit product individual description generation.
-6. Admin single generated description
-7. Track usage
-8. Plugin settings panel with API configuration and model selection.
+1. **AI Engine & Settings Studio**: Modern Dark Mode dashboard featuring Google AI Studio model selection cards, capability badges, quota meters, API key mask toggle, and token controls.
+2. **Product Descriptions Catalog Table**: Full WooCommerce product management table with instant AI status indicators, single-click generation, and bulk operations.
+3. **AI Description Preview Modal**: Fast preview modal showing generated descriptions with one-click clipboard copying.
+4. **Status & Live Diagnostics Suite**: Automated live environment tests verifying API handshake, rate limits, catalog metadata, and image downsampling pipeline.
+5. **On-Demand API Usage & Rate Limits**: Asynchronous slide drawer showing live request limits, token consumption, and daily quotas.
+6. **Prompt Engineering Studio & Placement**: Customizable prompt template editor with clickable variable insertion pills and automatic display placement settings.
 
 == Changelog ==
 
