@@ -173,6 +173,7 @@ class Plugin
     public static function activate(): void
     {
         delete_transient(Config::TRANSIENT_SKIP_ONBOARDING);
+        set_transient(Config::TRANSIENT_ACTIVATION_REDIRECT, true, 30);
 
         if (false === get_option(Config::OPTION_SETTINGS)) {
             add_option(Config::OPTION_SETTINGS, Config::get_default_options(), '', true);

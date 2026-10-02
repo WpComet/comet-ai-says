@@ -68,6 +68,21 @@ if (!function_exists('is_admin')) {
         return true;
     }
 }
+if (!function_exists('wp_doing_ajax')) {
+    function wp_doing_ajax() {
+        return $GLOBALS['_wp_mock_doing_ajax'] ?? false;
+    }
+}
+if (!function_exists('is_network_admin')) {
+    function is_network_admin() {
+        return $GLOBALS['_wp_mock_is_network_admin'] ?? false;
+    }
+}
+if (!function_exists('current_user_can')) {
+    function current_user_can($capability, ...$args) {
+        return $GLOBALS['_wp_mock_user_can'] ?? true;
+    }
+}
 if (!function_exists('plugin_dir_url')) {
     function plugin_dir_url($file) {
         return 'http://example.com/wp-content/plugins/comet-ai-says/';

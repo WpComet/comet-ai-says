@@ -10,8 +10,9 @@ defined('ABSPATH') || exit;
 class Config
 {
     // Primary Unified Option Name in wp_options
-    public const OPTION_SETTINGS          = 'wpcmt_aisays_settings';
-    public const TRANSIENT_SKIP_ONBOARDING = 'wpcmt_aisays_onboarding_skipped';
+    public const OPTION_SETTINGS             = 'wpcmt_aisays_settings';
+    public const TRANSIENT_SKIP_ONBOARDING    = 'wpcmt_aisays_onboarding_skipped';
+    public const TRANSIENT_ACTIVATION_REDIRECT = 'wpcmt_aisays_activation_redirect';
 
     // Setting Array Keys
     public const KEY_PROVIDER          = 'provider';

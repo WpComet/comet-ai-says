@@ -21,6 +21,7 @@ class AdminInterface
         add_action('all_admin_notices', [$this, 'stash_settings_errors'], 9999);
         add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_scripts']);
         add_action('admin_post_generate_bulk_ai_descriptions', [$this, 'handle_bulk_generation']);
+        add_action('admin_init', [$this, 'do_activation_redirect']);
         add_action('admin_init', [$this, 'maybe_restore_defaults']);
         add_action('admin_init', [$this, 'maybe_restart_onboarding']);
         add_action('wp_ajax_wpcmt_aisays_check_existing_description', [$this, 'check_existing_description_callback']);
@@ -1939,6 +1940,27 @@ class AdminInterface
         delete_transient(Config::TRANSIENT_SKIP_ONBOARDING);
 
         wp_safe_redirect(add_query_arg('restored', 'true', admin_url('options-general.php?page=wpcmt-aisays-settings')));
+        exit;
+    }
+
+    public function do_activation_redirect(): void
+    {
+        if (!get_transient(Config::TRANSIENT_ACTIVATION_REDIRECT)) {
+            return;
+        }
+
+        delete_transient(Config::TRANSIENT_ACTIVATION_REDIRECT);
+
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        if ((function_exists('wp_doing_ajax') && wp_doing_ajax()) || (defined('REST_REQUEST') && REST_REQUEST) || (defined('WP_CLI') && WP_CLI) || (function_exists('is_network_admin') && is_network_admin()) || isset($_GET['activate-multi'])) {
+            return;
+        }
+
+        if (!current_user_can('manage_options')) {
+            return;
+        }
+
+        wp_safe_redirect(admin_url('options-general.php?page=wpcmt-aisays-settings'));
         exit;
     }
 

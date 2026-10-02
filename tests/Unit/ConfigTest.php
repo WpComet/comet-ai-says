@@ -150,4 +150,10 @@ class ConfigTest extends TestCase
         $this->assertSame('AIzaSyBatchKey', Config::get_option(Config::KEY_GEMINI_KEY));
         $this->assertSame('spanish', Config::get_option(Config::KEY_LANGUAGE));
     }
+
+    public function test_transient_constants_are_defined(): void
+    {
+        $this->assertSame('wpcmt_aisays_onboarding_skipped', Config::TRANSIENT_SKIP_ONBOARDING);
+        $this->assertSame('wpcmt_aisays_activation_redirect', Config::TRANSIENT_ACTIVATION_REDIRECT);
+    }
 }
