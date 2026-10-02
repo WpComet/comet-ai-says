@@ -11,6 +11,7 @@ return function (): array {
     $has_imagick = extension_loaded('imagick') && class_exists('Imagick');
 
     $steps[] = sprintf(
+        /* translators: 1: GD installation status, 2: Imagick installation status. */
         __('Detected image engines: GD (%1$s), Imagick (%2$s)', 'comet-ai-says'),
         $has_gd ? __('Installed', 'comet-ai-says') : __('Not installed', 'comet-ai-says'),
         $has_imagick ? __('Installed', 'comet-ai-says') : __('Not installed', 'comet-ai-says')
@@ -39,6 +40,7 @@ return function (): array {
             $supported_names[] = $fmt;
         }
     }
+    /* translators: %s: Comma-separated list of supported image format encoders. */
     $steps[] = sprintf(__('Supported format encoders: %s', 'comet-ai-says'), implode(', ', $supported_names));
 
     // 3. Test wp_get_image_editor with synthetic micro image
@@ -51,11 +53,12 @@ return function (): array {
 
     $editor = wp_get_image_editor($temp_img);
     if (is_wp_error($editor)) {
-        @unlink($temp_img);
+        wp_delete_file($temp_img);
         return [
             'status' => 'error',
             'title'  => $title,
             'steps'  => $steps,
+            /* translators: %s: Error message details. */
             'result' => sprintf(__('wp_get_image_editor failed: %s', 'comet-ai-says'), $editor->get_error_message()),
         ];
     }
@@ -64,10 +67,10 @@ return function (): array {
     $save_temp  = wp_tempnam('cmt_test_thumb.jpg');
     $saved      = $editor->save($save_temp, 'image/jpeg');
 
-    @unlink($temp_img);
-    @unlink($save_temp);
+    wp_delete_file($temp_img);
+    wp_delete_file($save_temp);
     if (!is_wp_error($saved) && file_exists($saved['path'])) {
-        @unlink($saved['path']);
+        wp_delete_file($saved['path']);
     }
 
     if (is_wp_error($resize_res) || is_wp_error($saved)) {
@@ -86,6 +89,7 @@ return function (): array {
         'title'  => $title,
         'steps'  => $steps,
         'result' => sprintf(
+            /* translators: 1: Image editor class name, 2: Comma-separated list of supported image format encoders. */
             __('Image pipeline operational using %1$s. Formats verified: %2$s. Downsampling and AVIF conversion working properly.', 'comet-ai-says'),
             get_class($editor),
             implode(', ', $supported_names)

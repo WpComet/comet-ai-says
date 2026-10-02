@@ -40,7 +40,7 @@ if (!fs.existsSync(mainFile)) {
 let content = fs.readFileSync(mainFile, 'utf8');
 
 const headerRegex = /(\*\s*Version:\s+)(.+)/;
-const constRegex = /(define\s*\(\s*['"]COMET_AISAYS_VERSION['"]\s*,\s*['"])(.+?)(['"]\s*\)\s*;)/i;
+const constRegex = /(define\s*\(\s*['"][A-Z0-9_]+_VERSION['"]\s*,\s*['"])(.+?)(['"]\s*\)\s*;)/i;
 
 if (!headerRegex.test(content)) {
     console.error(`❌ Error: Could not locate "* Version:" header line in ${mainFileName}!`);
@@ -48,7 +48,7 @@ if (!headerRegex.test(content)) {
 }
 
 if (!constRegex.test(content)) {
-    console.error(`❌ Error: Could not locate COMET_AISAYS_VERSION define constant in ${mainFileName}!`);
+    console.error(`❌ Error: Could not locate *_VERSION define constant in ${mainFileName}!`);
     process.exit(1);
 }
 

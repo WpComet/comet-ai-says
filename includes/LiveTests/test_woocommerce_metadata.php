@@ -15,6 +15,7 @@ return function (): array {
             'result' => __('WooCommerce plugin is not active. Comet AI Says requires WooCommerce to manage product descriptions.', 'comet-ai-says'),
         ];
     }
+    /* translators: %s: WooCommerce version number. */
     $steps[] = sprintf(__('WooCommerce active (v%s).', 'comet-ai-says'), WC()->version);
 
     // 2. Query available products
@@ -35,6 +36,7 @@ return function (): array {
     }
 
     $sample_id = $product_posts[0];
+    /* translators: %d: Product post ID. */
     $steps[]   = sprintf(__('Found catalog product ID %d for storage integrity check.', 'comet-ai-says'), $sample_id);
 
     // 3. Test non-destructive meta write/read
@@ -63,6 +65,7 @@ return function (): array {
         'title'  => $title,
         'steps'  => $steps,
         'result' => sprintf(
+            /* translators: %d: Total number of published products. */
             __('WooCommerce integration operational. %d published products in store catalog. Custom field storage verified.', 'comet-ai-says'),
             $total_products
         ),

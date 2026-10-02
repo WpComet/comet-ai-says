@@ -3,6 +3,7 @@
 /.gitignore             export-ignore
 /.gitattributes         export-ignore
 /.phpunit.result.cache  export-ignore
+/.phpunit.cache         export-ignore
 /tests                  export-ignore
 /dev                    export-ignore
 /dev_llm                export-ignore
@@ -15,4 +16,7 @@
 /vendor                 export-ignore
 /.distignore            export-ignore
 /AGENTS.md              export-ignore
-/.distignore            export-ignore
+/.agents                export-ignore
+/agent_memory.md        export-ignore
+/TODO.md                export-ignore
+/todo.php               export-ignore

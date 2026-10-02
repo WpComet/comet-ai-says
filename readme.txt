@@ -1,8 +1,8 @@
 === Comet AI Says: Product Descriptions ===
 Contributors: wpcomet  
 Tags: woocommerce, ai, product descriptions, gpt, custom fields  
-Requires at least: 5.8  
-Tested up to: 7.0
+Requires at least: 6.0  
+Tested up to: 7.1
 Requires PHP: 7.4  
 Stable tag: 1.4.0
 License: GPLv3  
@@ -43,6 +43,15 @@ Comet AI Says is a lightweight, privacy-conscious WordPress plugin that generate
 6. **Prompt Engineering Studio & Placement**: Customizable prompt template editor with clickable variable insertion pills and automatic display placement settings.
 
 == Changelog ==
+
+= 1.4.0 =
+* Certified: Official WordPress Plugin Check (PCP) compliance with zero errors and zero warnings.
+* Compatibility: Fully verified with WordPress 7.1 and WooCommerce 9.6+ (High-Performance Order Storage compatible).
+* Security: Hardened output escaping using `wp_kses_post` and input sanitization across all table queries.
+* Core: Standardized filesystem operations with core WordPress helper functions (`wp_delete_file`, `wp_strip_all_tags`).
+* Performance: Database query caching implemented for catalog coverage statistics via `wp_cache_get` and `wp_cache_set`.
+* UI/UX: Refined Bulma admin theme controls, enhanced dark/light mode toggle transitions, and centered catalog table selectors.
+* i18n: Complete translators comment annotations and standardized positional argument placeholders across all translatable strings.
 
 = 1.3.9 =
 * Feature: Google AI Studio style interactive model selection tiles with capability badges, quota meters, and direct keyboard accessibility.
@@ -133,7 +142,8 @@ Comet AI Says is a lightweight, privacy-conscious WordPress plugin that generate
 
 == Upgrade Notice ==
 
-No breaking changes.
+= 1.4.0 =
+Recommended update. Fully verified with WordPress 7.1 and WooCommerce 9.6+. Includes official Plugin Check (PCP) certification, UI refinements, query caching, and hardened security.
 
 == Features ==
 

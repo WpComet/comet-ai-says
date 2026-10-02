@@ -38,6 +38,7 @@ return function (): array {
     $exhausted_models = [];
 
     foreach ($models_to_check as $m) {
+        // phpcs:ignore PluginCheck.CodeAnalysis.AIProvider.DirectIntegration
         $url = "https://generativelanguage.googleapis.com/v1beta/models/{$m}:generateContent?key=" . $api_key;
         $body = [
             'contents'         => [['parts' => [['text' => 'Health check']]]],
@@ -55,13 +56,16 @@ return function (): array {
 
         if (200 === $code) {
             $healthy_models[] = $m;
+            /* translators: %s: Model name. */
             $steps[] = sprintf(__('Model %s: Operational (HTTP 200).', 'comet-ai-says'), $m);
         } elseif (429 === $code || 'RESOURCE_EXHAUSTED' === ($data['error']['status'] ?? '')) {
             $exhausted_models[] = $m;
+            /* translators: %s: Model name. */
             $steps[] = sprintf(__('Model %s: Free-tier limit reached (HTTP 429 RESOURCE_EXHAUSTED).', 'comet-ai-says'), $m);
         } else {
             $err = $data['error']['message'] ?? "HTTP {$code}";
-            $steps[] = sprintf(__('Model %s: HTTP %d (%s).', 'comet-ai-says'), $m, $code, substr($err, 0, 50));
+            /* translators: 1: Model name, 2: HTTP status code, 3: Error message snippet. */
+            $steps[] = sprintf(__('Model %1$s: HTTP %2$d (%3$s).', 'comet-ai-says'), $m, $code, substr($err, 0, 50));
         }
     }
 
@@ -74,6 +78,7 @@ return function (): array {
             'title'  => $title,
             'steps'  => $steps,
             'result' => sprintf(
+                /* translators: 1: Primary model name, 2: Number of backup models available. */
                 __('Primary model %1$s is healthy. %2$d resilient fallback model(s) operational as automatic safety net.', 'comet-ai-says'),
                 $active_model,
                 $backup_count
@@ -87,6 +92,7 @@ return function (): array {
             'title'  => $title,
             'steps'  => $steps,
             'result' => sprintf(
+                /* translators: 1: Primary model name, 2: Number of backup models available, 3: Comma-separated list of backup model names. */
                 __('Primary model %1$s has reached temporary quota limits. Automatic fallback cascade is ready with %2$d active backup models (%3$s).', 'comet-ai-says'),
                 $active_model,
                 $backup_count,

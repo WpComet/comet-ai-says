@@ -189,6 +189,22 @@ async function runRelease() {
         env: { ...process.env, COMET_IN_RELEASE: '1' }
     });
 
+    // 2.5. Synchronize ignore files and regenerate translation POT catalog prior to commit
+    console.log('\n🔄 Synchronizing .distignore and .gitattributes...');
+    try {
+        const syncIgnore = require('./sync-ignore');
+        if (typeof syncIgnore === 'function') syncIgnore();
+    } catch (e) {
+        console.warn(`⚠️  Could not sync ignore files: ${e.message}`);
+    }
+
+    console.log('\n🌐 Regenerating translation POT catalog (makepot)...');
+    try {
+        execSync('npm run makepot', { cwd: rootDir, stdio: 'inherit' });
+    } catch (e) {
+        console.warn(`⚠️  Translation catalog update warning: ${e.message}`);
+    }
+
     // 3. Commit release
     console.log(`\n3️⃣  Committing release v${newVersion}:`);
     console.log('--------------------------------------------------');

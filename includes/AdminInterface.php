@@ -118,16 +118,22 @@ class AdminInterface
             'save_error' => esc_html__('Error saving', 'comet-ai-says'),
             'generating' => esc_html__('Generating...', 'comet-ai-says'),
             'generate_ai_description' => esc_html__('Generate AI Description', 'comet-ai-says'),
+            /* translators: %s: Product title or name. */
             'save_error_specific' => esc_html__('Error saving description for: %s', 'comet-ai-says'),
+            /* translators: %s: Product title or name. */
             'generate_error_specific' => esc_html__('Error generating description for: %s', 'comet-ai-says'),
+            /* translators: %s: Product title or name. */
             'generate_error_generic_specific' => esc_html__('An error occurred while generating description for: %s', 'comet-ai-says'),
             'view_error' => esc_html__('Error loading AI description', 'comet-ai-says'),
             'regenerate' => esc_html__('Regenerate', 'comet-ai-says'),
             'delete_ai_description' => esc_html__('Delete AI desc', 'comet-ai-says'),
+            /* translators: %s: Product title or name. */
             'delete_confirm' => esc_html__('Are you sure you want to delete the AI description for "%s"?', 'comet-ai-says'),
             'deleting' => esc_html__('Deleting...', 'comet-ai-says'),
+            /* translators: %s: Name of the product whose AI description was deleted. */
             'deleted_success' => esc_html__('AI description deleted for: %s', 'comet-ai-says'),
             'delete_error' => esc_html__('Error deleting AI description: ', 'comet-ai-says'),
+            /* translators: %s: Product title or name. */
             'delete_error_generic' => esc_html__('Error deleting AI description for: %s', 'comet-ai-says'),
         ];
 
@@ -177,8 +183,10 @@ class AdminInterface
         } elseif ('general' === $screen || 'product-descriptions' === $screen || 'product-edit' === $screen) {
             $screen_strings = [
                 'no_products_selected' => esc_html__('Please select at least one product.', 'comet-ai-says'),
+                /* translators: %d: Number of selected products. */
                 'bulk_confirm' => esc_html__('Generate AI descriptions for %d selected products?', 'comet-ai-says'),
                 'completed' => esc_html__('Completed!', 'comet-ai-says'),
+                /* translators: %d: Number of products generated. */
                 'generated_count' => esc_html__('Generated descriptions for %d products.', 'comet-ai-says'),
                 'already_has_description' => esc_html__('This product already has an AI description.', 'comet-ai-says'),
                 'replace_existing' => esc_html__('Replace Existing', 'comet-ai-says'),
@@ -189,8 +197,11 @@ class AdminInterface
                 'bulk_generating' => esc_html__('Bulk generating descriptions...', 'comet-ai-says'),
                 'bulk_complete' => esc_html__('Bulk generation complete!', 'comet-ai-says'),
                 'bulk_error' => esc_html__('Error during bulk generation', 'comet-ai-says'),
+                /* translators: %d: Number of selected products. */
                 'bulk_delete_confirm' => esc_html__('Are you sure you want to delete AI descriptions for %d selected products?', 'comet-ai-says'),
+                /* translators: %d: Number of deleted product descriptions. */
                 'deleted_count' => esc_html__('Successfully deleted AI descriptions for %d products.', 'comet-ai-says'),
+                /* translators: %s: Number or error details for failed deletions. */
                 'delete_error_specific' => esc_html__('Failed to delete %s AI descriptions.', 'comet-ai-says'),
             ];
         }
@@ -214,7 +225,9 @@ class AdminInterface
 
     private function display_tab_navigation(): void
     {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         $current_page = sanitize_text_field(wp_unslash($_GET['page'] ?? ''));
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         $current_tab = sanitize_text_field(wp_unslash($_GET['tab'] ?? ''));
         $settings_url = admin_url('options-general.php?page=wpcmt-aisays-settings');
         $products_url = admin_url('edit.php?post_type=product&page=wpcmt-aisays-table');
@@ -229,7 +242,7 @@ class AdminInterface
                 <h1 class="title is-4 mb-0 has-text-weight-bold is-flex is-align-items-center">
                     <?php esc_html_e('Comet AI Says: Product Descriptions', 'comet-ai-says'); ?>
                     <span
-                        class="tag is-primary is-light ml-3">v<?php echo esc_html(COMET_AISAYS_VERSION); ?></span>
+                        class="tag is-primary is-light ml-3">v<?php echo esc_html(COMET_AI_SAYS_VERSION); ?></span>
                     <span id="wpcmt-aisays-bulk-loading"
                         style="display: none; margin-left: 10px; font-size: 13px; font-weight: normal;">
                         <span class="spinner is-active" style="float: none; margin-top: 0;"></span>
@@ -543,6 +556,7 @@ class AdminInterface
                     $results['details'][] = [
                         'product_id' => $product_id,
                         'status' => 'success',
+                        /* translators: %s: Product name. */
                         'message' => sprintf(esc_html__('Generated for: %s', 'comet-ai-says'), $product->get_name()),
                     ];
                 } else {
@@ -551,6 +565,7 @@ class AdminInterface
                     $results['details'][] = [
                         'product_id' => $product_id,
                         'status' => 'error',
+                        /* translators: 1: Product name, 2: Error message details. */
                         'message' => sprintf(esc_html__('Generation failed for %1$s: %2$s', 'comet-ai-says'), $product->get_name(), esc_html($error_msg)),
                     ];
                 }
@@ -1072,7 +1087,7 @@ class AdminInterface
             <span
                 class="is-size-7 has-text-grey"><?php esc_html_e('Handcrafted by WpComet', 'comet-ai-says'); ?></span>
             <span
-                class="tag is-small is-light">v<?php echo esc_html(COMET_AISAYS_VERSION); ?></span>
+                class="tag is-small is-light">v<?php echo esc_html(COMET_AI_SAYS_VERSION); ?></span>
         </div>
     </div>
 </div>
@@ -1082,10 +1097,12 @@ class AdminInterface
     private function needs_onboarding(): bool
     {
         // When settings were just saved, proceed directly to settings dashboard
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         if (isset($_GET['settings-updated'])) {
             return false;
         }
 
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         if (isset($_GET['onboarding'])) {
             delete_transient(Config::TRANSIENT_SKIP_ONBOARDING);
 
@@ -1119,7 +1136,7 @@ class AdminInterface
             <span
                 class="has-text-weight-bold is-size-6"><?php esc_html_e('Comet AI Says', 'comet-ai-says'); ?></span>
             <span
-                class="tag is-primary is-light is-small ml-2">v<?php echo esc_html(COMET_AISAYS_VERSION); ?></span>
+                class="tag is-primary is-light is-small ml-2">v<?php echo esc_html(COMET_AI_SAYS_VERSION); ?></span>
         </div>
         <div>
             <button type="button" id="comet-theme-toggle" class="comet-theme-toggle"
@@ -1540,7 +1557,13 @@ class AdminInterface
         <div class="level-right">
             <div class="level-item">
                 <span class="tag is-info is-light">
-                    <?php printf(esc_html__('Total Generated: %s', 'comet-ai-says'), '<strong>'.esc_html(number_format(get_option('wpcmt_aisays_total_generations', 0))).'</strong>'); ?>
+                    <?php
+                        echo wp_kses_post(sprintf(
+                            /* translators: %s: Formatted total number of generated descriptions (HTML strong tag). */
+                            __('Total Generated: %s', 'comet-ai-says'),
+                            '<strong>' . esc_html(number_format((int) get_option('wpcmt_aisays_total_generations', 0))) . '</strong>'
+                        ));
+                    ?>
                 </span>
             </div>
         </div>
@@ -1812,6 +1835,7 @@ class AdminInterface
 
     public function render_settings_errors(): void
     {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         if (isset($_GET['restored'])) {
             add_settings_error(
                 'wpcmt_aisays_settings',
@@ -2089,6 +2113,7 @@ class AdminInterface
             return;
         }
 
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         $current_tab = sanitize_text_field(wp_unslash($_GET['tab'] ?? ''));
         if ('status' === $current_tab) {
             $this->render_page_wrapper(function () {
@@ -2424,7 +2449,10 @@ class AdminInterface
                 <?php esc_html_e('Generate AI Description', 'comet-ai-says'); ?>
             </button>
             <span id="wpcmt-aisays-loading" style="display: none; margin-left: 10px;">
-                <?php printf(esc_html__('Generating with %s...', 'comet-ai-says'), esc_html($provider_name)); ?>
+                <?php
+                    /* translators: %s: AI provider or model name. */
+                    printf(esc_html__('Generating with %s...', 'comet-ai-says'), esc_html($provider_name));
+                ?>
                 <span class="spinner is-active" style="float: none;"></span>
             </span>
         </div>
@@ -2531,6 +2559,7 @@ class AdminInterface
 
     public function products_table_page(): void
     {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         $current_tab = sanitize_text_field(wp_unslash($_GET['tab'] ?? ''));
         if ('status' === $current_tab) {
             $this->render_page_wrapper(function () {

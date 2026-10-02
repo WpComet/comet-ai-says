@@ -17,7 +17,7 @@ const defaultExcludes = [
     'composer.json', 'composer.lock', 'package.json', 'package-lock.json',
     'dev', 'dev_llm', 'dist', 'tests', 'phpunit.xml.dist',
     '.phpunit.result.cache', '.phpunit.cache', 'AGENTS.md', '.agents',
-    'todo.php'
+    'agent_memory.md', 'TODO.md', 'todo.php'
 ];
 
 const distignorePath = path.join(rootDir, '.distignore');

@@ -30,6 +30,7 @@ return function (): array {
         if (!has_action($action)) {
             $missing_actions[] = $action;
         } else {
+            /* translators: %s: AJAX action name. */
             $steps[] = sprintf(__('Action registered: %s', 'comet-ai-says'), $action);
         }
     }
@@ -39,12 +40,14 @@ return function (): array {
             'status' => 'error',
             'title'  => $title,
             'steps'  => $steps,
+            /* translators: %s: List of missing AJAX action names. */
             'result' => sprintf(__('Missing required AJAX actions: %s', 'comet-ai-says'), implode(', ', $missing_actions)),
         ];
     }
 
     // Verify current user capability
     $can_edit = current_user_can('edit_products') || current_user_can('manage_woocommerce') || current_user_can('manage_options');
+    /* translators: %s: Privilege status (Sufficient or Insufficient). */
     $steps[]  = sprintf(__('Current session security privilege: %s', 'comet-ai-says'), $can_edit ? __('Sufficient', 'comet-ai-says') : __('Insufficient', 'comet-ai-says'));
 
     return [

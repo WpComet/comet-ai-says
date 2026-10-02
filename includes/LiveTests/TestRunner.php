@@ -77,6 +77,7 @@ class TestRunner
                 'status'  => 'error',
                 'title'   => $key,
                 'steps'   => [__('Locating test file...', 'comet-ai-says')],
+                /* translators: %s: Missing test definition filename. */
                 'result'  => sprintf(__('Test definition file missing: %s', 'comet-ai-says'), basename($file)),
                 'latency' => 0,
             ];
@@ -109,7 +110,8 @@ class TestRunner
                 'status'  => 'error',
                 'title'   => $key,
                 'steps'   => [__('Running test execution...', 'comet-ai-says')],
-                'result'  => sprintf(__('Uncaught Exception: %s (in %s:%d)', 'comet-ai-says'), $e->getMessage(), basename($e->getFile()), $e->getLine()),
+                /* translators: 1: Exception message, 2: File name, 3: Line number. */
+                'result'  => sprintf(__('Uncaught Exception: %1$s (in %2$s:%3$d)', 'comet-ai-says'), $e->getMessage(), basename($e->getFile()), $e->getLine()),
                 'latency' => $elapsed,
             ];
         }

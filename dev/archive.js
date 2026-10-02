@@ -2,6 +2,7 @@ const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const { syncToWPlatest, shouldInclude } = require('./sync');
 
 const rootDir = path.resolve(__dirname, '..');
 const pkgPath = path.join(rootDir, 'package.json');
@@ -11,8 +12,46 @@ const pluginSlug = pkg.name || 'comet-ai-says';
 
 const args = process.argv.slice(2);
 const skipZip = args.includes('--no-zip') || args.includes('--clean-only');
+const skipTest = args.includes('--no-test') || args.includes('--skip-test');
+const skipPot = args.includes('--no-pot') || args.includes('--skip-pot');
 
-// Determine output directory for production zip
+console.log(`\x1b[1m\x1b[36m=== Comet Archive & Production Distribution ===\x1b[0m\n`);
+
+// 1. Pre-flight Code Integrity & PHPUnit Test Audit
+if (!skipTest) {
+    console.log('🛡️  Running automated code integrity audit and PHPUnit unit tests...');
+    try {
+        execSync('node dev/check-integrity.js', { cwd: rootDir, stdio: 'inherit' });
+    } catch (err) {
+        console.error('\n❌ Archive halted: Code integrity or unit test check failed.');
+        process.exit(1);
+    }
+} else {
+    console.log('⏭️  Skipping test audit (--no-test specified).\n');
+}
+
+// 2. Synchronize .distignore and .gitattributes from .gitignore
+console.log('🔄 Synchronizing .distignore and .gitattributes...');
+try {
+    const syncIgnore = require('./sync-ignore');
+    if (typeof syncIgnore === 'function') syncIgnore();
+} catch (e) {
+    console.warn(`⚠️  Could not sync ignore files: ${e.message}`);
+}
+
+// 3. Regenerate Translation POT Catalog
+if (!skipPot) {
+    console.log('\n🌐 Regenerating translation POT catalog (makepot)...');
+    try {
+        execSync('npm run makepot', { cwd: rootDir, stdio: 'inherit' });
+    } catch (e) {
+        console.warn(`⚠️  Translation catalog update warning: ${e.message}`);
+    }
+} else {
+    console.log('\n⏭️  Skipping translation catalog (--no-pot specified).');
+}
+
+// 4. Determine output directory for production zip
 let outputDir = process.env.COMET_RELEASE_DIR;
 if (!outputDir) {
     const defaultPublicOs = path.resolve(__dirname, '../../../../../public-os');
@@ -29,54 +68,17 @@ if (!fs.existsSync(outputDir)) {
 
 const outputPath = path.join(outputDir, `${pluginSlug}-v${version}.zip`);
 
-console.log(`📦 Preparing clean distribution for ${pluginSlug} v${version}...`);
-
-// Assemble comprehensive exclusion list (matching .distignore and .gitattributes)
-const excludeList = [
-    '.git', '.github', '.gitignore', '.gitattributes', '.distignore',
-    '.vscode', '.idea', 'node_modules', 'vendor',
-    'composer.json', 'composer.lock', 'package.json', 'package-lock.json',
-    'dev', 'dev_llm', 'dist', 'tests', 'phpunit.xml.dist',
-    '.phpunit.result.cache', '.phpunit.cache', 'AGENTS.md', '.agents',
-    'todo.php'
-];
-
-if (fs.existsSync(path.join(rootDir, '.distignore'))) {
-    const lines = fs.readFileSync(path.join(rootDir, '.distignore'), 'utf8').split(/\r?\n/);
-    lines.forEach(line => {
-        line = line.trim();
-        if (line && !line.startsWith('#')) {
-            excludeList.push(line.replace(/^\/+|\/+$/g, ''));
-        }
-    });
-}
-
-const excludeSet = new Set(excludeList);
-
-function shouldInclude(srcPath) {
-    const rel = path.relative(rootDir, srcPath).replace(/\\/g, '/');
-    if (!rel) return true; // root directory itself
-    const topPart = rel.split('/')[0];
-    const baseName = path.basename(srcPath);
-
-    if (excludeSet.has(topPart) || excludeSet.has(baseName) || excludeSet.has(rel)) {
-        return false;
-    }
-    if (baseName.startsWith('.temp') || baseName.endsWith('.cache')) {
-        return false;
-    }
-    return true;
-}
+console.log(`\n📦 Packaging clean distribution for ${pluginSlug} v${version}...`);
 
 try {
-    // 1. Stage clean plugin into an isolated temporary directory
+    // 5. Stage clean plugin into an isolated temporary directory
     const stagingRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'comet-pkg-'));
     const stagingPluginDir = path.join(stagingRoot, pluginSlug);
     fs.mkdirSync(stagingPluginDir, { recursive: true });
 
     fs.cpSync(rootDir, stagingPluginDir, { recursive: true, filter: shouldInclude });
 
-    // 2. Build release zip if not skipped
+    // 6. Build release zip if not skipped
     if (!skipZip) {
         if (fs.existsSync(outputPath)) {
             try { fs.unlinkSync(outputPath); } catch (e) {}
@@ -87,7 +89,6 @@ try {
             execSync(`tar -a -cf "${outputPath}" -C "${stagingRoot}" "${pluginSlug}"`, { stdio: 'pipe' });
             zipSuccess = true;
         } catch (tarErr) {
-            // Fallback to PowerShell Compress-Archive
             try {
                 const psCmd = `Compress-Archive -Path "${stagingPluginDir}" -DestinationPath "${outputPath}" -Force`;
                 execSync(`powershell -NoProfile -Command "${psCmd}"`, { stdio: 'inherit' });
@@ -105,25 +106,10 @@ try {
         }
     }
 
-    // 3. Deploy clean pre-zip folder copy to isolated test environment (WPlatest) for PCP checks
-    const cleanTestPluginsDir = process.env.COMET_TEST_PLUGINS_DIR || path.resolve('D:/wamp64/www/WPlatest/wp-content/plugins');
-    if (fs.existsSync(cleanTestPluginsDir)) {
-        const targetPluginDir = path.join(cleanTestPluginsDir, pluginSlug);
-        console.log(`🔄 Deploying clean release copy to test environment: ${targetPluginDir}`);
+    // 7. Deploy clean copy to WPlatest for PCP verification
+    syncToWPlatest();
 
-        if (fs.existsSync(targetPluginDir)) {
-            fs.rmSync(targetPluginDir, { recursive: true, force: true });
-        }
-        fs.mkdirSync(targetPluginDir, { recursive: true });
-
-        fs.cpSync(stagingPluginDir, targetPluginDir, { recursive: true });
-        console.log(`✅ Clean release copy successfully deployed to WPlatest for PCP verification!`);
-        console.log(`   Clean directory: ${targetPluginDir}\n`);
-    } else {
-        console.log(`ℹ️  Test environment directory not found at ${cleanTestPluginsDir} (skipped deployment).`);
-    }
-
-    // Clean up temporary staging
+    // 8. Clean up temporary staging
     try {
         fs.rmSync(stagingRoot, { recursive: true, force: true });
     } catch (e) {}
@@ -131,4 +117,3 @@ try {
     console.error(`❌ Packaging/Deployment failed:`, err.message);
     process.exit(1);
 }
-

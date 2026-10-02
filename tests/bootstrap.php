@@ -6,8 +6,11 @@ require_once dirname(__DIR__) . '/vendor/autoload.php';
 if (!defined('ABSPATH')) {
     define('ABSPATH', dirname(__DIR__) . '/');
 }
+if (!defined('COMET_AI_SAYS_VERSION')) {
+    define('COMET_AI_SAYS_VERSION', '1.4.0');
+}
 if (!defined('COMET_AISAYS_VERSION')) {
-    define('COMET_AISAYS_VERSION', '1.3.9');
+    define('COMET_AISAYS_VERSION', COMET_AI_SAYS_VERSION);
 }
 
 // Global in-memory storage for test options & metadata

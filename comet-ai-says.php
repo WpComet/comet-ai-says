@@ -12,7 +12,7 @@
  * Text Domain: comet-ai-says
  * Domain Path: /i18n/languages/
  * Requires at least: 6.0
- * Tested up to: 7.0
+ * Tested up to: 7.1
  * Requires PHP: 7.4
  * WC requires at least: 6.0
  * WC tested up to: 9.6
@@ -30,7 +30,8 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin version constant
-define('COMET_AISAYS_VERSION', '1.4.0');
+// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
+define('COMET_AI_SAYS_VERSION', '1.4.0');
 
 // Require PSR-4 Autoloader
 require_once __DIR__ . '/includes/Autoload.php';
@@ -55,7 +56,7 @@ class Plugin
     {
         self::$plugin_path    = plugin_dir_path(__FILE__);
         self::$plugin_url     = plugin_dir_url(__FILE__);
-        self::$plugin_version = COMET_AISAYS_VERSION;
+        self::$plugin_version = COMET_AI_SAYS_VERSION;
 
         $this->init_hooks();
     }
@@ -131,8 +132,6 @@ class Plugin
 
     public function init(): void
     {
-        load_plugin_textdomain('comet-ai-says', false, dirname(plugin_basename(__FILE__)) . '/i18n/languages');
-
         if (is_admin()) {
             new AdminInterface();
             LiveTests\TestRunner::get_instance()->init();

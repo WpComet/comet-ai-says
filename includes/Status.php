@@ -29,7 +29,12 @@ class Status
 
         $key_status = empty($active_key)
             ? __('Not configured', 'comet-ai-says')
-            : sprintf(__('Configured (%s...%s)', 'comet-ai-says'), substr($active_key, 0, 4), substr($active_key, -4));
+            : sprintf(
+                /* translators: 1: Key prefix (first 4 characters), 2: Key suffix (last 4 characters). */
+                __('Configured (%1$s...%2$s)', 'comet-ai-says'),
+                substr($active_key, 0, 4),
+                substr($active_key, -4)
+            );
 
         // Catalog coverage metrics
         $wc_active        = class_exists('WooCommerce');
@@ -44,14 +49,23 @@ class Status
 
             if ($total_products > 0) {
                 // Count products having non-empty _wpcmt_aisays_description meta
-                $with_ai_desc = (int) $wpdb->get_var(
-                    "SELECT COUNT(DISTINCT pm.post_id) FROM {$wpdb->postmeta} pm
-                     INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id
-                     WHERE pm.meta_key = '_wpcmt_aisays_description'
-                     AND pm.meta_value != ''
-                     AND p.post_type = 'product'
-                     AND p.post_status = 'publish'"
-                );
+                $cache_key    = 'wpcmt_aisays_coverage_count';
+                $cached_count = wp_cache_get($cache_key);
+
+                if (false !== $cached_count) {
+                    $with_ai_desc = (int) $cached_count;
+                } else {
+                    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+                    $with_ai_desc = (int) $wpdb->get_var(
+                        "SELECT COUNT(DISTINCT pm.post_id) FROM {$wpdb->postmeta} pm
+                         INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id
+                         WHERE pm.meta_key = '_wpcmt_aisays_description'
+                         AND pm.meta_value != ''
+                         AND p.post_type = 'product'
+                         AND p.post_status = 'publish'"
+                    );
+                    wp_cache_set($cache_key, $with_ai_desc, '', 300);
+                }
                 $missing_ai_desc  = max(0, $total_products - $with_ai_desc);
                 $coverage_percent = round(($with_ai_desc / $total_products) * 100, 1);
             }
@@ -89,6 +103,7 @@ class Status
             'catalog_coverage' => [
                 'title'  => __('WooCommerce Catalog Coverage', 'comet-ai-says'),
                 'fields' => [
+                    /* translators: %s: WooCommerce version number. */
                     __('WooCommerce Status', 'comet-ai-says')      => $wc_active ? sprintf(__('Active (v%s)', 'comet-ai-says'), WC_VERSION) : __('Inactive / Not installed', 'comet-ai-says'),
                     __('High-Performance Storage', 'comet-ai-says')=> class_exists('\Automattic\WooCommerce\Utilities\OrderUtil') && \Automattic\WooCommerce\Utilities\OrderUtil::custom_orders_table_usage_is_enabled() ? __('HPOS Enabled', 'comet-ai-says') : __('Standard / Legacy Posts', 'comet-ai-says'),
                     __('Published Products', 'comet-ai-says')      => number_format($total_products),
@@ -111,7 +126,7 @@ class Status
             'server_environment' => [
                 'title'  => __('WordPress & Server Environment', 'comet-ai-says'),
                 'fields' => [
-                    __('Plugin Version', 'comet-ai-says')          => 'v' . COMET_AISAYS_VERSION,
+                    __('Plugin Version', 'comet-ai-says')          => 'v' . COMET_AI_SAYS_VERSION,
                     __('WordPress Version', 'comet-ai-says')       => get_bloginfo('version'),
                     __('PHP Version', 'comet-ai-says')             => PHP_VERSION,
                     __('WP Memory Limit', 'comet-ai-says')         => WP_MEMORY_LIMIT,
@@ -197,7 +212,10 @@ class Status
                     </div>
                     <div class="level-right">
                         <div class="tags are-medium mb-0">
-                            <span class="tag is-light"><?php printf(esc_html__('Total: %d', 'comet-ai-says'), count($tests)); ?></span>
+                            <span class="tag is-light"><?php
+                                /* translators: %d: Total number of diagnostic tests. */
+                                printf(esc_html__('Total: %d', 'comet-ai-says'), count($tests));
+                            ?></span>
                             <span class="tag is-success is-light" id="comet-diag-passed-badge"><?php esc_html_e('Passed: 0', 'comet-ai-says'); ?></span>
                             <span class="tag is-warning is-light" id="comet-diag-warned-badge"><?php esc_html_e('Warnings: 0', 'comet-ai-says'); ?></span>
                             <span class="tag is-danger is-light" id="comet-diag-failed-badge"><?php esc_html_e('Failed: 0', 'comet-ai-says'); ?></span>
@@ -296,7 +314,14 @@ class Status
                             </div>
                             <progress class="progress is-primary is-small mb-2" value="<?php echo esc_attr($coverage_pct); ?>" max="100"></progress>
                             <p class="is-size-7 has-text-grey mb-0">
-                                <?php printf(esc_html__('%s of %s published store products have an AI-enhanced description.', 'comet-ai-says'), '<strong>' . esc_html($catalog[__('With AI Descriptions', 'comet-ai-says')]) . '</strong>', '<strong>' . esc_html($catalog[__('Published Products', 'comet-ai-says')]) . '</strong>'); ?>
+                                <?php
+                                    echo wp_kses_post(sprintf(
+                                        /* translators: 1: Number of products with AI descriptions (HTML strong tag), 2: Total number of published products (HTML strong tag). */
+                                        __('%1$s of %2$s published store products have an AI-enhanced description.', 'comet-ai-says'),
+                                        '<strong>' . esc_html($catalog[__('With AI Descriptions', 'comet-ai-says')]) . '</strong>',
+                                        '<strong>' . esc_html($catalog[__('Published Products', 'comet-ai-says')]) . '</strong>'
+                                    ));
+                                ?>
                             </p>
                         </div>
 

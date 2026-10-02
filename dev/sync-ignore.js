@@ -27,6 +27,7 @@ const distOnly = [
     'node_modules',
     'AGENTS.md',
     '.agents',
+    'agent_memory.md',
     'TODO.md',
     'todo.php'
 ];

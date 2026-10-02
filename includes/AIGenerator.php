@@ -144,9 +144,7 @@ class AIGenerator
             $prompt_template
         );
 
-        if (Plugin::$debug && defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {
-            error_log('Comet AI Says - Prompt sent: ' . $prompt);
-        }
+        $this->log_debug('Prompt sent: ' . $prompt);
 
         switch ($this->provider) {
             case 'openai':
@@ -157,6 +155,17 @@ class AIGenerator
             default:
                 AdminInterface::track_usage('generation');
                 return $this->call_gemini_api($prompt, $product_id);
+        }
+    }
+
+    /**
+     * Log debug message when debug mode and WP_DEBUG_LOG are active.
+     */
+    private function log_debug(string $message): void
+    {
+        if (Plugin::$debug && defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {
+            // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+            error_log('Comet AI Says - ' . $message);
         }
     }
 
@@ -191,9 +200,11 @@ class AIGenerator
 
         $analysis_context = '';
         if ($image_alt) {
+            /* translators: %s: Alternative text for the product image. */
             $analysis_context .= sprintf(__('Image alt text: "%s". ', 'comet-ai-says'), $image_alt);
         }
         if ($image_caption) {
+            /* translators: %s: Caption for the product image. */
             $analysis_context .= sprintf(__('Image caption: "%s". ', 'comet-ai-says'), $image_caption);
         }
 
@@ -209,6 +220,7 @@ class AIGenerator
         $hook_callback = function (&$handle, $r, $target_url) use ($url) {
             if (is_resource($handle) || (is_object($handle) && $handle instanceof \CurlHandle)) {
                 if (defined('CURLOPT_IPRESOLVE') && defined('CURL_IPRESOLVE_V4')) {
+                    // phpcs:ignore WordPress.WP.AlternativeFunctions.curl_curl_setopt
                     curl_setopt($handle, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
                 }
             }
@@ -237,9 +249,7 @@ class AIGenerator
             );
 
             if ($is_transient && $attempt <= $max_retries) {
-                if (Plugin::$debug && defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {
-                    error_log("Comet AI Says - Network blip ({$error_message}). Retrying attempt {$attempt}/{$max_retries}...");
-                }
+                $this->log_debug("Network blip ({$error_message}). Retrying attempt {$attempt}/{$max_retries}...");
                 usleep(500000); // 500ms
                 continue;
             }
@@ -262,6 +272,7 @@ class AIGenerator
         $max_tokens   = (int) Config::get_option(Config::KEY_MAX_TOKENS, 1500);
 
         $api_version = 'v1beta';
+        // phpcs:ignore PluginCheck.CodeAnalysis.AIProvider.DirectIntegration
         $api_url     = "https://generativelanguage.googleapis.com/{$api_version}/models/{$gemini_model}:generateContent?key=" . $this->api_key;
         $parts       = [['text' => $prompt]];
 
@@ -328,9 +339,7 @@ class AIGenerator
         $status        = $error['status'] ?? '';
 
         if (429 == $error_code || 'RESOURCE_EXHAUSTED' === $status || 503 == $error_code || 'UNAVAILABLE' === $status) {
-            if (Plugin::$debug && defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {
-                error_log("Comet AI Says - Gemini Busy/Quota Error | Model: {$gemini_model} | Code: {$error_code} | {$error_message}");
-            }
+            $this->log_debug("Gemini Busy/Quota Error | Model: {$gemini_model} | Code: {$error_code} | {$error_message}");
 
             // If selected model is overloaded or quota-restricted, attempt fallback across resilient candidate models
             $candidate_fallbacks = ['gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-2.5-flash'];
@@ -365,6 +374,7 @@ class AIGenerator
      */
     private function fallback_gemini_api(string $prompt, ?int $product_id = null, string $fallback_model = 'gemini-3.6-flash')
     {
+        // phpcs:ignore PluginCheck.CodeAnalysis.AIProvider.DirectIntegration
         $api_url    = "https://generativelanguage.googleapis.com/v1beta/models/{$fallback_model}:generateContent?key=" . $this->api_key;
         $max_tokens = (int) Config::get_option(Config::KEY_MAX_TOKENS, 1500);
 
@@ -423,6 +433,7 @@ class AIGenerator
      */
     private function call_openai_api(string $prompt, ?int $product_id = null)
     {
+        // phpcs:ignore PluginCheck.CodeAnalysis.AIProvider.DirectIntegration
         $api_url    = 'https://api.openai.com/v1/chat/completions';
         $model      = Config::get_option(Config::KEY_OPENAI_MODEL, 'gpt-4o');
         $max_tokens = (int) Config::get_option(Config::KEY_MAX_TOKENS, 1500);
@@ -477,9 +488,7 @@ class AIGenerator
         ]);
 
         if (is_wp_error($response)) {
-            if (Plugin::$debug && defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {
-                error_log('Comet AI Says - OpenAI API Error: ' . $response->get_error_message());
-            }
+            $this->log_debug('OpenAI API Error: ' . $response->get_error_message());
             return 'Network Error: ' . $response->get_error_message();
         }
 
@@ -564,8 +573,8 @@ class AIGenerator
                     if (!is_wp_error($saved) && file_exists($saved['path'])) {
                         $image_data = @file_get_contents($saved['path']);
                         $mime_type  = 'image/jpeg';
-                        @unlink($saved['path']);
-                        @unlink($temp_file);
+                        wp_delete_file($saved['path']);
+                        wp_delete_file($temp_file);
                     }
                 }
             } catch (\Throwable $e) {
@@ -649,7 +658,7 @@ class AIGenerator
             return false;
         }
 
-        $trimmed = trim(strip_tags($description));
+        $trimmed = trim(wp_strip_all_tags($description));
 
         // Substantive length check - real product descriptions are paragraphs, not single words or short error alerts
         if (mb_strlen($trimmed) < 25) {
@@ -740,6 +749,7 @@ class AIGenerator
             $error_msg = is_string($description) && !empty($description)
                 ? $description
                 : __('Check your API key and provider settings.', 'comet-ai-says');
+            /* translators: %s: Error message details. */
             wp_send_json_error(sprintf(esc_html__('Failed to generate description: %s', 'comet-ai-says'), esc_html($error_msg)));
         }
     }
@@ -829,6 +839,7 @@ class AIGenerator
         wp_send_json_success([
             'product_id'   => $product_id,
             'product_name' => $product->get_name(),
+            /* translators: %s: Name of the product whose AI description was deleted. */
             'message'      => sprintf(esc_html__('AI description deleted for: %s', 'comet-ai-says'), $product->get_name()),
         ]);
     }
@@ -873,12 +884,14 @@ class AIGenerator
                 'product_id'   => $product_id,
                 'product_name' => $product->get_name(),
                 'description'  => $description,
+                /* translators: 1: Name of the product, 2: AI model identifier. */
                 'message'      => sprintf(esc_html__('AI description generated and saved for: %1$s via %2$s', 'comet-ai-says'), $product->get_name(), $model_name),
             ]);
         } else {
             $error_msg = is_string($description) && !empty($description)
                 ? $description
                 : __('Check your API key and provider settings.', 'comet-ai-says');
+            /* translators: 1: Name of the product, 2: Error message details. */
             wp_send_json_error(sprintf(esc_html__('Failed to generate description for %1$s: %2$s', 'comet-ai-says'), $product->get_name(), esc_html($error_msg)));
         }
     }

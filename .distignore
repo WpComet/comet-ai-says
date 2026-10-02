@@ -16,6 +16,7 @@
 /dev
 /dev_llm
 /tests
+agent_memory.md
 AGENTS.md
 composer.json
 composer.lock

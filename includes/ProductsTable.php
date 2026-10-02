@@ -227,11 +227,12 @@ class ProductsTable extends \WP_List_Table
 
         // Category filter
         if (!empty($_GET['category'])) {
+            // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
             $args['tax_query'] = [
                 [
                     'taxonomy' => 'product_cat',
                     'field'    => 'term_id',
-                    'terms'    => intval($_GET['category']),
+                    'terms'    => absint(wp_unslash($_GET['category'])),
                 ],
             ];
         }
@@ -240,6 +241,7 @@ class ProductsTable extends \WP_List_Table
         $desc_status = !empty($_GET['desc_status']) ? sanitize_text_field(wp_unslash($_GET['desc_status'])) : '';
 
         if ('no_ai' === $desc_status || 'no_short' === $desc_status) {
+            // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
             $args['meta_query'] = [
                 'relation' => 'OR',
                 [
@@ -253,6 +255,7 @@ class ProductsTable extends \WP_List_Table
                 ],
             ];
         } elseif ('has_ai' === $desc_status) {
+            // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
             $args['meta_query'] = [
                 [
                     'key'     => '_wpcmt_aisays_description',
@@ -264,7 +267,8 @@ class ProductsTable extends \WP_List_Table
 
         // Sort
         if (!empty($_GET['orderby'])) {
-            switch ($_GET['orderby']) {
+            $orderby = sanitize_key(wp_unslash($_GET['orderby']));
+            switch ($orderby) {
                 case 'product':
                     $args['orderby'] = 'title';
                     break;
@@ -274,7 +278,8 @@ class ProductsTable extends \WP_List_Table
                 default:
                     $args['orderby'] = 'title';
             }
-            $args['order'] = (!empty($_GET['order']) && 'desc' === strtolower($_GET['order'])) ? 'DESC' : 'ASC';
+            $order = !empty($_GET['order']) ? sanitize_text_field(wp_unslash($_GET['order'])) : 'ASC';
+            $args['order'] = ('desc' === strtolower($order)) ? 'DESC' : 'ASC';
         }
         // phpcs:enable WordPress.Security.NonceVerification.Recommended
 
