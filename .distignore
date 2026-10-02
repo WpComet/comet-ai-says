@@ -13,6 +13,7 @@
 /.gitattributes
 /.github
 /.gitignore
+/assets/screenshots
 /dev
 /dev_llm
 /tests

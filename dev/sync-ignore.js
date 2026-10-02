@@ -16,6 +16,7 @@ const distOnly = [
     '/dev',
     '/dev_llm',
     '/tests',
+    '/assets/screenshots',
     'phpunit.xml.dist',
     '.phpunit.result.cache',
     '.phpunit.cache',

@@ -9,6 +9,12 @@
       "homepage": "https://wpcomet.com"
     }
   ],
+  "config": {
+    "platform": {
+      "php": "7.4.33"
+    },
+    "sort-packages": true
+  },
   "autoload": {
     "psr-4": {
       "WpComet\\AISays\\": "includes/"
