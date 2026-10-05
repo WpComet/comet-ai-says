@@ -57,4 +57,31 @@ class MimeAndImageTest extends TestCase
             'Unsupported format (TIFF)' => ['image/tiff', '/uploads/doc.tiff', 100 * 1024, true],
         ];
     }
+
+    /**
+     * @dataProvider binaryHeaderProvider
+     */
+    public function test_binary_mime_detection(string $binaryData, ?string $expectedMime): void
+    {
+        $detected = \WpComet\AISays\AIGenerator::detect_image_mime_from_binary($binaryData);
+        $this->assertSame($expectedMime, $detected);
+    }
+
+    public function binaryHeaderProvider(): array
+    {
+        return [
+            'JPEG magic bytes' => ["\xFF\xD8\xFF\xE0\x00\x10JFIF\x00\x01\x01", 'image/jpeg'],
+            'PNG magic bytes'  => ["\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR", 'image/png'],
+            'GIF89a magic'     => ["GIF89a\x64\x00\x64\x00\x80\x00\x00", 'image/gif'],
+            'GIF87a magic'     => ["GIF87a\x64\x00\x64\x00\x80\x00\x00", 'image/gif'],
+            'WebP magic bytes' => ["RIFF\x24\x00\x00\x00WEBPVP8 ", 'image/webp'],
+            'AVIF major brand' => ["\x00\x00\x00\x1cftypavif\x00\x00\x00\x00", 'image/avif'],
+            'AVIS major brand' => ["\x00\x00\x00\x1cftypavis\x00\x00\x00\x00", 'image/avif'],
+            'HEIC major brand' => ["\x00\x00\x00\x1cftypheic\x00\x00\x00\x00", 'image/heic'],
+            'HEIF mif1 brand'  => ["\x00\x00\x00\x1cftypmif1\x00\x00\x00\x00", 'image/heic'],
+            'HTML document'    => ["<!DOCTYPE html><html><body>Error</body></html>", null],
+            'Short string'     => ["short", null],
+            'Random binary'    => ["\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0A\x0B\x0C", null],
+        ];
+    }
 }

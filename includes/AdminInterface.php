@@ -144,6 +144,10 @@ class AdminInterface
             $screen_strings = [
                 'show' => esc_html__('Show', 'comet-ai-says'),
                 'hide' => esc_html__('Hide', 'comet-ai-says'),
+                'preset_applied' => esc_html__('Applied!', 'comet-ai-says'),
+                'apply_preset' => esc_html__('Apply Preset', 'comet-ai-says'),
+                'custom_preset' => esc_html__('-- Custom / Choose a Tone Preset --', 'comet-ai-says'),
+                'preset_hint_default' => esc_html__('Choose from ready-to-use tone archetypes or customize manually.', 'comet-ai-says'),
                 'tokens' => esc_html__('tokens', 'comet-ai-says'),
                 'tokens_4000_10000' => esc_html__('4000-10000 tokens for complex analysis', 'comet-ai-says'),
                 'tokens_1500_5000' => esc_html__('1500-5000 tokens for detailed descriptions', 'comet-ai-says'),
@@ -219,6 +223,7 @@ class AdminInterface
 
         if ('settings' === $screen && isset($language_data)) {
             $return_data['languageData'] = $language_data;
+            $return_data['promptPresets'] = Config::get_prompt_presets();
         }
 
         return $return_data;
@@ -864,12 +869,58 @@ class AdminInterface
             '{instructions}' => __('Format & tone guidelines', 'comet-ai-says'),
             '{store_context}' => __('Store name or domain branding context', 'comet-ai-says'),
         ];
+
+        $presets = Config::get_prompt_presets();
+        $matched_preset_id = '';
+        foreach ($presets as $p_id => $p_data) {
+            if (trim($current_prompt_template) === trim($p_data['template'])) {
+                $matched_preset_id = $p_id;
+                break;
+            }
+        }
         ?>
 <!-- Description Language Row -->
 <table class="form-table mb-4"
     style="margin-top: 0; border-bottom: 1px solid var(--comet-border-weak); padding-bottom: 1.25rem;">
     <?php $this->render_language_settings($current_language, $custom_language); ?>
 </table>
+
+<!-- Preset Prompts Library -->
+<div class="comet-prompt-presets-bar mb-3 p-3" style="background: var(--comet-surface-subtle); border: 1px solid var(--comet-border-weak); border-radius: 8px;">
+    <div class="is-flex is-justify-content-space-between is-align-items-center is-flex-wrap-wrap gap-2">
+        <div class="is-flex is-align-items-center is-flex-wrap-wrap gap-2">
+            <span class="dashicons dashicons-admin-customizer has-text-primary" style="font-size: 16px; width: 16px; height: 16px; line-height: 16px;"></span>
+            <label for="comet-prompt-preset-select" class="label is-small mb-0 has-text-weight-semibold">
+                <?php esc_html_e('Prompt Preset Library:', 'comet-ai-says'); ?>
+            </label>
+            <div class="select is-small">
+                <select id="comet-prompt-preset-select" style="min-width: 230px;">
+                    <option value="" <?php selected(empty($matched_preset_id)); ?>>
+                        <?php esc_html_e('-- Choose a Tone Preset --', 'comet-ai-says'); ?>
+                    </option>
+                    <?php foreach ($presets as $p_id => $p_data): ?>
+                    <option value="<?php echo esc_attr($p_id); ?>" <?php selected($matched_preset_id, $p_id); ?>>
+                        <?php echo esc_html($p_data['name']); ?>
+                    </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <button type="button" id="comet-apply-preset-btn" class="button is-small is-primary is-light" <?php disabled(empty($matched_preset_id)); ?>>
+                <span class="dashicons dashicons-yes-alt mr-1" style="font-size: 14px; width: 14px; height: 14px; line-height: 14px;"></span>
+                <span class="comet-apply-btn-label"><?php esc_html_e('Apply Preset', 'comet-ai-says'); ?></span>
+            </button>
+        </div>
+        <span id="comet-preset-desc-hint" class="is-size-7 has-text-grey" style="font-style: italic;">
+            <?php
+            if (!empty($matched_preset_id) && isset($presets[$matched_preset_id])) {
+                echo esc_html($presets[$matched_preset_id]['description']);
+            } else {
+                esc_html_e('Choose from ready-to-use tone archetypes or customize manually.', 'comet-ai-says');
+            }
+            ?>
+        </span>
+    </div>
+</div>
 
 <!-- Quick Insert Variables & Guide Toggle -->
 <div class="comet-variable-pills mb-3">

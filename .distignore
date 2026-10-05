@@ -13,6 +13,7 @@
 /.gitattributes
 /.github
 /.gitignore
+/.wordpress-org
 /assets/screenshots
 /dev
 /dev_llm

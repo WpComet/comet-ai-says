@@ -203,6 +203,122 @@ class Config
     }
 
     /**
+     * Get built-in prompt template presets for different store niches and tones.
+     *
+     * @return array<string, array{name: string, description: string, template: string}>
+     */
+    public static function get_prompt_presets(): array
+    {
+        return [
+            'default' => [
+                'name'        => __('Default (Balanced & Engaging)', 'comet-ai-says'),
+                'description' => __('Standard versatile e-commerce copy balancing features, benefits, and clean HTML formatting.', 'comet-ai-says'),
+                'template'    => self::get_default_prompt_template(),
+            ],
+            'luxury_elegant' => [
+                'name'        => __('Luxury & Elegant', 'comet-ai-says'),
+                'description' => __('Sophisticated, sensory, and aspirational copy emphasizing exclusivity, premium craftsmanship, and elegance.', 'comet-ai-says'),
+                'template'    => "{introduction}\n\n" .
+                    "PRODUCT DETAILS:\n" .
+                    "- Product Name: {product_name}\n" .
+                    "- Short Description: {short_description}\n" .
+                    "- Categories: {categories}\n" .
+                    "- Tags: {tags}\n" .
+                    "- Store: {store_context}\n\n" .
+                    "SPECIFICATIONS & ATTRIBUTES:\n" .
+                    "{attributes}\n\n" .
+                    "VISUAL ANALYSIS:\n" .
+                    "{image_analysis}\n\n" .
+                    "INSTRUCTIONS:\n" .
+                    "{instructions}\n" .
+                    "- Tone: Refined, elegant, evocative, and luxurious. Appeal to sensory details, meticulous craftsmanship, and discerning taste.\n" .
+                    "- Format with graceful HTML paragraphs (<p>) and an optional curated highlights list (<ul><li>) focusing on distinctive qualities.\n" .
+                    "- Highlight the emotional prestige, timeless appeal, and premium materials of the product.",
+            ],
+            'short_punchy' => [
+                'name'        => __('Short & Punchy (Social & Mobile)', 'comet-ai-says'),
+                'description' => __('Bite-sized, high-energy, mobile-optimized descriptions designed for fast scanning and quick conversions.', 'comet-ai-says'),
+                'template'    => "{introduction}\n\n" .
+                    "PRODUCT DETAILS:\n" .
+                    "- Product Name: {product_name}\n" .
+                    "- Short Description: {short_description}\n" .
+                    "- Categories: {categories}\n" .
+                    "- Tags: {tags}\n" .
+                    "- Store: {store_context}\n\n" .
+                    "SPECIFICATIONS & ATTRIBUTES:\n" .
+                    "{attributes}\n\n" .
+                    "VISUAL ANALYSIS:\n" .
+                    "{image_analysis}\n\n" .
+                    "INSTRUCTIONS:\n" .
+                    "{instructions}\n" .
+                    "- Tone: Energetic, direct, punchy, and confident. Zero fluff or filler words.\n" .
+                    "- Length: Maximum 100-150 words. Ideal for mobile shoppers and social storefronts.\n" .
+                    "- Structure: Start with an attention-grabbing one-line hook (<p><strong>...</strong></p>), followed by 3-4 bold, actionable bullet points (<ul><li><strong>Feature:</strong> Benefit</li></ul>), and end with a snappy closing sentence.",
+            ],
+            'technical_specs' => [
+                'name'        => __('Technical & Specs-Focused', 'comet-ai-says'),
+                'description' => __('Structured, authoritative, and fact-driven copy highlighting engineering, compatibility, metrics, and build quality.', 'comet-ai-says'),
+                'template'    => "{introduction}\n\n" .
+                    "PRODUCT DETAILS:\n" .
+                    "- Product Name: {product_name}\n" .
+                    "- Short Description: {short_description}\n" .
+                    "- Categories: {categories}\n" .
+                    "- Tags: {tags}\n" .
+                    "- Store: {store_context}\n\n" .
+                    "SPECIFICATIONS & ATTRIBUTES:\n" .
+                    "{attributes}\n\n" .
+                    "VISUAL ANALYSIS:\n" .
+                    "{image_analysis}\n\n" .
+                    "INSTRUCTIONS:\n" .
+                    "{instructions}\n" .
+                    "- Tone: Authoritative, objective, informative, and precise. Focus on utility, performance, and durability.\n" .
+                    "- Structure: Provide a clear overview paragraph highlighting primary applications, followed by a structured specification list (<ul><li><strong>Spec:</strong> Value</li></ul>).\n" .
+                    "- Emphasize compatibility, materials, engineering standards, and exact dimensions/performance metrics from the product data.",
+            ],
+            'seo_benefits' => [
+                'name'        => __('SEO & Benefit-Driven', 'comet-ai-says'),
+                'description' => __('Search-optimized copywriting structured with semantic headings, natural keywords, and problem/solution benefits.', 'comet-ai-says'),
+                'template'    => "{introduction}\n\n" .
+                    "PRODUCT DETAILS:\n" .
+                    "- Product Name: {product_name}\n" .
+                    "- Short Description: {short_description}\n" .
+                    "- Categories: {categories}\n" .
+                    "- Tags: {tags}\n" .
+                    "- Store: {store_context}\n\n" .
+                    "SPECIFICATIONS & ATTRIBUTES:\n" .
+                    "{attributes}\n\n" .
+                    "VISUAL ANALYSIS:\n" .
+                    "{image_analysis}\n\n" .
+                    "INSTRUCTIONS:\n" .
+                    "{instructions}\n" .
+                    "- Tone: Persuasive, informative, and customer-centric.\n" .
+                    "- SEO & Structure: Naturally weave in product category and keyword context. Use clean semantic HTML (<h3>Why You'll Love It</h3>, <h3>Key Features</h3>, <p>, <ul><li>).\n" .
+                    "- Focus on the problem solved, real-world customer benefits, and address common buying hesitations clearly.",
+            ],
+            'storyteller' => [
+                'name'        => __('Storyteller & Artisan (Boutique)', 'comet-ai-says'),
+                'description' => __('Warm, narrative-led copywriting connecting customers to the inspiration, craft, and heartfelt story behind the piece.', 'comet-ai-says'),
+                'template'    => "{introduction}\n\n" .
+                    "PRODUCT DETAILS:\n" .
+                    "- Product Name: {product_name}\n" .
+                    "- Short Description: {short_description}\n" .
+                    "- Categories: {categories}\n" .
+                    "- Tags: {tags}\n" .
+                    "- Store: {store_context}\n\n" .
+                    "SPECIFICATIONS & ATTRIBUTES:\n" .
+                    "{attributes}\n\n" .
+                    "VISUAL ANALYSIS:\n" .
+                    "{image_analysis}\n\n" .
+                    "INSTRUCTIONS:\n" .
+                    "{instructions}\n" .
+                    "- Tone: Warm, authentic, narrative, and inspiring. Connect the customer to the inspiration and care behind the product.\n" .
+                    "- Highlight the textures, handmade or curated essence, lifestyle feeling, and the joy of owning or gifting this item.\n" .
+                    "- Format with evocative narrative paragraphs (<p>) and a thoughtful summary of crafted details.",
+            ],
+        ];
+    }
+
+    /**
      * Get Gemini model migration mappings for older/sunset models.
      */
     public static function get_gemini_model_mappings(): array

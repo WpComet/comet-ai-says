@@ -27,6 +27,9 @@ Comet AI Says is a lightweight, privacy-conscious WordPress plugin that generate
 - **Zero Performance Impact**  
   No background processes. No unnecessary API calls. No frontend or admin bloat. The plugin only runs when you trigger it.
 
+- **Tone Presets Library**  
+  Select from curated copywriting presets designed for different store niches—Luxury & Elegant, Short & Punchy for Social, Technical & Specs-Focused, SEO & Benefit-Driven, and Artisan Storyteller—or customize freely with live template variables.
+
 == Installation ==
 
 1. Upload the plugin files to `/wp-content/plugins/comet-ai-says/`
@@ -40,9 +43,15 @@ Comet AI Says is a lightweight, privacy-conscious WordPress plugin that generate
 3. **AI Description Preview Modal**: Fast preview modal showing generated descriptions with one-click clipboard copying.
 4. **Status & Live Diagnostics Suite**: Automated live environment tests verifying API handshake, rate limits, catalog metadata, and image downsampling pipeline.
 5. **On-Demand API Usage & Rate Limits**: Asynchronous slide drawer showing live request limits, token consumption, and daily quotas.
-6. **Prompt Engineering Studio & Placement**: Customizable prompt template editor with clickable variable insertion pills and automatic display placement settings.
+6. **Prompt Engineering Studio & Placement**: Customizable prompt template editor with preset tone library, clickable variable insertion pills, and automatic display placement settings.
 
 == Changelog ==
+
+= 1.4.1 =
+* Feature: Preset Prompts Library: Instant tone presets (Luxury & Elegant, Short & Punchy for Social, Technical & Specs-Focused, SEO & Benefit-Driven, Storyteller & Artisan) with real-time prompt preview updates.
+* Feature: Seamless activation redirect: First-time plugin activation automatically routes store administrators to the settings and onboarding wizard.
+* UI/UX: Interactive tone archetype selector with contextual descriptions, one-click template application, and visual feedback flash animation.
+* Testing: Expanded automated PHPUnit unit test suite with comprehensive prompt preset catalog and activation guard tests.
 
 = 1.4.0 =
 * Certified: Official WordPress Plugin Check (PCP) compliance with zero errors and zero warnings.

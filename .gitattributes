@@ -21,3 +21,5 @@
 /TODO.md                export-ignore
 /todo.php               export-ignore
 /.distignore            export-ignore
+/.wordpress-org         export-ignore
+/.distignore            export-ignore

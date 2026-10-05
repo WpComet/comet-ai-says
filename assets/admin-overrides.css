@@ -547,6 +547,80 @@
 }
 
 /* ============================================================
+   PROMPT PRESET LIBRARY BAR & CONTROLS
+   ============================================================ */
+.comet-prompt-presets-bar {
+    background: var(--comet-surface-subtle);
+    border: 1px solid var(--comet-border-weak);
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+#comet-prompt-preset-select {
+    border-color: var(--comet-border);
+    background-color: var(--comet-surface-card);
+    color: var(--comet-text);
+    font-size: 12px;
+    font-weight: 500;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#comet-prompt-preset-select:focus {
+    border-color: var(--comet-primary);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--comet-primary) 20%, transparent);
+}
+
+#comet-apply-preset-btn {
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    font-weight: 600;
+}
+
+#comet-apply-preset-btn:not([disabled]):hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--comet-primary) 25%, transparent);
+}
+
+#comet-apply-preset-btn.is-success {
+    background-color: var(--comet-success) !important;
+    border-color: var(--comet-success) !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(72, 199, 142, 0.3) !important;
+}
+
+#comet-preset-desc-hint {
+    color: var(--comet-text-muted);
+    line-height: 1.35;
+}
+
+/* Flash Glow when a Preset is Applied */
+@keyframes comet-flash-glow {
+    0% {
+        border-color: var(--comet-primary);
+        box-shadow: 0 0 0 4px color-mix(in srgb, var(--comet-primary) 35%, transparent);
+    }
+    100% {
+        border-color: var(--comet-border);
+        box-shadow: none;
+    }
+}
+
+.comet-flash-highlight {
+    animation: comet-flash-glow 1s ease-out;
+}
+
+/* Dark Mode Overrides for Prompt Presets */
+.comet-aisays[data-theme="dark"] .comet-prompt-presets-bar {
+    background: var(--comet-surface-subtle, #1c2128) !important;
+    border-color: var(--comet-border, #30363d) !important;
+}
+
+.comet-aisays[data-theme="dark"] #comet-prompt-preset-select {
+    background: #0d1117 !important;
+    border-color: var(--comet-border, #30363d) !important;
+    color: #e6edf3 !important;
+}
+
+/* ============================================================
    PROMPT TEMPLATE, PREVIEW & TOOLBAR CONTROLS
    ============================================================ */
 .comet-prompt-preview-box {

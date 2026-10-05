@@ -360,6 +360,40 @@ class AIGenerator
             return 'AI Quota Error: ' . esc_html__('Gemini API quota exceeded for the selected model. Try switching to Gemini 3.5 Flash or check your limits at https://ai.google.dev/gemini-api/docs/rate-limits', 'comet-ai-says');
         }
 
+        // Automatic recovery: If Gemini rejects the image (e.g. 400 INVALID_ARGUMENT with image error), retry text-only
+        if (400 == $error_code && count($parts) > 1 && (false !== stripos($error_message, 'image') || 'INVALID_ARGUMENT' === $status)) {
+            $this->log_debug("Gemini multimodal image error ({$error_message}). Automatically recovering with text-only payload.");
+            $text_body = [
+                'contents'         => [['parts' => [['text' => $prompt]]]],
+                'generationConfig' => [
+                    'maxOutputTokens' => $max_tokens,
+                ],
+            ];
+            $retry_res = $this->safe_remote_post($api_url, [
+                'headers' => ['Content-Type' => 'application/json'],
+                'body'    => wp_json_encode($text_body),
+                'timeout' => 60,
+            ]);
+            if (!is_wp_error($retry_res) && 200 === wp_remote_retrieve_response_code($retry_res)) {
+                $retry_body = json_decode(wp_remote_retrieve_body($retry_res), true);
+                if (isset($retry_body['candidates'][0]['content']['parts'])) {
+                    $retry_text = '';
+                    foreach ($retry_body['candidates'][0]['content']['parts'] as $p) {
+                        if (isset($p['thought']) && true === $p['thought']) {
+                            continue;
+                        }
+                        if (isset($p['text'])) {
+                            $retry_text .= $p['text'];
+                        }
+                    }
+                    $retry_text = trim($retry_text);
+                    if (!empty($retry_text)) {
+                        return $retry_text;
+                    }
+                }
+            }
+        }
+
         return sprintf(
             'AI Error (%d - %s) for model %s: %s',
             $error_code,
@@ -423,6 +457,40 @@ class AIGenerator
             }
             $output_text = trim($output_text);
             return !empty($output_text) ? $output_text : false;
+        }
+
+        // Retry text-only if fallback failed due to image error
+        $fallback_err = $body['error'] ?? [];
+        if (isset($fallback_err['code']) && 400 == $fallback_err['code'] && count($parts) > 1) {
+            $text_body = [
+                'contents'         => [['parts' => [['text' => $prompt]]]],
+                'generationConfig' => [
+                    'maxOutputTokens' => $max_tokens,
+                ],
+            ];
+            $retry_res = $this->safe_remote_post($api_url, [
+                'headers' => ['Content-Type' => 'application/json'],
+                'body'    => wp_json_encode($text_body),
+                'timeout' => 45,
+            ]);
+            if (!is_wp_error($retry_res) && 200 === wp_remote_retrieve_response_code($retry_res)) {
+                $retry_body = json_decode(wp_remote_retrieve_body($retry_res), true);
+                if (isset($retry_body['candidates'][0]['content']['parts'])) {
+                    $retry_text = '';
+                    foreach ($retry_body['candidates'][0]['content']['parts'] as $p) {
+                        if (isset($p['thought']) && true === $p['thought']) {
+                            continue;
+                        }
+                        if (isset($p['text'])) {
+                            $retry_text .= $p['text'];
+                        }
+                    }
+                    $retry_text = trim($retry_text);
+                    if (!empty($retry_text)) {
+                        return $retry_text;
+                    }
+                }
+            }
         }
 
         return false;
@@ -502,7 +570,85 @@ class AIGenerator
         }
 
         $error_msg = $body['error']['message'] ?? 'OpenAI API returned an empty or invalid response.';
+
+        // If OpenAI fails with an image error, automatically retry text-only
+        if ($use_image && (false !== stripos($error_msg, 'image') || false !== stripos($error_msg, 'url'))) {
+            $this->log_debug('OpenAI image error: ' . $error_msg . '. Retrying text-only.');
+            $text_request = [
+                'model'      => $model,
+                'messages'   => [
+                    [
+                        'role'    => 'user',
+                        'content' => $prompt,
+                    ],
+                ],
+                'max_tokens' => $max_tokens,
+            ];
+            $retry_res = $this->safe_remote_post($api_url, [
+                'headers' => [
+                    'Content-Type'  => 'application/json',
+                    'Authorization' => 'Bearer ' . $this->api_key,
+                ],
+                'body'    => wp_json_encode($text_request),
+                'timeout' => 45,
+            ]);
+            if (!is_wp_error($retry_res)) {
+                $retry_body = json_decode(wp_remote_retrieve_body($retry_res), true);
+                if (isset($retry_body['choices'][0]['message']['content'])) {
+                    $retry_content = trim($retry_body['choices'][0]['message']['content']);
+                    if (!empty($retry_content)) {
+                        return $retry_content;
+                    }
+                }
+            }
+        }
+
         return 'AI Error: ' . esc_html($error_msg);
+    }
+
+    /**
+     * Detect real image MIME type from binary header magic bytes.
+     */
+    public static function detect_image_mime_from_binary(string $data): ?string
+    {
+        $len = strlen($data);
+        if ($len < 12) {
+            return null;
+        }
+
+        // JPEG: \xFF\xD8\xFF
+        if ("\xFF\xD8\xFF" === substr($data, 0, 3)) {
+            return 'image/jpeg';
+        }
+
+        // PNG: \x89PNG\r\n\x1a\n
+        if ("\x89PNG\r\n\x1a\n" === substr($data, 0, 8)) {
+            return 'image/png';
+        }
+
+        // GIF: GIF87a or GIF89a
+        if ('GIF87a' === substr($data, 0, 6) || 'GIF89a' === substr($data, 0, 6)) {
+            return 'image/gif';
+        }
+
+        // WebP: RIFF....WEBP
+        if ('RIFF' === substr($data, 0, 4) && 'WEBP' === substr($data, 8, 4)) {
+            return 'image/webp';
+        }
+
+        // ISOBMFF container check (AVIF / HEIC / HEIF)
+        // Bytes 4-7 are 'ftyp'
+        if ('ftyp' === substr($data, 4, 4)) {
+            $major_brand = substr($data, 8, 4);
+            if ('avif' === $major_brand || 'avis' === $major_brand) {
+                return 'image/avif';
+            }
+            if (in_array($major_brand, ['heic', 'heix', 'hevc', 'heif', 'mif1', 'msf1'], true)) {
+                return 'image/heic';
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -532,68 +678,110 @@ class AIGenerator
         if (empty($raw_image_data)) {
             $image_url = wp_get_attachment_image_url($featured_image_id, 'large');
             if (!$image_url) {
+                $image_url = wp_get_attachment_url($featured_image_id);
+            }
+            if (!$image_url) {
                 return false;
             }
 
             $image_response = wp_remote_get($image_url, ['timeout' => 15]);
-            if (is_wp_error($image_response)) {
+            if (is_wp_error($image_response) || 200 !== (int) wp_remote_retrieve_response_code($image_response)) {
                 return false;
             }
 
             $raw_image_data = wp_remote_retrieve_body($image_response);
             $content_type   = wp_remote_retrieve_header($image_response, 'content-type');
-            $mime_type      = $content_type ?: 'image/jpeg';
+            $mime_type      = $content_type ?: null;
         }
 
-        if (empty($raw_image_data)) {
+        if (empty($raw_image_data) || strlen($raw_image_data) < 12) {
             return false;
         }
 
         // Clean mime type (strip any parameters like ; charset=...)
-        if (false !== strpos((string) $mime_type, ';')) {
+        if (!empty($mime_type) && false !== strpos((string) $mime_type, ';')) {
             $parts     = explode(';', (string) $mime_type);
             $mime_type = trim($parts[0]);
         }
         $mime_type = strtolower((string) $mime_type);
 
-        $file_ext   = $local_path ? strtolower(pathinfo($local_path, PATHINFO_EXTENSION)) : '';
-        $is_avif    = ('avif' === $file_ext || 'image/avif' === $mime_type);
-        $needs_opt  = $is_avif || !in_array($mime_type, ['image/png', 'image/jpeg', 'image/webp'], true) || strlen($raw_image_data) > 300 * 1024;
-        $image_data = '';
-
-        if ($needs_opt && $local_path && file_exists($local_path)) {
-            try {
-                $editor = wp_get_image_editor($local_path);
-                if (!is_wp_error($editor)) {
-                    $editor->resize(800, 800, false);
-                    $editor->set_quality(80);
-                    $temp_file = wp_tempnam('gemini_thumb_');
-                    $saved     = $editor->save($temp_file, 'image/jpeg');
-
-                    if (!is_wp_error($saved) && file_exists($saved['path'])) {
-                        $image_data = @file_get_contents($saved['path']);
-                        $mime_type  = 'image/jpeg';
-                        wp_delete_file($saved['path']);
-                        wp_delete_file($temp_file);
-                    }
-                }
-            } catch (\Throwable $e) {
-                // If image optimization fails, continue gracefully
-            }
+        // Binary magic-byte sniffing (protects against mismatched DB metadata or headerless HTTP responses)
+        $detected_mime = self::detect_image_mime_from_binary($raw_image_data);
+        if ($detected_mime) {
+            $mime_type = $detected_mime;
         }
 
-        if (empty($image_data)) {
-            $image_data = $raw_image_data;
-        }
-
-        if (empty($image_data)) {
+        // Reject non-image responses (e.g. HTML 404/403 pages, SVG, text)
+        if (empty($mime_type) || 0 !== strpos($mime_type, 'image/') || 'image/svg+xml' === $mime_type) {
             return false;
         }
 
-        return [
-            'base64'    => base64_encode($image_data),
-            'mime_type' => $mime_type ?: 'image/jpeg',
-        ];
+        $file_ext              = $local_path ? strtolower(pathinfo($local_path, PATHINFO_EXTENSION)) : '';
+        $is_avif               = ('avif' === $file_ext || 'image/avif' === $mime_type);
+        $is_natively_supported = in_array($mime_type, ['image/jpeg', 'image/png', 'image/webp'], true);
+        $needs_opt             = $is_avif || !$is_natively_supported || strlen($raw_image_data) > 300 * 1024;
+        $image_data            = '';
+
+        if ($needs_opt) {
+            $source_file  = null;
+            $cleanup_temp = false;
+
+            if ($local_path && file_exists($local_path) && is_readable($local_path)) {
+                $source_file = $local_path;
+            } else {
+                $temp_in = wp_tempnam('cmt_opt_in_');
+                if ($temp_in && false !== @file_put_contents($temp_in, $raw_image_data)) {
+                    $source_file  = $temp_in;
+                    $cleanup_temp = true;
+                }
+            }
+
+            if ($source_file) {
+                try {
+                    $editor = wp_get_image_editor($source_file);
+                    if (!is_wp_error($editor)) {
+                        $editor->resize(800, 800, false);
+                        $editor->set_quality(80);
+                        $temp_file = wp_tempnam('gemini_thumb_');
+                        $saved     = $editor->save($temp_file, 'image/jpeg');
+
+                        if (!is_wp_error($saved) && file_exists($saved['path'])) {
+                            $image_data = @file_get_contents($saved['path']);
+                            $mime_type  = 'image/jpeg';
+                            wp_delete_file($saved['path']);
+                            wp_delete_file($temp_file);
+                        }
+                    }
+                } catch (\Throwable $e) {
+                    $this->log_debug('Image optimization editor error: ' . $e->getMessage());
+                }
+
+                if ($cleanup_temp && file_exists($source_file)) {
+                    wp_delete_file($source_file);
+                }
+            }
+        }
+
+        // If optimization succeeded, use the converted JPEG data
+        if (!empty($image_data)) {
+            return [
+                'base64'    => base64_encode($image_data),
+                'mime_type' => 'image/jpeg',
+            ];
+        }
+
+        // If optimization was not needed, only send raw data if it is already a natively supported format
+        // (JPEG, PNG, WebP) and under reasonable size (<= 4MB). Never send raw AVIF, BMP, or corrupted images!
+        if ($is_natively_supported && strlen($raw_image_data) <= 4 * 1024 * 1024) {
+            return [
+                'base64'    => base64_encode($raw_image_data),
+                'mime_type' => $mime_type,
+            ];
+        }
+
+        // If it's an unsupported format (like AVIF) and couldn't be converted, omit the image
+        // so description generation succeeds via text instead of crashing with 400 INVALID_ARGUMENT.
+        return false;
     }
 
     /**

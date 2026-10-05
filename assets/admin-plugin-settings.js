@@ -149,8 +149,89 @@
       var defaultTpl = $("#comet-default-prompt-template").val();
       if (defaultTpl) {
         $("#wpcmt_aisays_prompt_template").val(defaultTpl);
+        $("#comet-prompt-preset-select").val("default");
+        $("#comet-apply-preset-btn").prop("disabled", false);
+        if (window.wpcmt_aisays && wpcmt_aisays.promptPresets && wpcmt_aisays.promptPresets["default"]) {
+          $("#comet-preset-desc-hint").text(wpcmt_aisays.promptPresets["default"].description);
+        }
         if (typeof updatePromptPreview === "function") {
           updatePromptPreview();
+        }
+      }
+    });
+
+    // Prompt Presets Library: Change selection
+    $(document).on("change", "#comet-prompt-preset-select", function () {
+      var presetKey = $(this).val();
+      var $applyBtn = $("#comet-apply-preset-btn");
+      var $hint = $("#comet-preset-desc-hint");
+
+      if (presetKey && window.wpcmt_aisays && wpcmt_aisays.promptPresets && wpcmt_aisays.promptPresets[presetKey]) {
+        var preset = wpcmt_aisays.promptPresets[presetKey];
+        $applyBtn.prop("disabled", false);
+        if (preset.description) {
+          $hint.text(preset.description);
+        }
+      } else {
+        $applyBtn.prop("disabled", true);
+        var fallbackHint = (window.wpcmt_aisays && wpcmt_aisays.i18n && wpcmt_aisays.i18n.preset_hint_default)
+          ? wpcmt_aisays.i18n.preset_hint_default
+          : "Choose from ready-to-use tone archetypes or customize manually.";
+        $hint.text(fallbackHint);
+      }
+    });
+
+    // Prompt Presets Library: Apply preset to textarea
+    $(document).on("click", "#comet-apply-preset-btn", function (e) {
+      e.preventDefault();
+      var presetKey = $("#comet-prompt-preset-select").val();
+      if (!presetKey || !window.wpcmt_aisays || !wpcmt_aisays.promptPresets || !wpcmt_aisays.promptPresets[presetKey]) {
+        return;
+      }
+
+      var preset = wpcmt_aisays.promptPresets[presetKey];
+      var $textarea = $("#wpcmt_aisays_prompt_template");
+      $textarea.val(preset.template);
+
+      if (typeof updatePromptPreview === "function") {
+        updatePromptPreview();
+      }
+
+      $textarea.addClass("comet-flash-highlight");
+      setTimeout(function () {
+        $textarea.removeClass("comet-flash-highlight");
+      }, 1000);
+
+      var $btn = $(this);
+      var $label = $btn.find(".comet-apply-btn-label");
+      var originalText = $label.text() || "Apply Preset";
+      var appliedText = (window.wpcmt_aisays && wpcmt_aisays.i18n && wpcmt_aisays.i18n.preset_applied)
+        ? wpcmt_aisays.i18n.preset_applied
+        : "Applied!";
+
+      $label.text(appliedText);
+      $btn.addClass("is-success").removeClass("is-primary");
+
+      setTimeout(function () {
+        $label.text(originalText);
+        $btn.addClass("is-primary").removeClass("is-success");
+      }, 1500);
+    });
+
+    // Prompt Presets Library: Unselect preset if manually edited
+    $(document).on("input", "#wpcmt_aisays_prompt_template", function () {
+      var currentVal = $(this).val().trim();
+      var selectedKey = $("#comet-prompt-preset-select").val();
+
+      if (selectedKey && window.wpcmt_aisays && wpcmt_aisays.promptPresets && wpcmt_aisays.promptPresets[selectedKey]) {
+        var presetTpl = (wpcmt_aisays.promptPresets[selectedKey].template || "").trim();
+        if (currentVal !== presetTpl) {
+          $("#comet-prompt-preset-select").val("");
+          $("#comet-apply-preset-btn").prop("disabled", true);
+          var hintText = (window.wpcmt_aisays && wpcmt_aisays.i18n && wpcmt_aisays.i18n.preset_hint_default)
+            ? wpcmt_aisays.i18n.preset_hint_default
+            : "Choose from ready-to-use tone archetypes or customize manually.";
+          $("#comet-preset-desc-hint").text(hintText);
         }
       }
     });

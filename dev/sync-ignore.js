@@ -30,7 +30,8 @@ const distOnly = [
     '.agents',
     'agent_memory.md',
     'TODO.md',
-    'todo.php'
+    'todo.php',
+    '/.wordpress-org'
 ];
 
 function sync() {

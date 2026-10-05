@@ -27,11 +27,16 @@ return function (): array {
     }
 
     // 2. Test format support
+    $imagick_formats = [];
+    if ($has_imagick && method_exists('Imagick', 'queryFormats')) {
+        $imagick_formats = (array) call_user_func(['Imagick', 'queryFormats']);
+    }
+
     $formats = [
-        'JPEG' => function_exists('imagejpeg') || ($has_imagick && in_array('JPEG', \Imagick::queryFormats(), true)),
-        'PNG'  => function_exists('imagepng') || ($has_imagick && in_array('PNG', \Imagick::queryFormats(), true)),
-        'WebP' => function_exists('imagewebp') || ($has_imagick && in_array('WEBP', \Imagick::queryFormats(), true)),
-        'AVIF' => function_exists('imageavif') || ($has_imagick && in_array('AVIF', \Imagick::queryFormats(), true)),
+        'JPEG' => function_exists('imagejpeg') || in_array('JPEG', $imagick_formats, true),
+        'PNG'  => function_exists('imagepng') || in_array('PNG', $imagick_formats, true),
+        'WebP' => function_exists('imagewebp') || in_array('WEBP', $imagick_formats, true),
+        'AVIF' => function_exists('imageavif') || in_array('AVIF', $imagick_formats, true),
     ];
 
     $supported_names = [];

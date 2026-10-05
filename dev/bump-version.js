@@ -74,6 +74,53 @@ for (const rFile of readmeFiles) {
     }
 }
 
+// Auto-sync Tested up to (WP) and WC tested up to from local testbed environment
+try {
+    const alldemosDir = 'd:/wamp64/www/alldemos';
+    if (fs.existsSync(alldemosDir)) {
+        const liveWpVer = execSync(`wp core version --path="${alldemosDir}"`, { stdio: 'pipe' }).toString().trim();
+        let liveWcVer = null;
+        try {
+            liveWcVer = execSync(`wp plugin get woocommerce --field=version --path="${alldemosDir}"`, { stdio: 'pipe' }).toString().trim();
+        } catch (e) {}
+
+        if (liveWpVer) {
+            const wpMajorMinor = liveWpVer.split('.').slice(0, 2).join('.');
+            const rPath = path.join(rootDir, 'readme.txt');
+            if (fs.existsSync(rPath)) {
+                let rContent = fs.readFileSync(rPath, 'utf8');
+                if (/(Tested up to:\s+)[^\r\n]+/i.test(rContent)) {
+                    rContent = rContent.replace(/(Tested up to:\s+)[^\r\n]+/i, `$1${wpMajorMinor}`);
+                    fs.writeFileSync(rPath, rContent, 'utf8');
+                    console.log(`✅ Auto-synced readme.txt "Tested up to: ${wpMajorMinor}" from local testbed!`);
+                }
+            }
+        }
+
+        if (liveWcVer) {
+            const wcMajorMinor = liveWcVer.split('.').slice(0, 2).join('.');
+            let mContent = fs.readFileSync(mainFile, 'utf8');
+            if (/(\*\s*WC tested up to:\s+)[^\r\n]+/.test(mContent)) {
+                mContent = mContent.replace(/(\*\s*WC tested up to:\s+)[^\r\n]+/, `$1${wcMajorMinor}`);
+                fs.writeFileSync(mainFile, mContent, 'utf8');
+                console.log(`✅ Auto-synced ${mainFileName} "WC tested up to: ${wcMajorMinor}" from local testbed!`);
+            }
+
+            const rPath = path.join(rootDir, 'readme.txt');
+            if (fs.existsSync(rPath)) {
+                let rContent = fs.readFileSync(rPath, 'utf8');
+                if (/(WC tested up to:\s+)[^\r\n]+/i.test(rContent)) {
+                    rContent = rContent.replace(/(WC tested up to:\s+)[^\r\n]+/i, `$1${wcMajorMinor}`);
+                    fs.writeFileSync(rPath, rContent, 'utf8');
+                    console.log(`✅ Auto-synced readme.txt "WC tested up to: ${wcMajorMinor}" from local testbed!`);
+                }
+            }
+        }
+    }
+} catch (e) {
+    // Non-blocking query
+}
+
 // Automatically sync clean copy to WPlatest for PCP verification if not invoked from release script
 if (!process.env.COMET_IN_RELEASE) {
     try {

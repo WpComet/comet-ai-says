@@ -9,14 +9,14 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-02T00:55:22+00:00\n"
+"POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: comet-ai-says\n"
 
 #. Plugin Name of the plugin
 #: D:\wamp64\www\alldemos\wp-content\plugins\comet-ai-says\comet-ai-says.php
-#: includes/AdminInterface.php:243
+#: includes/AdminInterface.php:249
 msgid "Comet AI Says: Product Descriptions"
 msgstr ""
 
@@ -40,365 +40,383 @@ msgstr ""
 msgid "https://wpcomet.com/"
 msgstr ""
 
-#: comet-ai-says.php:191
-#: includes/AdminInterface.php:317
+#: comet-ai-says.php:192
+#: includes/AdminInterface.php:323
 msgid "Settings"
 msgstr ""
 
-#: comet-ai-says.php:196
+#: comet-ai-says.php:197
 msgid "AI Descriptions"
 msgstr ""
 
-#: includes/AdminInterface.php:114
+#: includes/AdminInterface.php:115
 msgid "Error: "
 msgstr ""
 
-#: includes/AdminInterface.php:115
+#: includes/AdminInterface.php:116
 msgid "An error occurred while generating the description."
 msgstr ""
 
-#: includes/AdminInterface.php:116
+#: includes/AdminInterface.php:117
 msgid "Saving..."
 msgstr ""
 
-#: includes/AdminInterface.php:117
+#: includes/AdminInterface.php:118
 msgid "Saved!"
 msgstr ""
 
-#: includes/AdminInterface.php:118
+#: includes/AdminInterface.php:119
 msgid "Error saving"
 msgstr ""
 
-#: includes/AdminInterface.php:119
+#: includes/AdminInterface.php:120
 msgid "Generating..."
 msgstr ""
 
-#: includes/AdminInterface.php:120
-#: includes/AdminInterface.php:2449
+#: includes/AdminInterface.php:121
+#: includes/AdminInterface.php:2522
 msgid "Generate AI Description"
 msgstr ""
 
 #. translators: %s: Product title or name.
-#: includes/AdminInterface.php:122
+#: includes/AdminInterface.php:123
 msgid "Error saving description for: %s"
 msgstr ""
 
 #. translators: %s: Product title or name.
-#: includes/AdminInterface.php:124
+#: includes/AdminInterface.php:125
 msgid "Error generating description for: %s"
 msgstr ""
 
 #. translators: %s: Product title or name.
-#: includes/AdminInterface.php:126
+#: includes/AdminInterface.php:127
 msgid "An error occurred while generating description for: %s"
 msgstr ""
 
-#: includes/AdminInterface.php:127
+#: includes/AdminInterface.php:128
 msgid "Error loading AI description"
 msgstr ""
 
-#: includes/AdminInterface.php:128
+#: includes/AdminInterface.php:129
 #: includes/ProductsTable.php:175
 msgid "Regenerate"
 msgstr ""
 
-#: includes/AdminInterface.php:129
+#: includes/AdminInterface.php:130
 #: includes/ProductsTable.php:181
 msgid "Delete AI desc"
 msgstr ""
 
 #. translators: %s: Product title or name.
-#: includes/AdminInterface.php:131
+#: includes/AdminInterface.php:132
 msgid "Are you sure you want to delete the AI description for \"%s\"?"
 msgstr ""
 
-#: includes/AdminInterface.php:132
+#: includes/AdminInterface.php:133
 msgid "Deleting..."
 msgstr ""
 
 #. translators: %s: Name of the product whose AI description was deleted.
-#: includes/AdminInterface.php:134
+#: includes/AdminInterface.php:135
 #: includes/AIGenerator.php:843
 msgid "AI description deleted for: %s"
 msgstr ""
 
-#: includes/AdminInterface.php:135
+#: includes/AdminInterface.php:136
 msgid "Error deleting AI description: "
 msgstr ""
 
 #. translators: %s: Product title or name.
-#: includes/AdminInterface.php:137
+#: includes/AdminInterface.php:138
 msgid "Error deleting AI description for: %s"
 msgstr ""
 
-#: includes/AdminInterface.php:144
-#: includes/AdminInterface.php:1274
-#: includes/AdminInterface.php:1314
-#: includes/AdminInterface.php:2210
-#: includes/AdminInterface.php:2243
+#: includes/AdminInterface.php:145
+#: includes/AdminInterface.php:1326
+#: includes/AdminInterface.php:1366
+#: includes/AdminInterface.php:2283
+#: includes/AdminInterface.php:2316
 msgid "Show"
 msgstr ""
 
-#: includes/AdminInterface.php:145
+#: includes/AdminInterface.php:146
 msgid "Hide"
 msgstr ""
 
-#: includes/AdminInterface.php:146
-#: includes/AdminInterface.php:2294
-msgid "tokens"
-msgstr ""
-
 #: includes/AdminInterface.php:147
-msgid "4000-10000 tokens for complex analysis"
+msgid "Applied!"
 msgstr ""
 
 #: includes/AdminInterface.php:148
-msgid "1500-5000 tokens for detailed descriptions"
+#: includes/AdminInterface.php:910
+msgid "Apply Preset"
 msgstr ""
 
 #: includes/AdminInterface.php:149
-msgid "800-2500 tokens for efficient descriptions"
+msgid "-- Custom / Choose a Tone Preset --"
 msgstr ""
 
 #: includes/AdminInterface.php:150
-msgid "1000-4000 tokens for balanced performance"
+#: includes/AdminInterface.php:918
+msgid "Choose from ready-to-use tone archetypes or customize manually."
 msgstr ""
 
 #: includes/AdminInterface.php:151
-msgid "800-2000 tokens for lightweight tasks"
+#: includes/AdminInterface.php:2367
+msgid "tokens"
 msgstr ""
 
 #: includes/AdminInterface.php:152
-msgid "1500-4000 tokens for preview testing"
+msgid "4000-10000 tokens for complex analysis"
 msgstr ""
 
 #: includes/AdminInterface.php:153
-msgid "3000-8000 tokens for pro preview"
+msgid "1500-5000 tokens for detailed descriptions"
 msgstr ""
 
 #: includes/AdminInterface.php:154
-msgid "1000-5000 tokens for comprehensive descriptions"
+msgid "800-2500 tokens for efficient descriptions"
 msgstr ""
 
 #: includes/AdminInterface.php:155
-msgid "125K TPM, 5 RPM"
+msgid "1000-4000 tokens for balanced performance"
 msgstr ""
 
 #: includes/AdminInterface.php:156
-msgid "250K TPM, 10 RPM"
+msgid "800-2000 tokens for lightweight tasks"
 msgstr ""
 
 #: includes/AdminInterface.php:157
-msgid "250K TPM, 15 RPM"
+msgid "1500-4000 tokens for preview testing"
 msgstr ""
 
 #: includes/AdminInterface.php:158
-msgid "1M TPM, 15 RPM"
+msgid "3000-8000 tokens for pro preview"
 msgstr ""
 
 #: includes/AdminInterface.php:159
-msgid "1M TPM, 30 RPM"
+msgid "1000-5000 tokens for comprehensive descriptions"
 msgstr ""
 
 #: includes/AdminInterface.php:160
-msgid "Limited Free Tier"
+msgid "125K TPM, 5 RPM"
 msgstr ""
 
 #: includes/AdminInterface.php:161
-msgid "15K TPM, 30 RPM"
+msgid "250K TPM, 10 RPM"
 msgstr ""
 
 #: includes/AdminInterface.php:162
-msgid "Standard configuration"
+msgid "250K TPM, 15 RPM"
 msgstr ""
 
 #: includes/AdminInterface.php:163
-msgid "Generous daily token allowance with Gemini 3.5 Flash"
+msgid "1M TPM, 15 RPM"
 msgstr ""
 
 #: includes/AdminInterface.php:164
-msgid "Up to 1,000,000 TPM with Gemini Flash models"
+msgid "1M TPM, 30 RPM"
 msgstr ""
 
 #: includes/AdminInterface.php:165
-msgid "2000-6000 tokens for complex reasoning"
+msgid "Limited Free Tier"
 msgstr ""
 
 #: includes/AdminInterface.php:166
-msgid "2000-8000 tokens for high-quality analysis"
+msgid "15K TPM, 30 RPM"
 msgstr ""
 
 #: includes/AdminInterface.php:167
-msgid "30K TPM, 2 RPM"
+msgid "Standard configuration"
 msgstr ""
 
 #: includes/AdminInterface.php:168
+msgid "Generous daily token allowance with Gemini 3.5 Flash"
+msgstr ""
+
+#: includes/AdminInterface.php:169
+msgid "Up to 1,000,000 TPM with Gemini Flash models"
+msgstr ""
+
+#: includes/AdminInterface.php:170
+msgid "2000-6000 tokens for complex reasoning"
+msgstr ""
+
+#: includes/AdminInterface.php:171
+msgid "2000-8000 tokens for high-quality analysis"
+msgstr ""
+
+#: includes/AdminInterface.php:172
+msgid "30K TPM, 2 RPM"
+msgstr ""
+
+#: includes/AdminInterface.php:173
 msgid "32K TPM, 2 RPM"
 msgstr ""
 
-#: includes/AdminInterface.php:185
+#: includes/AdminInterface.php:190
 msgid "Please select at least one product."
 msgstr ""
 
 #. translators: %d: Number of selected products.
-#: includes/AdminInterface.php:187
+#: includes/AdminInterface.php:192
 msgid "Generate AI descriptions for %d selected products?"
 msgstr ""
 
-#: includes/AdminInterface.php:188
+#: includes/AdminInterface.php:193
 msgid "Completed!"
 msgstr ""
 
 #. translators: %d: Number of products generated.
-#: includes/AdminInterface.php:190
+#: includes/AdminInterface.php:195
 msgid "Generated descriptions for %d products."
 msgstr ""
 
-#: includes/AdminInterface.php:191
+#: includes/AdminInterface.php:196
 msgid "This product already has an AI description."
 msgstr ""
 
-#: includes/AdminInterface.php:192
-#: includes/AdminInterface.php:2496
+#: includes/AdminInterface.php:197
+#: includes/AdminInterface.php:2569
 msgid "Replace Existing"
 msgstr ""
 
-#: includes/AdminInterface.php:193
-#: includes/AdminInterface.php:2498
+#: includes/AdminInterface.php:198
+#: includes/AdminInterface.php:2571
 msgid "Discard New"
 msgstr ""
 
-#: includes/AdminInterface.php:194
-#: includes/AdminInterface.php:2503
+#: includes/AdminInterface.php:199
+#: includes/AdminInterface.php:2576
 #: includes/ProductsTable.php:169
 msgid "View AI desc"
 msgstr ""
 
-#: includes/AdminInterface.php:195
+#: includes/AdminInterface.php:200
 msgid "New AI desc"
 msgstr ""
 
-#: includes/AdminInterface.php:196
-#: includes/AdminInterface.php:2518
+#: includes/AdminInterface.php:201
+#: includes/AdminInterface.php:2591
 msgid "Close"
 msgstr ""
 
-#: includes/AdminInterface.php:197
+#: includes/AdminInterface.php:202
 msgid "Bulk generating descriptions..."
 msgstr ""
 
-#: includes/AdminInterface.php:198
+#: includes/AdminInterface.php:203
 msgid "Bulk generation complete!"
 msgstr ""
 
-#: includes/AdminInterface.php:199
+#: includes/AdminInterface.php:204
 msgid "Error during bulk generation"
 msgstr ""
 
 #. translators: %d: Number of selected products.
-#: includes/AdminInterface.php:201
+#: includes/AdminInterface.php:206
 msgid "Are you sure you want to delete AI descriptions for %d selected products?"
 msgstr ""
 
 #. translators: %d: Number of deleted product descriptions.
-#: includes/AdminInterface.php:203
+#: includes/AdminInterface.php:208
 msgid "Successfully deleted AI descriptions for %d products."
 msgstr ""
 
 #. translators: %s: Number or error details for failed deletions.
-#: includes/AdminInterface.php:205
+#: includes/AdminInterface.php:210
 msgid "Failed to delete %s AI descriptions."
 msgstr ""
 
-#: includes/AdminInterface.php:249
+#: includes/AdminInterface.php:255
 msgid "Generating descriptions..."
 msgstr ""
 
-#: includes/AdminInterface.php:253
+#: includes/AdminInterface.php:259
 msgid "Contextual WooCommerce AI descriptions"
 msgstr ""
 
-#: includes/AdminInterface.php:259
-#: includes/AdminInterface.php:1143
+#: includes/AdminInterface.php:265
+#: includes/AdminInterface.php:1195
 msgid "Toggle Light/Dark Theme"
 msgstr ""
 
-#: includes/AdminInterface.php:264
+#: includes/AdminInterface.php:270
 msgid "Toggle API Usage & Rate Limits"
 msgstr ""
 
-#: includes/AdminInterface.php:268
+#: includes/AdminInterface.php:274
 msgid "Usage"
 msgstr ""
 
-#: includes/AdminInterface.php:324
+#: includes/AdminInterface.php:330
 msgid "Product Descriptions"
 msgstr ""
 
-#: includes/AdminInterface.php:331
+#: includes/AdminInterface.php:337
 msgid "Status & Diagnostics"
 msgstr ""
 
-#: includes/AdminInterface.php:389
+#: includes/AdminInterface.php:395
 msgid "Error loading usage statistics:"
 msgstr ""
 
-#: includes/AdminInterface.php:391
+#: includes/AdminInterface.php:397
 msgid "Retry"
 msgstr ""
 
-#: includes/AdminInterface.php:429
-#: includes/AdminInterface.php:1549
+#: includes/AdminInterface.php:435
+#: includes/AdminInterface.php:1601
 msgid "API Usage & Rate Limits"
 msgstr ""
 
-#: includes/AdminInterface.php:438
+#: includes/AdminInterface.php:444
 msgid "Refresh Stats"
 msgstr ""
 
-#: includes/AdminInterface.php:444
+#: includes/AdminInterface.php:450
 msgid "Total Generated: "
 msgstr ""
 
-#: includes/AdminInterface.php:455
-#: includes/AdminInterface.php:1577
+#: includes/AdminInterface.php:461
+#: includes/AdminInterface.php:1629
 msgid "Limit Metric"
 msgstr ""
 
-#: includes/AdminInterface.php:456
-#: includes/AdminInterface.php:1579
+#: includes/AdminInterface.php:462
+#: includes/AdminInterface.php:1631
 msgid "Used"
 msgstr ""
 
-#: includes/AdminInterface.php:457
-#: includes/AdminInterface.php:1581
+#: includes/AdminInterface.php:463
+#: includes/AdminInterface.php:1633
 msgid "Limit"
 msgstr ""
 
-#: includes/AdminInterface.php:458
-#: includes/AdminInterface.php:1584
+#: includes/AdminInterface.php:464
+#: includes/AdminInterface.php:1636
 msgid "Capacity"
 msgstr ""
 
-#: includes/AdminInterface.php:467
-#: includes/AdminInterface.php:1623
+#: includes/AdminInterface.php:473
+#: includes/AdminInterface.php:1675
 msgid "API Quota Status"
 msgstr ""
 
-#: includes/AdminInterface.php:468
-#: includes/AdminInterface.php:1626
+#: includes/AdminInterface.php:474
+#: includes/AdminInterface.php:1678
 msgid "Minute limits reset every 60 seconds. Daily limits reset every 24 hours (UTC)."
 msgstr ""
 
-#: includes/AdminInterface.php:469
+#: includes/AdminInterface.php:475
 msgid "Active Provider: "
 msgstr ""
 
-#: includes/AdminInterface.php:476
+#: includes/AdminInterface.php:482
 msgid "Open Dashboard"
 msgstr ""
 
-#: includes/AdminInterface.php:545
+#: includes/AdminInterface.php:551
 #: includes/AIGenerator.php:741
 #: includes/AIGenerator.php:833
 #: includes/AIGenerator.php:866
@@ -406,467 +424,475 @@ msgid "Product not found"
 msgstr ""
 
 #. translators: %s: Product name.
-#: includes/AdminInterface.php:560
+#: includes/AdminInterface.php:566
 msgid "Generated for: %s"
 msgstr ""
 
-#: includes/AdminInterface.php:564
+#: includes/AdminInterface.php:570
 msgid "Generation failed"
 msgstr ""
 
 #. translators: 1: Product name, 2: Error message details.
-#: includes/AdminInterface.php:569
+#: includes/AdminInterface.php:575
 msgid "Generation failed for %1$s: %2$s"
 msgstr ""
 
-#: includes/AdminInterface.php:594
+#: includes/AdminInterface.php:600
 msgid "Select Gemini Model"
 msgstr ""
 
-#: includes/AdminInterface.php:644
+#: includes/AdminInterface.php:650
 msgid "🚀 Active Model Capacity:"
 msgstr ""
 
-#: includes/AdminInterface.php:649
+#: includes/AdminInterface.php:655
 msgid "Model Availability Tip"
 msgstr ""
 
-#: includes/AdminInterface.php:652
+#: includes/AdminInterface.php:658
 msgid "API Availability Tip:"
 msgstr ""
 
-#: includes/AdminInterface.php:653
+#: includes/AdminInterface.php:659
 msgid "Google API model rollouts vary by API key tier and region. If your key encounters an unsupported model error on a pinned version, select"
 msgstr ""
 
-#: includes/AdminInterface.php:655
+#: includes/AdminInterface.php:661
 msgid "to automatically route to the newest model supported by your account."
 msgstr ""
 
-#: includes/AdminInterface.php:672
+#: includes/AdminInterface.php:678
 msgid "Select OpenAI Model"
 msgstr ""
 
-#: includes/AdminInterface.php:721
+#: includes/AdminInterface.php:727
 msgid "Recommended:"
 msgstr ""
 
-#: includes/AdminInterface.php:722
+#: includes/AdminInterface.php:728
 msgid "GPT-4o or GPT-4o Mini for fast, vision-enabled product descriptions."
 msgstr ""
 
-#: includes/AdminInterface.php:734
+#: includes/AdminInterface.php:740
 msgid "Display Mode"
 msgstr ""
 
-#: includes/AdminInterface.php:741
+#: includes/AdminInterface.php:747
 msgid "Automatic - Hook into product page"
 msgstr ""
 
-#: includes/AdminInterface.php:744
+#: includes/AdminInterface.php:750
 msgid "Manual - Shortcode only"
 msgstr ""
 
-#: includes/AdminInterface.php:749
+#: includes/AdminInterface.php:755
 msgid "Choose how AI descriptions are displayed on single product pages."
 msgstr ""
 
-#: includes/AdminInterface.php:758
+#: includes/AdminInterface.php:764
 msgid "Display Position"
 msgstr ""
 
-#: includes/AdminInterface.php:765
+#: includes/AdminInterface.php:771
 msgid "After short description"
 msgstr ""
 
-#: includes/AdminInterface.php:768
+#: includes/AdminInterface.php:774
 msgid "After main product description"
 msgstr ""
 
-#: includes/AdminInterface.php:771
+#: includes/AdminInterface.php:777
 msgid "After product tabs"
 msgstr ""
 
-#: includes/AdminInterface.php:774
+#: includes/AdminInterface.php:780
 msgid "Bottom of product page"
 msgstr ""
 
-#: includes/AdminInterface.php:785
+#: includes/AdminInterface.php:791
 msgid "Shortcode"
 msgstr ""
 
-#: includes/AdminInterface.php:797
+#: includes/AdminInterface.php:803
 msgid "Shortcode copied to clipboard!"
 msgstr ""
 
-#: includes/AdminInterface.php:798
+#: includes/AdminInterface.php:804
 msgid "Copy"
 msgstr ""
 
-#: includes/AdminInterface.php:803
+#: includes/AdminInterface.php:809
 msgid "Use this shortcode anywhere in Elementor, Gutenberg, or theme templates."
 msgstr ""
 
-#: includes/AdminInterface.php:816
+#: includes/AdminInterface.php:822
 msgid "Description Language"
 msgstr ""
 
-#: includes/AdminInterface.php:829
-#: includes/AdminInterface.php:2440
+#: includes/AdminInterface.php:835
+#: includes/AdminInterface.php:2513
 msgid "Custom Language"
 msgstr ""
 
-#: includes/AdminInterface.php:840
+#: includes/AdminInterface.php:846
 msgid "Custom Language Name"
 msgstr ""
 
-#: includes/AdminInterface.php:847
+#: includes/AdminInterface.php:853
 msgid "e.g., Swedish, Polish, Greek"
 msgstr ""
 
-#: includes/AdminInterface.php:856
-#: includes/AdminInterface.php:962
+#: includes/AdminInterface.php:862
+#: includes/AdminInterface.php:1014
 msgid "Product title / name"
 msgstr ""
 
-#: includes/AdminInterface.php:857
-#: includes/AdminInterface.php:963
+#: includes/AdminInterface.php:863
+#: includes/AdminInterface.php:1015
 msgid "Existing product short description"
 msgstr ""
 
-#: includes/AdminInterface.php:858
-#: includes/AdminInterface.php:964
+#: includes/AdminInterface.php:864
+#: includes/AdminInterface.php:1016
 msgid "Product categories separated by commas"
 msgstr ""
 
-#: includes/AdminInterface.php:859
-#: includes/AdminInterface.php:965
+#: includes/AdminInterface.php:865
+#: includes/AdminInterface.php:1017
 msgid "Product tags list"
 msgstr ""
 
-#: includes/AdminInterface.php:860
-#: includes/AdminInterface.php:966
+#: includes/AdminInterface.php:866
+#: includes/AdminInterface.php:1018
 msgid "WooCommerce attributes & specifications"
 msgstr ""
 
-#: includes/AdminInterface.php:861
-#: includes/AdminInterface.php:967
+#: includes/AdminInterface.php:867
+#: includes/AdminInterface.php:1019
 msgid "AI visual inspection context of featured image"
 msgstr ""
 
-#: includes/AdminInterface.php:862
-#: includes/AdminInterface.php:968
+#: includes/AdminInterface.php:868
+#: includes/AdminInterface.php:1020
 msgid "Opening language instructions"
 msgstr ""
 
-#: includes/AdminInterface.php:863
-#: includes/AdminInterface.php:969
+#: includes/AdminInterface.php:869
+#: includes/AdminInterface.php:1021
 msgid "Format & tone guidelines"
 msgstr ""
 
-#: includes/AdminInterface.php:864
-#: includes/AdminInterface.php:970
+#: includes/AdminInterface.php:870
+#: includes/AdminInterface.php:1022
 msgid "Store name or domain branding context"
 msgstr ""
 
-#: includes/AdminInterface.php:877
+#: includes/AdminInterface.php:894
+msgid "Prompt Preset Library:"
+msgstr ""
+
+#: includes/AdminInterface.php:899
+msgid "-- Choose a Tone Preset --"
+msgstr ""
+
+#: includes/AdminInterface.php:929
 msgid "Quick Insert Template Variables:"
 msgstr ""
 
-#: includes/AdminInterface.php:884
+#: includes/AdminInterface.php:936
 msgid "Guide"
 msgstr ""
 
-#: includes/AdminInterface.php:897
+#: includes/AdminInterface.php:949
 msgid "Prompt Variables Reference Guide"
 msgstr ""
 
-#: includes/AdminInterface.php:900
+#: includes/AdminInterface.php:952
 msgid "Click any variable pill to insert directly at cursor"
 msgstr ""
 
-#: includes/AdminInterface.php:931
+#: includes/AdminInterface.php:983
 msgid "Live Prompt Preview:"
 msgstr ""
 
-#: includes/AdminInterface.php:933
+#: includes/AdminInterface.php:985
 msgid "Preview Mode"
 msgstr ""
 
-#: includes/AdminInterface.php:949
+#: includes/AdminInterface.php:1001
 msgid "Customize prompt instructions and layout per store tone."
 msgstr ""
 
-#: includes/AdminInterface.php:953
+#: includes/AdminInterface.php:1005
 msgid "Reset to Default Template"
 msgstr ""
 
-#: includes/AdminInterface.php:977
+#: includes/AdminInterface.php:1029
 msgid "Prompt Variables Guide"
 msgstr ""
 
-#: includes/AdminInterface.php:982
+#: includes/AdminInterface.php:1034
 msgid "Click any variable pill to insert it directly into your prompt template:"
 msgstr ""
 
-#: includes/AdminInterface.php:1011
+#: includes/AdminInterface.php:1063
 msgid "API Setup Guide"
 msgstr ""
 
-#: includes/AdminInterface.php:1015
+#: includes/AdminInterface.php:1067
 msgid "Active"
 msgstr ""
 
-#: includes/AdminInterface.php:1022
+#: includes/AdminInterface.php:1074
 msgid "Google Gemini"
 msgstr ""
 
-#: includes/AdminInterface.php:1024
+#: includes/AdminInterface.php:1076
 msgid "Free Tier"
 msgstr ""
 
-#: includes/AdminInterface.php:1027
+#: includes/AdminInterface.php:1079
 msgid "Get a 100% free API key with 15 requests/min and 1M tokens/min."
 msgstr ""
 
-#: includes/AdminInterface.php:1031
+#: includes/AdminInterface.php:1083
 msgid "Get Google AI Studio Key"
 msgstr ""
 
-#: includes/AdminInterface.php:1041
+#: includes/AdminInterface.php:1093
 msgid "OpenAI GPT"
 msgstr ""
 
-#: includes/AdminInterface.php:1043
+#: includes/AdminInterface.php:1095
 msgid "Paid Tier"
 msgstr ""
 
-#: includes/AdminInterface.php:1046
+#: includes/AdminInterface.php:1098
 msgid "Requires an OpenAI platform account with prepaid billing credits."
 msgstr ""
 
-#: includes/AdminInterface.php:1050
+#: includes/AdminInterface.php:1102
 msgid "Get OpenAI API Key"
 msgstr ""
 
-#: includes/AdminInterface.php:1067
+#: includes/AdminInterface.php:1119
 msgid "Resources & Support"
 msgstr ""
 
-#: includes/AdminInterface.php:1072
+#: includes/AdminInterface.php:1124
 msgid "Need assistance, custom model tuning, or want to report feedback?"
 msgstr ""
 
-#: includes/AdminInterface.php:1077
+#: includes/AdminInterface.php:1129
 msgid "Documentation"
 msgstr ""
 
-#: includes/AdminInterface.php:1082
+#: includes/AdminInterface.php:1134
 msgid "Contact Support"
 msgstr ""
 
-#: includes/AdminInterface.php:1088
+#: includes/AdminInterface.php:1140
 msgid "Handcrafted by WpComet"
 msgstr ""
 
-#: includes/AdminInterface.php:1137
+#: includes/AdminInterface.php:1189
 msgid "Comet AI Says"
 msgstr ""
 
-#: includes/AdminInterface.php:1158
+#: includes/AdminInterface.php:1210
 msgid "Welcome to Comet AI Says!"
 msgstr ""
 
-#: includes/AdminInterface.php:1161
+#: includes/AdminInterface.php:1213
 msgid "Connect your AI engine to start generating contextual product copy for WooCommerce in seconds."
 msgstr ""
 
-#: includes/AdminInterface.php:1167
+#: includes/AdminInterface.php:1219
 msgid "1. Provider"
 msgstr ""
 
-#: includes/AdminInterface.php:1172
+#: includes/AdminInterface.php:1224
 msgid "2. API Key"
 msgstr ""
 
-#: includes/AdminInterface.php:1177
+#: includes/AdminInterface.php:1229
 msgid "3. Ready"
 msgstr ""
 
-#: includes/AdminInterface.php:1194
+#: includes/AdminInterface.php:1246
 msgid "1. Choose AI Engine"
 msgstr ""
 
-#: includes/AdminInterface.php:1216
+#: includes/AdminInterface.php:1268
 msgid "High-speed multimodal vision with 15 RPM / 1M TPM free tier. Ideal for catalog copy."
 msgstr ""
 
-#: includes/AdminInterface.php:1221
+#: includes/AdminInterface.php:1273
 msgid "Recommended (Free Tier)"
 msgstr ""
 
-#: includes/AdminInterface.php:1243
+#: includes/AdminInterface.php:1295
 msgid "Connect your OpenAI developer account to generate copy via GPT-4o or GPT-4o mini."
 msgstr ""
 
-#: includes/AdminInterface.php:1248
+#: includes/AdminInterface.php:1300
 msgid "Paid Platform Tier"
 msgstr ""
 
-#: includes/AdminInterface.php:1258
+#: includes/AdminInterface.php:1310
 msgid "2. Google Gemini API Key"
 msgstr ""
 
-#: includes/AdminInterface.php:1268
+#: includes/AdminInterface.php:1320
 msgid "Paste your Gemini API key (AIzaSy...)"
 msgstr ""
 
-#: includes/AdminInterface.php:1271
-#: includes/AdminInterface.php:1311
-#: includes/AdminInterface.php:2207
-#: includes/AdminInterface.php:2240
+#: includes/AdminInterface.php:1323
+#: includes/AdminInterface.php:1363
+#: includes/AdminInterface.php:2280
+#: includes/AdminInterface.php:2313
 msgid "Show API Key"
 msgstr ""
 
-#: includes/AdminInterface.php:1283
+#: includes/AdminInterface.php:1335
 msgid "Get your free API key in under 60 seconds from Google AI Studio (no credit card needed)."
 msgstr ""
 
-#: includes/AdminInterface.php:1287
+#: includes/AdminInterface.php:1339
 msgid "Get Free Key"
 msgstr ""
 
-#: includes/AdminInterface.php:1298
+#: includes/AdminInterface.php:1350
 msgid "2. OpenAI API Key"
 msgstr ""
 
-#: includes/AdminInterface.php:1308
+#: includes/AdminInterface.php:1360
 msgid "Paste your OpenAI API key (sk-...)"
 msgstr ""
 
-#: includes/AdminInterface.php:1323
+#: includes/AdminInterface.php:1375
 msgid "Get your API secret key from your OpenAI Platform account dashboard."
 msgstr ""
 
-#: includes/AdminInterface.php:1327
+#: includes/AdminInterface.php:1379
 msgid "OpenAI Keys"
 msgstr ""
 
-#: includes/AdminInterface.php:1339
+#: includes/AdminInterface.php:1391
 msgid "Optimized defaults are already configured: Gemini 3.6 Flash engine, 1500 max tokens, contextual spec extraction, and safe WooCommerce custom field isolation."
 msgstr ""
 
-#: includes/AdminInterface.php:1346
+#: includes/AdminInterface.php:1398
 msgid "Save & Start Generating"
 msgstr ""
 
-#: includes/AdminInterface.php:1352
+#: includes/AdminInterface.php:1404
 msgid "Skip setup for now & go to Settings"
 msgstr ""
 
-#: includes/AdminInterface.php:1361
+#: includes/AdminInterface.php:1413
 msgid "Safe Storage"
 msgstr ""
 
-#: includes/AdminInterface.php:1362
+#: includes/AdminInterface.php:1414
 msgid "Never touches original text"
 msgstr ""
 
-#: includes/AdminInterface.php:1365
+#: includes/AdminInterface.php:1417
 msgid "Fast Processing"
 msgstr ""
 
-#: includes/AdminInterface.php:1366
+#: includes/AdminInterface.php:1418
 msgid "Single or bulk generation"
 msgstr ""
 
-#: includes/AdminInterface.php:1369
+#: includes/AdminInterface.php:1421
 msgid "Multi-Language"
 msgstr ""
 
-#: includes/AdminInterface.php:1370
+#: includes/AdminInterface.php:1422
 msgid "14+ languages supported"
 msgstr ""
 
-#: includes/AdminInterface.php:1450
+#: includes/AdminInterface.php:1502
 msgid "Bulk Generation Progress:"
 msgstr ""
 
-#: includes/AdminInterface.php:1455
+#: includes/AdminInterface.php:1507
 msgid "Stop Generation"
 msgstr ""
 
-#: includes/AdminInterface.php:1468
+#: includes/AdminInterface.php:1520
 msgid "Search Products"
 msgstr ""
 
-#: includes/AdminInterface.php:1481
+#: includes/AdminInterface.php:1533
 msgid "AI Generated Description"
 msgstr ""
 
-#: includes/AdminInterface.php:1495
+#: includes/AdminInterface.php:1547
 msgid "Copy Description"
 msgstr ""
 
-#: includes/AdminInterface.php:1498
+#: includes/AdminInterface.php:1550
 msgid "Close Preview"
 msgstr ""
 
 #. translators: %s: Formatted total number of generated descriptions (HTML strong tag).
-#: includes/AdminInterface.php:1563
+#: includes/AdminInterface.php:1615
 msgid "Total Generated: %s"
 msgstr ""
 
-#: includes/AdminInterface.php:1590
-#: includes/AdminInterface.php:1731
+#: includes/AdminInterface.php:1642
+#: includes/AdminInterface.php:1783
 msgid "Requests/Minute"
 msgstr ""
 
-#: includes/AdminInterface.php:1590
-#: includes/AdminInterface.php:1591
-#: includes/AdminInterface.php:1732
-#: includes/AdminInterface.php:1741
+#: includes/AdminInterface.php:1642
+#: includes/AdminInterface.php:1643
+#: includes/AdminInterface.php:1784
+#: includes/AdminInterface.php:1793
 msgid "Resets every 60s"
 msgstr ""
 
-#: includes/AdminInterface.php:1591
-#: includes/AdminInterface.php:1740
+#: includes/AdminInterface.php:1643
+#: includes/AdminInterface.php:1792
 msgid "Tokens/Minute"
 msgstr ""
 
-#: includes/AdminInterface.php:1592
-#: includes/AdminInterface.php:1749
+#: includes/AdminInterface.php:1644
+#: includes/AdminInterface.php:1801
 msgid "Requests/Day"
 msgstr ""
 
-#: includes/AdminInterface.php:1592
-#: includes/AdminInterface.php:1750
+#: includes/AdminInterface.php:1644
+#: includes/AdminInterface.php:1802
 msgid "Resets every 24h"
 msgstr ""
 
-#: includes/AdminInterface.php:1629
+#: includes/AdminInterface.php:1681
 msgid "Active Provider:"
 msgstr ""
 
-#: includes/AdminInterface.php:1637
-#: includes/AdminInterface.php:1763
+#: includes/AdminInterface.php:1689
+#: includes/AdminInterface.php:1815
 msgid "Open Google AI Studio"
 msgstr ""
 
-#: includes/AdminInterface.php:1643
+#: includes/AdminInterface.php:1695
 msgid "Open OpenAI Usage Dashboard"
 msgstr ""
 
-#: includes/AdminInterface.php:1763
+#: includes/AdminInterface.php:1815
 msgid "Open OpenAI Dashboard"
 msgstr ""
 
-#: includes/AdminInterface.php:1843
+#: includes/AdminInterface.php:1895
 msgid "Default settings have been restored successfully."
 msgstr ""
 
-#: includes/AdminInterface.php:1894
-#: includes/AdminInterface.php:2641
+#: includes/AdminInterface.php:1946
+#: includes/AdminInterface.php:2714
 #: includes/AIGenerator.php:730
 #: includes/AIGenerator.php:765
 #: includes/AIGenerator.php:797
@@ -875,7 +901,7 @@ msgstr ""
 msgid "Permission denied."
 msgstr ""
 
-#: includes/AdminInterface.php:1898
+#: includes/AdminInterface.php:1950
 #: includes/AIGenerator.php:734
 #: includes/AIGenerator.php:801
 #: includes/AIGenerator.php:826
@@ -883,199 +909,199 @@ msgstr ""
 msgid "Product ID is required"
 msgstr ""
 
-#: includes/AdminInterface.php:1903
+#: includes/AdminInterface.php:1955
 msgid "Invalid product ID"
 msgstr ""
 
-#: includes/AdminInterface.php:1922
-#: includes/AdminInterface.php:1952
-#: includes/AdminInterface.php:2590
-#: includes/AdminInterface.php:2637
+#: includes/AdminInterface.php:1974
+#: includes/AdminInterface.php:2025
+#: includes/AdminInterface.php:2663
+#: includes/AdminInterface.php:2710
 msgid "Security check failed"
 msgstr ""
 
-#: includes/AdminInterface.php:1965
+#: includes/AdminInterface.php:2038
 msgid "AI Product Descriptions Settings"
 msgstr ""
 
-#: includes/AdminInterface.php:1966
+#: includes/AdminInterface.php:2039
 msgid "AI Says Descriptions"
 msgstr ""
 
-#: includes/AdminInterface.php:1974
+#: includes/AdminInterface.php:2047
 msgid "AI Product Descriptions"
 msgstr ""
 
-#: includes/AdminInterface.php:1975
+#: includes/AdminInterface.php:2048
 msgid "AI Says Product Descriptions"
 msgstr ""
 
-#: includes/AdminInterface.php:2160
+#: includes/AdminInterface.php:2233
 msgid "AI Engine & Authentication"
 msgstr ""
 
-#: includes/AdminInterface.php:2168
+#: includes/AdminInterface.php:2241
 msgid "AI Provider"
 msgstr ""
 
-#: includes/AdminInterface.php:2175
+#: includes/AdminInterface.php:2248
 msgid "Google Gemini (Recommended - Free Tier)"
 msgstr ""
 
-#: includes/AdminInterface.php:2178
+#: includes/AdminInterface.php:2251
 msgid "OpenAI GPT (Paid Tier)"
 msgstr ""
 
-#: includes/AdminInterface.php:2183
+#: includes/AdminInterface.php:2256
 msgid "Choose which AI provider generates descriptions for your store catalog."
 msgstr ""
 
-#: includes/AdminInterface.php:2193
+#: includes/AdminInterface.php:2266
 msgid "Gemini API Key"
 msgstr ""
 
-#: includes/AdminInterface.php:2204
+#: includes/AdminInterface.php:2277
 msgid "Paste your Gemini API key"
 msgstr ""
 
-#: includes/AdminInterface.php:2214
+#: includes/AdminInterface.php:2287
 msgid "Get your free API key from"
 msgstr ""
 
-#: includes/AdminInterface.php:2216
+#: includes/AdminInterface.php:2289
 msgid "Google AI Studio"
 msgstr ""
 
-#: includes/AdminInterface.php:2226
+#: includes/AdminInterface.php:2299
 msgid "OpenAI API Key"
 msgstr ""
 
-#: includes/AdminInterface.php:2237
+#: includes/AdminInterface.php:2310
 msgid "Paste your OpenAI API key"
 msgstr ""
 
-#: includes/AdminInterface.php:2247
+#: includes/AdminInterface.php:2320
 msgid "Get your API key from"
 msgstr ""
 
-#: includes/AdminInterface.php:2249
+#: includes/AdminInterface.php:2322
 msgid "OpenAI Platform"
 msgstr ""
 
-#: includes/AdminInterface.php:2259
+#: includes/AdminInterface.php:2332
 msgid "Gemini Model"
 msgstr ""
 
-#: includes/AdminInterface.php:2271
+#: includes/AdminInterface.php:2344
 msgid "OpenAI Model"
 msgstr ""
 
-#: includes/AdminInterface.php:2282
+#: includes/AdminInterface.php:2355
 msgid "Max Response Tokens"
 msgstr ""
 
-#: includes/AdminInterface.php:2299
+#: includes/AdminInterface.php:2372
 msgid "Maximum tokens allowed per description (recommended: 1500 tokens)."
 msgstr ""
 
-#: includes/AdminInterface.php:2308
+#: includes/AdminInterface.php:2381
 msgid "AI Webhook URL"
 msgstr ""
 
-#: includes/AdminInterface.php:2315
+#: includes/AdminInterface.php:2388
 msgid "https://your-webhook-endpoint.com/api"
 msgstr ""
 
-#: includes/AdminInterface.php:2317
+#: includes/AdminInterface.php:2390
 msgid "Optional: Dispatches description generation payloads to Zapier, Make, or custom webhook endpoints."
 msgstr ""
 
-#: includes/AdminInterface.php:2326
+#: includes/AdminInterface.php:2399
 msgid "Skipped or need to reconfigure API keys?"
 msgstr ""
 
-#: includes/AdminInterface.php:2329
+#: includes/AdminInterface.php:2402
 msgid "Restart setup wizard"
 msgstr ""
 
-#: includes/AdminInterface.php:2332
+#: includes/AdminInterface.php:2405
 msgid "Restart Onboarding"
 msgstr ""
 
-#: includes/AdminInterface.php:2341
+#: includes/AdminInterface.php:2414
 msgid "Store Display & Placement"
 msgstr ""
 
-#: includes/AdminInterface.php:2352
+#: includes/AdminInterface.php:2425
 msgid "Prompt Template"
 msgstr ""
 
-#: includes/AdminInterface.php:2364
+#: includes/AdminInterface.php:2437
 msgid "Save Changes"
 msgstr ""
 
-#: includes/AdminInterface.php:2367
+#: includes/AdminInterface.php:2440
 msgid "Are you sure you want to restore all settings to default values?"
 msgstr ""
 
-#: includes/AdminInterface.php:2368
+#: includes/AdminInterface.php:2441
 msgid "Restore Defaults"
 msgstr ""
 
-#: includes/AdminInterface.php:2374
+#: includes/AdminInterface.php:2447
 msgid "Filter settings..."
 msgstr ""
 
-#: includes/AdminInterface.php:2400
+#: includes/AdminInterface.php:2473
 msgid "AI Product Description"
 msgstr ""
 
-#: includes/AdminInterface.php:2422
+#: includes/AdminInterface.php:2495
 msgid "AI Provider:"
 msgstr ""
 
-#: includes/AdminInterface.php:2428
+#: includes/AdminInterface.php:2501
 msgid "Language for this product:"
 msgstr ""
 
-#: includes/AdminInterface.php:2431
+#: includes/AdminInterface.php:2504
 msgid "Use Global Setting"
 msgstr ""
 
 #. translators: %s: AI provider or model name.
-#: includes/AdminInterface.php:2454
+#: includes/AdminInterface.php:2527
 msgid "Generating with %s..."
 msgstr ""
 
-#: includes/AdminInterface.php:2467
+#: includes/AdminInterface.php:2540
 msgid "Save AI Description"
 msgstr ""
 
-#: includes/AdminInterface.php:2472
+#: includes/AdminInterface.php:2545
 msgid "Delete AI Description"
 msgstr ""
 
-#: includes/AdminInterface.php:2482
+#: includes/AdminInterface.php:2555
 msgid "AI Description Already Exists"
 msgstr ""
 
-#: includes/AdminInterface.php:2484
+#: includes/AdminInterface.php:2557
 msgid "This product already has an AI description. What would you like to do?"
 msgstr ""
 
-#: includes/AdminInterface.php:2488
+#: includes/AdminInterface.php:2561
 msgid "New Description:"
 msgstr ""
 
-#: includes/AdminInterface.php:2512
+#: includes/AdminInterface.php:2585
 msgid "Existing AI Description"
 msgstr ""
 
-#: includes/AdminInterface.php:2574
+#: includes/AdminInterface.php:2647
 msgid "WooCommerce is required for this page to work."
 msgstr ""
 
-#: includes/AdminInterface.php:2600
+#: includes/AdminInterface.php:2673
 msgid "Invalid product IDs"
 msgstr ""
 
@@ -1173,107 +1199,155 @@ msgstr ""
 msgid "Failed to generate description for %1$s: %2$s"
 msgstr ""
 
-#: includes/Config.php:249
-msgid "Google's highly stable, versatile Flash model — multimodal vision, fast throughput, and reliable catalog copy (Recommended default)."
+#: includes/Config.php:214
+msgid "Default (Balanced & Engaging)"
 msgstr ""
 
-#: includes/Config.php:253
-#: includes/Config.php:345
-msgid "Recommended"
+#: includes/Config.php:215
+msgid "Standard versatile e-commerce copy balancing features, benefits, and clean HTML formatting."
 msgstr ""
 
-#: includes/Config.php:254
-#: includes/Config.php:275
-msgid "Stable"
+#: includes/Config.php:219
+msgid "Luxury & Elegant"
 msgstr ""
 
-#: includes/Config.php:261
-msgid "Google's latest Flash model with deep reasoning. Note: Currently experiencing temporary free-tier throttling / high demand."
+#: includes/Config.php:220
+msgid "Sophisticated, sensory, and aspirational copy emphasizing exclusivity, premium craftsmanship, and elegance."
 msgstr ""
 
-#: includes/Config.php:264
-msgid "New"
+#: includes/Config.php:239
+msgid "Short & Punchy (Social & Mobile)"
 msgstr ""
 
-#: includes/Config.php:265
-msgid "High Demand"
+#: includes/Config.php:240
+msgid "Bite-sized, high-energy, mobile-optimized descriptions designed for fast scanning and quick conversions."
 msgstr ""
 
-#: includes/Config.php:272
-msgid "Stable Flash model for complex coding, agentic workflows, and reliable multi-step execution."
+#: includes/Config.php:259
+msgid "Technical & Specs-Focused"
 msgstr ""
 
-#: includes/Config.php:282
-msgid "Fastest, most cost-effective model built for high-throughput product catalogs and bulk runs."
+#: includes/Config.php:260
+msgid "Structured, authoritative, and fact-driven copy highlighting engineering, compatibility, metrics, and build quality."
 msgstr ""
 
-#: includes/Config.php:285
-msgid "High Volume"
+#: includes/Config.php:279
+msgid "SEO & Benefit-Driven"
 msgstr ""
 
-#: includes/Config.php:292
-msgid "Legacy stable Flash model providing baseline speed and foundational description performance."
+#: includes/Config.php:280
+msgid "Search-optimized copywriting structured with semantic headings, natural keywords, and problem/solution benefits."
 msgstr ""
 
-#: includes/Config.php:295
-#: includes/Config.php:305
-#: includes/Config.php:376
-msgid "Legacy"
+#: includes/Config.php:299
+msgid "Storyteller & Artisan (Boutique)"
 msgstr ""
 
-#: includes/Config.php:302
-msgid "Frontier-class performance rivaling larger models at minimal cost overhead."
-msgstr ""
-
-#: includes/Config.php:312
-msgid "Deep reasoning model recommended when nuanced copy, creative storytelling, or complex specs are required."
-msgstr ""
-
-#: includes/Config.php:315
-msgid "Pro Reasoning"
-msgstr ""
-
-#: includes/Config.php:322
-msgid "Auto-routing alias — dynamically selects the newest Flash model supported by your API key."
-msgstr ""
-
-#: includes/Config.php:325
-msgid "Auto-Routing"
-msgstr ""
-
-#: includes/Config.php:341
-msgid "Flagship multimodal model with vision capabilities, nuance, and high reasoning."
-msgstr ""
-
-#: includes/Config.php:346
-msgid "Multimodal"
-msgstr ""
-
-#: includes/Config.php:353
-msgid "Fast, cost-effective multimodal model for high-volume catalogs and bulk generation."
-msgstr ""
-
-#: includes/Config.php:356
-msgid "Fast & Efficient"
-msgstr ""
-
-#: includes/Config.php:363
-msgid "Specialized reasoning model for complex attributes and highly technical product data."
+#: includes/Config.php:300
+msgid "Warm, narrative-led copywriting connecting customers to the inspiration, craft, and heartfelt story behind the piece."
 msgstr ""
 
 #: includes/Config.php:366
+msgid "Google's highly stable, versatile Flash model — multimodal vision, fast throughput, and reliable catalog copy (Recommended default)."
+msgstr ""
+
+#: includes/Config.php:370
+#: includes/Config.php:462
+msgid "Recommended"
+msgstr ""
+
+#: includes/Config.php:371
+#: includes/Config.php:392
+msgid "Stable"
+msgstr ""
+
+#: includes/Config.php:378
+msgid "Google's latest Flash model with deep reasoning. Note: Currently experiencing temporary free-tier throttling / high demand."
+msgstr ""
+
+#: includes/Config.php:381
+msgid "New"
+msgstr ""
+
+#: includes/Config.php:382
+msgid "High Demand"
+msgstr ""
+
+#: includes/Config.php:389
+msgid "Stable Flash model for complex coding, agentic workflows, and reliable multi-step execution."
+msgstr ""
+
+#: includes/Config.php:399
+msgid "Fastest, most cost-effective model built for high-throughput product catalogs and bulk runs."
+msgstr ""
+
+#: includes/Config.php:402
+msgid "High Volume"
+msgstr ""
+
+#: includes/Config.php:409
+msgid "Legacy stable Flash model providing baseline speed and foundational description performance."
+msgstr ""
+
+#: includes/Config.php:412
+#: includes/Config.php:422
+#: includes/Config.php:493
+msgid "Legacy"
+msgstr ""
+
+#: includes/Config.php:419
+msgid "Frontier-class performance rivaling larger models at minimal cost overhead."
+msgstr ""
+
+#: includes/Config.php:429
+msgid "Deep reasoning model recommended when nuanced copy, creative storytelling, or complex specs are required."
+msgstr ""
+
+#: includes/Config.php:432
+msgid "Pro Reasoning"
+msgstr ""
+
+#: includes/Config.php:439
+msgid "Auto-routing alias — dynamically selects the newest Flash model supported by your API key."
+msgstr ""
+
+#: includes/Config.php:442
+msgid "Auto-Routing"
+msgstr ""
+
+#: includes/Config.php:458
+msgid "Flagship multimodal model with vision capabilities, nuance, and high reasoning."
+msgstr ""
+
+#: includes/Config.php:463
+msgid "Multimodal"
+msgstr ""
+
+#: includes/Config.php:470
+msgid "Fast, cost-effective multimodal model for high-volume catalogs and bulk generation."
+msgstr ""
+
+#: includes/Config.php:473
+msgid "Fast & Efficient"
+msgstr ""
+
+#: includes/Config.php:480
+msgid "Specialized reasoning model for complex attributes and highly technical product data."
+msgstr ""
+
+#: includes/Config.php:483
 msgid "Reasoning"
 msgstr ""
 
-#: includes/Config.php:373
+#: includes/Config.php:490
 msgid "Previous flagship GPT-4 model with wide context window."
 msgstr ""
 
-#: includes/Config.php:383
+#: includes/Config.php:500
 msgid "Fast and economical text-only model (no vision support)."
 msgstr ""
 
-#: includes/Config.php:386
+#: includes/Config.php:503
 msgid "Text Only"
 msgstr ""
 

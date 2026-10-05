@@ -38,6 +38,10 @@ class Status
 
         // Catalog coverage metrics
         $wc_active        = class_exists('WooCommerce');
+        $wc_version       = defined('WC_VERSION') ? constant('WC_VERSION') : '';
+        $hpos_enabled     = class_exists('\Automattic\WooCommerce\Utilities\OrderUtil')
+            && method_exists('\Automattic\WooCommerce\Utilities\OrderUtil', 'custom_orders_table_usage_is_enabled')
+            && call_user_func(['\Automattic\WooCommerce\Utilities\OrderUtil', 'custom_orders_table_usage_is_enabled']);
         $total_products   = 0;
         $with_ai_desc     = 0;
         $missing_ai_desc  = 0;
@@ -104,8 +108,8 @@ class Status
                 'title'  => __('WooCommerce Catalog Coverage', 'comet-ai-says'),
                 'fields' => [
                     /* translators: %s: WooCommerce version number. */
-                    __('WooCommerce Status', 'comet-ai-says')      => $wc_active ? sprintf(__('Active (v%s)', 'comet-ai-says'), WC_VERSION) : __('Inactive / Not installed', 'comet-ai-says'),
-                    __('High-Performance Storage', 'comet-ai-says')=> class_exists('\Automattic\WooCommerce\Utilities\OrderUtil') && \Automattic\WooCommerce\Utilities\OrderUtil::custom_orders_table_usage_is_enabled() ? __('HPOS Enabled', 'comet-ai-says') : __('Standard / Legacy Posts', 'comet-ai-says'),
+                    __('WooCommerce Status', 'comet-ai-says')      => $wc_active ? sprintf(__('Active (v%s)', 'comet-ai-says'), $wc_version) : __('Inactive / Not installed', 'comet-ai-says'),
+                    __('High-Performance Storage', 'comet-ai-says')=> $hpos_enabled ? __('HPOS Enabled', 'comet-ai-says') : __('Standard / Legacy Posts', 'comet-ai-says'),
                     __('Published Products', 'comet-ai-says')      => number_format($total_products),
                     __('With AI Descriptions', 'comet-ai-says')    => number_format($with_ai_desc),
                     __('Missing AI Descriptions', 'comet-ai-says') => number_format($missing_ai_desc),

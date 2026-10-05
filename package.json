@@ -11,7 +11,7 @@
     "archive": "node dev/archive.js",
     "sync": "node dev/sync.js",
     "sync:ignore": "node dev/sync-ignore.js",
-    "makepot": "wp i18n make-pot . i18n/languages/comet-ai-says.pot --slug=\"comet-ai-says\" --domain=\"comet-ai-says\" --exclude=\"node_modules,dev,dev_llm,tests,assets\"",
+    "makepot": "node dev/makepot.js",
     "release": "node dev/release.js",
     "release:minor": "node dev/release.js minor",
     "release:major": "node dev/release.js major",
