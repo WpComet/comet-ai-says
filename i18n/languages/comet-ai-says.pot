@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv3.
 msgid ""
 msgstr ""
-"Project-Id-Version: Comet AI Says: Product Descriptions 1.4.0\n"
+"Project-Id-Version: Comet AI Says: Product Descriptions 1.4.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/comet-ai-says\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -118,7 +118,7 @@ msgstr ""
 
 #. translators: %s: Name of the product whose AI description was deleted.
 #: includes/AdminInterface.php:135
-#: includes/AIGenerator.php:843
+#: includes/AIGenerator.php:1031
 msgid "AI description deleted for: %s"
 msgstr ""
 
@@ -417,9 +417,9 @@ msgid "Open Dashboard"
 msgstr ""
 
 #: includes/AdminInterface.php:551
-#: includes/AIGenerator.php:741
-#: includes/AIGenerator.php:833
-#: includes/AIGenerator.php:866
+#: includes/AIGenerator.php:929
+#: includes/AIGenerator.php:1021
+#: includes/AIGenerator.php:1054
 msgid "Product not found"
 msgstr ""
 
@@ -893,19 +893,19 @@ msgstr ""
 
 #: includes/AdminInterface.php:1946
 #: includes/AdminInterface.php:2714
-#: includes/AIGenerator.php:730
-#: includes/AIGenerator.php:765
-#: includes/AIGenerator.php:797
-#: includes/AIGenerator.php:822
-#: includes/AIGenerator.php:855
+#: includes/AIGenerator.php:918
+#: includes/AIGenerator.php:953
+#: includes/AIGenerator.php:985
+#: includes/AIGenerator.php:1010
+#: includes/AIGenerator.php:1043
 msgid "Permission denied."
 msgstr ""
 
 #: includes/AdminInterface.php:1950
-#: includes/AIGenerator.php:734
-#: includes/AIGenerator.php:801
-#: includes/AIGenerator.php:826
-#: includes/AIGenerator.php:859
+#: includes/AIGenerator.php:922
+#: includes/AIGenerator.php:989
+#: includes/AIGenerator.php:1014
+#: includes/AIGenerator.php:1047
 msgid "Product ID is required"
 msgstr ""
 
@@ -1163,39 +1163,39 @@ msgstr ""
 msgid "Gemini API quota exceeded for the selected model. Try switching to Gemini 3.5 Flash or check your limits at https://ai.google.dev/gemini-api/docs/rate-limits"
 msgstr ""
 
-#: includes/AIGenerator.php:751
-#: includes/AIGenerator.php:893
+#: includes/AIGenerator.php:939
+#: includes/AIGenerator.php:1081
 msgid "Check your API key and provider settings."
 msgstr ""
 
 #. translators: %s: Error message details.
-#: includes/AIGenerator.php:753
+#: includes/AIGenerator.php:941
 msgid "Failed to generate description: %s"
 msgstr ""
 
-#: includes/AIGenerator.php:769
+#: includes/AIGenerator.php:957
 msgid "Missing required fields"
 msgstr ""
 
-#: includes/AIGenerator.php:776
+#: includes/AIGenerator.php:964
 msgid "Cannot save invalid content or error messages as an AI description."
 msgstr ""
 
-#: includes/AIGenerator.php:786
+#: includes/AIGenerator.php:974
 msgid "Description saved successfully"
 msgstr ""
 
-#: includes/AIGenerator.php:810
+#: includes/AIGenerator.php:998
 msgid "No AI description found"
 msgstr ""
 
 #. translators: 1: Name of the product, 2: AI model identifier.
-#: includes/AIGenerator.php:888
+#: includes/AIGenerator.php:1076
 msgid "AI description generated and saved for: %1$s via %2$s"
 msgstr ""
 
 #. translators: 1: Name of the product, 2: Error message details.
-#: includes/AIGenerator.php:895
+#: includes/AIGenerator.php:1083
 msgid "Failed to generate description for %1$s: %2$s"
 msgstr ""
 
@@ -1541,15 +1541,15 @@ msgstr ""
 
 #: includes/LiveTests/test_image_processor.php:16
 #: includes/LiveTests/test_image_processor.php:17
-#: includes/Status.php:118
-#: includes/Status.php:119
+#: includes/Status.php:122
+#: includes/Status.php:123
 msgid "Installed"
 msgstr ""
 
 #: includes/LiveTests/test_image_processor.php:16
 #: includes/LiveTests/test_image_processor.php:17
-#: includes/Status.php:118
-#: includes/Status.php:119
+#: includes/Status.php:122
+#: includes/Status.php:123
 msgid "Not installed"
 msgstr ""
 
@@ -1558,25 +1558,25 @@ msgid "Neither GD nor Imagick is installed on this PHP server. Image vision mult
 msgstr ""
 
 #. translators: %s: Comma-separated list of supported image format encoders.
-#: includes/LiveTests/test_image_processor.php:44
+#: includes/LiveTests/test_image_processor.php:49
 msgid "Supported format encoders: %s"
 msgstr ""
 
 #. translators: %s: Error message details.
-#: includes/LiveTests/test_image_processor.php:62
+#: includes/LiveTests/test_image_processor.php:67
 msgid "wp_get_image_editor failed: %s"
 msgstr ""
 
-#: includes/LiveTests/test_image_processor.php:81
+#: includes/LiveTests/test_image_processor.php:86
 msgid "Image resizing or saving test encountered a warning."
 msgstr ""
 
-#: includes/LiveTests/test_image_processor.php:85
+#: includes/LiveTests/test_image_processor.php:90
 msgid "Successfully verified live 100x100 -> 50x50 resize & JPEG downsampling pipeline."
 msgstr ""
 
 #. translators: 1: Image editor class name, 2: Comma-separated list of supported image format encoders.
-#: includes/LiveTests/test_image_processor.php:93
+#: includes/LiveTests/test_image_processor.php:98
 msgid "Image pipeline operational using %1$s. Formats verified: %2$s. Downsampling and AVIF conversion working properly."
 msgstr ""
 
@@ -1792,243 +1792,243 @@ msgstr ""
 msgid "Configured (%1$s...%2$s)"
 msgstr ""
 
-#: includes/Status.php:91
+#: includes/Status.php:95
 msgid "AI Engine & Quotas"
 msgstr ""
 
-#: includes/Status.php:93
+#: includes/Status.php:97
 msgid "Active Provider"
 msgstr ""
 
-#: includes/Status.php:94
+#: includes/Status.php:98
 msgid "Primary Model"
 msgstr ""
 
-#: includes/Status.php:95
+#: includes/Status.php:99
 msgid "API Key Status"
 msgstr ""
 
-#: includes/Status.php:96
+#: includes/Status.php:100
 msgid "Fallback Models"
 msgstr ""
 
-#: includes/Status.php:97
+#: includes/Status.php:101
 msgid "Target Language"
 msgstr ""
 
-#: includes/Status.php:98
+#: includes/Status.php:102
 msgid "Max Token Limit"
 msgstr ""
 
-#: includes/Status.php:99
+#: includes/Status.php:103
 msgid "Prompt Template Size"
 msgstr ""
 
-#: includes/Status.php:100
+#: includes/Status.php:104
 msgid "Lifetime Generations"
 msgstr ""
 
-#: includes/Status.php:104
+#: includes/Status.php:108
 msgid "WooCommerce Catalog Coverage"
 msgstr ""
 
 #. translators: %s: WooCommerce version number.
-#: includes/Status.php:107
+#: includes/Status.php:111
 msgid "WooCommerce Status"
 msgstr ""
 
 #. translators: %s: WooCommerce version number.
-#: includes/Status.php:107
+#: includes/Status.php:111
 msgid "Active (v%s)"
 msgstr ""
 
 #. translators: %s: WooCommerce version number.
-#: includes/Status.php:107
+#: includes/Status.php:111
 msgid "Inactive / Not installed"
 msgstr ""
 
-#: includes/Status.php:108
+#: includes/Status.php:112
 msgid "High-Performance Storage"
 msgstr ""
 
-#: includes/Status.php:108
+#: includes/Status.php:112
 msgid "HPOS Enabled"
 msgstr ""
 
-#: includes/Status.php:108
+#: includes/Status.php:112
 msgid "Standard / Legacy Posts"
 msgstr ""
 
-#: includes/Status.php:109
-#: includes/Status.php:322
+#: includes/Status.php:113
+#: includes/Status.php:326
 msgid "Published Products"
 msgstr ""
 
-#: includes/Status.php:110
-#: includes/Status.php:321
+#: includes/Status.php:114
+#: includes/Status.php:325
 msgid "With AI Descriptions"
 msgstr ""
 
-#: includes/Status.php:111
+#: includes/Status.php:115
 msgid "Missing AI Descriptions"
 msgstr ""
 
-#: includes/Status.php:112
-#: includes/Status.php:173
+#: includes/Status.php:116
+#: includes/Status.php:177
 msgid "Catalog AI Coverage"
 msgstr ""
 
-#: includes/Status.php:116
+#: includes/Status.php:120
 msgid "Server Vision & Image Pipeline"
 msgstr ""
 
-#: includes/Status.php:118
+#: includes/Status.php:122
 msgid "GD Extension"
 msgstr ""
 
-#: includes/Status.php:119
+#: includes/Status.php:123
 msgid "Imagick Extension"
 msgstr ""
 
-#: includes/Status.php:120
+#: includes/Status.php:124
 msgid "Supported Encoders"
 msgstr ""
 
-#: includes/Status.php:120
+#: includes/Status.php:124
 msgid "None detected"
 msgstr ""
 
-#: includes/Status.php:121
+#: includes/Status.php:125
 msgid "AVIF Vision Support"
 msgstr ""
 
-#: includes/Status.php:121
-#: includes/Status.php:122
+#: includes/Status.php:125
+#: includes/Status.php:126
 msgid "Supported"
 msgstr ""
 
-#: includes/Status.php:121
+#: includes/Status.php:125
 msgid "Not supported (fallback to JPEG downsample)"
 msgstr ""
 
-#: includes/Status.php:122
+#: includes/Status.php:126
 msgid "WebP Vision Support"
 msgstr ""
 
-#: includes/Status.php:122
+#: includes/Status.php:126
 msgid "Not supported"
 msgstr ""
 
-#: includes/Status.php:123
+#: includes/Status.php:127
 msgid "Max Upload Size"
 msgstr ""
 
-#: includes/Status.php:127
+#: includes/Status.php:131
 msgid "WordPress & Server Environment"
 msgstr ""
 
-#: includes/Status.php:129
+#: includes/Status.php:133
 msgid "Plugin Version"
 msgstr ""
 
-#: includes/Status.php:130
+#: includes/Status.php:134
 msgid "WordPress Version"
 msgstr ""
 
-#: includes/Status.php:131
+#: includes/Status.php:135
 msgid "PHP Version"
 msgstr ""
 
-#: includes/Status.php:132
+#: includes/Status.php:136
 msgid "WP Memory Limit"
 msgstr ""
 
-#: includes/Status.php:133
+#: includes/Status.php:137
 msgid "PHP Time Limit"
 msgstr ""
 
-#: includes/Status.php:134
+#: includes/Status.php:138
 msgid "WP Debug Mode"
 msgstr ""
 
-#: includes/Status.php:135
+#: includes/Status.php:139
 msgid "Server Software"
 msgstr ""
 
-#: includes/Status.php:136
+#: includes/Status.php:140
 msgid "MySQL Version"
 msgstr ""
 
-#: includes/Status.php:182
+#: includes/Status.php:186
 msgid "System Status & Live Diagnostics"
 msgstr ""
 
-#: includes/Status.php:185
+#: includes/Status.php:189
 msgid "Real-time API connectivity, rate limit checks, catalog coverage, and image downsampling health."
 msgstr ""
 
-#: includes/Status.php:192
+#: includes/Status.php:196
 msgid "Run All Live Tests"
 msgstr ""
 
-#: includes/Status.php:196
+#: includes/Status.php:200
 msgid "Copy for Support"
 msgstr ""
 
-#: includes/Status.php:210
+#: includes/Status.php:214
 msgid "Live Environment & Diagnostic Suite"
 msgstr ""
 
 #. translators: %d: Total number of diagnostic tests.
-#: includes/Status.php:217
+#: includes/Status.php:221
 msgid "Total: %d"
 msgstr ""
 
-#: includes/Status.php:219
+#: includes/Status.php:223
 msgid "Passed: 0"
 msgstr ""
 
-#: includes/Status.php:220
+#: includes/Status.php:224
 msgid "Warnings: 0"
 msgstr ""
 
-#: includes/Status.php:221
+#: includes/Status.php:225
 msgid "Failed: 0"
 msgstr ""
 
-#: includes/Status.php:245
+#: includes/Status.php:249
 msgid "READY"
 msgstr ""
 
-#: includes/Status.php:304
+#: includes/Status.php:308
 msgid "Manage Catalog Table"
 msgstr ""
 
-#: includes/Status.php:312
+#: includes/Status.php:316
 msgid "AI Catalog Coverage Progress:"
 msgstr ""
 
 #. translators: 1: Number of products with AI descriptions (HTML strong tag), 2: Total number of published products (HTML strong tag).
-#: includes/Status.php:320
+#: includes/Status.php:324
 msgid "%1$s of %2$s published store products have an AI-enhanced description."
 msgstr ""
 
-#: includes/Status.php:414
+#: includes/Status.php:418
 msgid "Copied!"
 msgstr ""
 
-#: includes/Status.php:440
+#: includes/Status.php:444
 msgid "Passed: "
 msgstr ""
 
-#: includes/Status.php:441
+#: includes/Status.php:445
 msgid "Warnings: "
 msgstr ""
 
-#: includes/Status.php:442
+#: includes/Status.php:446
 msgid "Failed: "
 msgstr ""
 
-#: includes/Status.php:455
+#: includes/Status.php:459
 msgid "RUNNING..."
 msgstr ""

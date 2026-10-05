@@ -1,6 +1,6 @@
 {
   "name": "comet-ai-says",
-  "version": "1.4.0",
+  "version": "1.4.2",
   "description": "Generate contextual AI product descriptions on-the-fly and store them in custom fields without messing with your existing descriptions.",
   "main": "comet-ai-says.php",
   "scripts": {
